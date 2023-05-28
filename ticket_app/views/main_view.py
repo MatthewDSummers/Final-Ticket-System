@@ -34,7 +34,7 @@ def theError(request, error_message):
 
 ##### BASE URL #####
 def login_app(request): 
-    return redirect('/users')
+    return redirect('/ticket-easy/users')
 
 ##### HOMEPAGE #####
 @user_level_required(8,9)
