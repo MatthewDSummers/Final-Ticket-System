@@ -1,0 +1,407 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <title>Ticket Easy</title>
+        <meta name="description" content="This is an IT support ticketing system!">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        {% load static %}
+
+        <link rel="icon" type="image/png" href="{% static 'login_app_static/images/favicon.ico' %}"/>
+        {% comment %} flatpickr scripts {% endcomment %}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/toggle-theme.css' %}">
+        
+
+        <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/ticket-app.css' %}">
+        <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/sidenav.css' %}">
+
+        {% block css_stylesheet %}
+        {% endblock %}
+
+        {% block head_scripts %}
+        {% endblock %}
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;500;600;700;800&display=swap');
+        </style>
+    </head>
+
+
+    <body> 
+        {% comment %} <div id="ticket-table" class="row flex-it" style="display: none"></div> {% endcomment %}
+        {% comment %} <div id="ticket-table" class="rdw flex-dit" style="display: none;"></div> {% endcomment %}
+
+        <div class="container margin-left" id="container">
+
+            {% if messages %}
+                {% if "success" in request.session.message_status %}
+                <div class="col-12" id="success-new">
+                    <ul class = "success-ul">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    <div id="close-messages">
+                        <p>Close</p>
+                    </div>
+                </div> 
+                <div id="see-messages-again">
+                    <p class="theme-text">View again</p>
+                </div>
+                {% else %}
+                
+                <div class="col-12" id="errors-new">
+                    <ul class = "errors-ul">
+                    <p class="error-p">&#9888;</p>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    <div id="close-messages">
+                        <p>Close</p>
+                    </div>
+                </div> 
+                <div id="see-messages-again">
+                    <p class="theme-text">View again</p>
+                </div>
+                {% endif %}
+            {% endif %}
+
+            {% if user.level == 9 or user.level == 8 %}
+
+            {% comment %} <div class="sidenav" id="sidenav" onclick="openNfav()"> {% endcomment %}
+            <div class="sidenav" id="sidenav">
+                {% comment %} >&#9776; {% endcomment %}
+                {% if not no_dark_mode %}
+                    <button id="dark-mode-toggle" class="dark-mode-toggle" aria-label="toggle dark mode">
+                        <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M12 11.807A9.002 9.002 0 0 1 10.049 2a9.942 9.942 0 0 0-5.12 2.735c-3.905 3.905-3.905 10.237 0 14.142 3.906 3.906 10.237 3.905 14.143 0a9.946 9.946 0 0 0 2.735-5.119A9.003 9.003 0 0 1 12 11.807z"></path></svg>
+                        </span>
+                {% endif %}
+
+                </button>
+                {% comment %} <div class="sidenav-item"> {% endcomment %}
+                    <a href="{% url 'ticket-easy:dashboard' %}" class="sidenav-item">
+                        <img class="sidenav-icon" src="{% static 'login_app_static/images/home.png' %}" % alt="details">
+                        <span class="sidebar-option">Home</span>
+                    </a>
+                {% comment %} </div> {% endcomment %}
+                <a href="{% url 'ticket-easy:mail' %}" class="sidenav-item">
+                    <img class="sidenav-icon" src="{% static 'login_app_static/images/mail.png' %}" % alt="details">
+                    <span class="sidebar-option">Inbox</span>
+                    {% comment %} {{user.messages.all}} {% endcomment %}
+                </a>
+                    {% if user.inbox.messages.all|length > 0 %}
+                        {% if user.unviewed_message_count > 0 %}
+                            <div class="circle unviewed-div">
+                                {% if user.inbox.messages.all|length > 9 %}
+                                    <p class="center-circle-content unviewed-notification-sm">{{user.unviewed_message_count}}</p>
+                                {% else %}
+                                    <p class="center-circle-content unviewed-notification-lg">{{user.unviewed_message_count}}</p>
+                                            {% comment %} <p class="center-circle-content unviewed-notification-lg">{{user.inbox.viewed.count}}</p> {% endcomment %}
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+            
+    
+                <a class="sidenav-item has_subs" id="new" >
+                    <img class="sidenav-icon" src="{% static 'login_app_static/images/add-new.png' %}" % alt="details">
+                    <span class="sidebar-option" >New</p>
+                </a>
+
+                <div data-menu="new" class="sidenav-option-container">
+                    {% if user.level == 9 %}
+                        <div>
+                            <a href="{% url 'ticket-easy:new-automator' %}" class="dd-content">Automator</a>
+                        </div>
+                    {% endif %}
+                    <div>
+                        <a href="{% url 'ticket-easy:category-page' %}" class="dd-content">Category</a>
+                    </div>
+
+                    {% comment %} <div>
+                        <a href="/priority-page" class="dd-content">Priority</a>
+                    </div> {% endcomment %}
+
+                    <div>
+                        <a href="{% url 'ticket-easy:canned-response' %}" class="dd-content">Response</a>
+                    </div>
+
+                    {% comment %} <div>
+                        <a href="/tasks?filter=new" class="dd-content">Task</a>
+                    </div>
+
+                    <div>
+                        <a href="/new-team-page" class="dd-content">Team</a>
+                    </div> {% endcomment %}
+
+                    <div>
+                        <a href="{% url 'ticket-easy:new-ticket-page' %}" class="dd-content">Ticket</a>
+                    </div>
+
+                    <div>
+                        <a href="{% url 'login-app:new-user' %}" class="dd-content">User/Admin</a>
+                    </div>
+
+                </div>
+                    {% comment %} <button class="sidenav-item"> {% endcomment %}
+
+                    {% comment %} </button> {% endcomment %}
+
+
+                    
+
+
+
+
+                <div class="sidenav-item">
+                    {% comment %} <a href="/tickets/?filter=Pinned&page=1&type=pinned"> {% endcomment %}
+                    <a href="{% url 'ticket-easy:tickets' %}?type=Pinned&page=1">
+                    {% comment %} <a href="/tickets/?type=Pinned&page=1"> {% endcomment %}
+                        <img class="sidenav-icon" src="{% static 'login_app_static/images/pin2.png' %}" % alt="details">
+                        <span class="sidebar-option">Pinned</p>
+                    </a>
+                </div>
+
+                    <a href="{% url 'ticket-easy:tickets' %}?type=Active&page=1" class="dropdown sidenav-item">
+                    {% comment %} <a href="/ticket-easy/tickets/?type=Active&page=1" class="dropdown sidenav-item"> {% endcomment %}
+                        <img class="sidenav-icon" src="{% static 'login_app_static/images/tickets.png' %}" % alt="details">
+                        <span class="sidebar-option">Active</span>
+                        {% comment %} <span class="sidebar-option ticket-sidebar-option">Tickets</span> {% endcomment %}
+                    </a>
+
+                    <a href="{% url 'ticket-easy:tickets' %}?type=Resolved&page=1" class="dropdown sidenav-item">
+                    {% comment %} <a href="/ticket-easy/tickets/?type=Active&page=1" class="dropdown sidenav-item"> {% endcomment %}
+                        <img class="sidenav-icon" src="{% static 'login_app_static/images/resolved.png' %}" % alt="details">
+                        <span class="sidebar-option">Resolved</span>
+                        {% comment %} <span class="sidebar-option ticket-sidebar-option">Tickets</span> {% endcomment %}
+                    </a>
+
+                {% comment %} <a href="/teams?filter=all" class="dropdown sidenav-item">
+                    <img class="sidenav-icon" src="{% static 'login_app_static/images/team.png' %}" % alt="details">
+                    <span class="sidebar-option">Teams</span>
+                </a> {% endcomment %}
+
+                <div class="sidenav-item">
+                    {% comment %} <a href="/tickets/?filter=Status&value=Withheld&page=1&type=withheld"> {% endcomment %}
+                    <a href="{% url 'ticket-easy:tickets' %}?type=Withheld&page=1">
+                    {% comment %} <a href="/ticket-easy/tickets/?type=Withheld&page=1"> {% endcomment %}
+                        <img class="sidenav-icon" src="{% static 'login_app_static/images/hold.png' %}" % alt="details">
+                        <span class="sidebar-option">Withheld</p>
+                    </a>
+                </div>
+
+                {% comment %} <div class="sidenav-item"> {% endcomment %}
+
+                    {% if user.level == 9 %}
+                    <a href="{% url 'ticket-easy:all-automators' %}" class="sidenav-item">
+                        <img class="sidenav-icon" src="{% static 'login_app_static/images/bot.png' %}" % alt="details">
+                        <span class="sidebar-option">Bots</span>
+                    </a>
+                    {% endif %}
+                {% comment %} </div> {% endcomment %}
+
+
+                {% comment %} <div class="sidenav-item"> {% endcomment %}
+                    <a href="{% url 'ticket-easy:reports-page' %}" class="sidenav-item">
+                        <img class="sidenav-icon" src="{% static 'login_app_static/images/records.png' %}" % alt="details">
+                        <span class="sidebar-option">Analytics</span>
+                    </a>
+                {% comment %} </div> {% endcomment %}
+
+                {% comment %} <div class="sidenav-item"> {% endcomment %}
+                    {% comment %} <a href="/tickets/?filter=Archived&page=1&type=archived" class="sidenav-item"> {% endcomment %}
+                    <a href="{% url 'ticket-easy:tickets' %}?type=Archived&page=1" class="sidenav-item">
+                        <img class="sidenav-icon" src="{% static 'login_app_static/images/cabinet.png' %}" % alt="details">
+                        <span class="sidebar-option">Archives</span>
+                    </a>
+                {% comment %} </div> {% endcomment %}
+
+                {% comment %} <div > {% endcomment %}
+                    {% comment %} <div class="sidenav-item"> {% endcomment %}
+
+
+                        {% comment %} <a href="/users/all" class="sidenav-item"> {% endcomment %}
+                        <a href="{% url 'login-app:user-tickets' user_id=user.id %}?type=Profile" class="sidenav-item">
+                            <img class="sidenav-icon" src="{% static 'login_app_static/images/user2.png' %}" % alt="details">
+                            <span class="sidebar-option">Users</span>
+                        </a>
+                    {% comment %} </div> {% endcomment %}
+
+                    {% comment %} <div class="nav-users-div hidden">
+                        <a href="/profile" class="dd-content">My Profile</a>
+                    </div>
+
+                    <div class="nav-users-div hidden">
+                        <a href="/users/all" class="dd-content">All Users</a>
+                    </div> {% endcomment %}
+                {% comment %} </div> {% endcomment %}
+
+                    {% comment %} <a href="#" class="sidenav-item has_subs" id="events">
+                        <img class="sidenav-icon" src="{% static 'login_app_static/images/calendar4.png' %}" % alt="details">
+                        <span class="sidebar-option">Events</span>
+                    </a> {% endcomment %}
+
+                {% comment %} <div data-menu="events" class="sidenav-option-container">
+                    <a href="/topics_page" class="dd-content">Planner</a>
+                </div> {% endcomment %}
+
+                    <a href="{% url 'login-app:logout' %}" class="sidenav-item">
+                        <img class="sidenav-icon" src="{% static 'login_app_static/images/logout.png' %}" % alt="details">
+                        <span class="sidebar-option">Logout</span>
+                    </a>
+
+                    <a href="{% url 'ticket-easy:guide' %}" class="sidenav-item">
+                        <img class="sidenav-icon" src="{% static 'login_app_static/images/guide.png' %}" % alt="details">
+                        <span class="sidebar-option">Guide</span>
+                    </a>
+
+            </div>
+
+            {% endif %}
+
+            {% if user.level == 1 %}
+            {% comment %} <div class="sidenav" id="sidenav" onclick="openNfav()"> {% endcomment %}
+                <div class="sidenav" id="sidenav">
+                    {% comment %} >&#9776; {% endcomment %}
+                    {% if not no_dark_mode %}
+                        <button id="dark-mode-toggle" class="dark-mode-toggle" aria-label="toggle dark mode">
+                            <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M12 11.807A9.002 9.002 0 0 1 10.049 2a9.942 9.942 0 0 0-5.12 2.735c-3.905 3.905-3.905 10.237 0 14.142 3.906 3.906 10.237 3.905 14.143 0a9.946 9.946 0 0 0 2.735-5.119A9.003 9.003 0 0 1 12 11.807z"></path></svg>
+                            </span>
+                    {% endif %}
+    
+                    </button>
+                    {% comment %} <div class="sidenav-item"> {% endcomment %}
+                        <a href="{% url 'ticket-easy:dashboard' %}" class="sidenav-item">
+                            <img class="sidenav-icon" src="{% static 'login_app_static/images/home.png' %}" % alt="details">
+                            <span class="sidebar-option">Home</span>
+                        </a>
+                    {% comment %} </div> {% endcomment %}
+                    <a href="{% url 'ticket-easy:mail' %}" class="sidenav-item">
+                        <img class="sidenav-icon" src="{% static 'login_app_static/images/mail.png' %}" % alt="details">
+                        <span class="sidebar-option">Inbox</span>
+                        {% comment %} {{user.messages.all}} {% endcomment %}
+                    </a>
+                        {% if user.inbox.messages.all|length > 0 %}
+                            {% if user.unviewed_message_count > 0 %}
+                                <div class="circle unviewed-div">
+                                    {% if user.inbox.messages.all|length > 9 %}
+                                        <p class="center-circle-content unviewed-notification-sm">{{user.unviewed_message_count}}</p>
+                                    {% else %}
+                                        <p class="center-circle-content unviewed-notification-lg">{{user.unviewed_message_count}}</p>
+                                                {% comment %} <p class="center-circle-content unviewed-notification-lg">{{user.inbox.viewed.count}}</p> {% endcomment %}
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                
+        
+
+                        <a href="{% url 'login-app:user-tickets' user_id=user.id %}?type=Profile" class="sidenav-item">
+
+                            <img class="sidenav-icon" src="{% static 'login_app_static/images/user2.png' %}" % alt="details">
+                            <span class="sidebar-option">Profile</span>
+                        </a>
+                        <a href="{% url 'login-app:logout' %}" class="sidenav-item">
+                            <img class="sidenav-icon" src="{% static 'login_app_static/images/logout.png' %}" % alt="details">
+                            <span class="sidebar-option">Logout</span>
+                        </a>
+    
+                </div>
+            {% endif %}
+            
+            {% block content %}
+            {% comment %} <div class="ticket-table"></div> {% endcomment %}
+
+            {% endblock %}
+        </div>
+        <script src="{% static 'ticket_app_static/js/main.js' %}"></script>
+
+        {% block deferred_script %}
+
+        {% endblock %}
+
+
+        {% if not no_dark_mode %}
+            <script src="{% static 'ticket_app_static/js/darkmode.js' %}"></script>
+        {% endif %}
+        {% comment %} <script src="{% static 'import-select.js' %}" type="module"></script> {% endcomment %}
+
+<script>
+            //JQUERY
+            $(".has_subs").click(function(){
+                var data = $(this).attr("id")
+                var target = document.querySelector(`[data-menu="${data}"`)
+
+                if (data == "new"){
+                    target.classList.toggle("visible-sidenav-item")
+                    target.classList.toggle("present")
+                }else if (data == "events"){
+                    target.classList.toggle("visible-sidenav-item-events")
+                    target.classList.toggle("present")
+                }
+
+            });
+            $(".sidenav").mouseover( function (){
+
+                $(".sidenav").css("width", '9em')
+                var x = document.querySelectorAll(".sidebar-option")
+                for (const item of x){
+                    item.style.transition = "opacity .9s ease"
+                    item.style.opacity = "1"
+                }
+
+                var inbox_sidebar = document.querySelector(".inbox-sidebar-container")
+
+                if (inbox_sidebar !== null){
+                    $("#inbox-sidebar-expanded").css("left", "-200px")
+                    $(".inbox-sidebar").css("left", "9em")
+                }
+            })
+            $(".sidenav").mouseleave(function(e){
+                var x = document.querySelectorAll(".sidebar-option")
+                var z = document.querySelectorAll(".present")
+                for (const item of x){
+                    item.style.transition = "none"
+                    item.style.opacity = "0"
+                }
+
+                for (const item of z){
+                    console.log("ok")
+                    console.log(item, "item")
+                    if (item !== null){
+                        if (item.dataset.menu == "new"){
+                            item.classList.toggle("visible-sidenav-item")
+                        }else if(item.dataset.menu == "events"){
+                            item.classList.toggle("visible-sidenav-item-events")
+                        }
+                        item.classList.toggle("present")
+                    }
+                }
+
+
+                var inbox_sidebar = document.querySelector(".inbox-sidebar-container")
+
+                if (inbox_sidebar !== null){
+                    $("#inbox-sidebar-expanded").css("left", "-200px")
+                    $(".inbox-sidebar").css("left", "3.5em")
+                }
+
+
+                $(this).css("width", "3.5em")
+            })
+
+        </script>
+    </body>
+</html>
+
+{% comment %} {% endif %} {% endcomment %}
+

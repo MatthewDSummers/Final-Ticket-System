@@ -1,0 +1,30 @@
+.input-error{
+    color: var(--clr-error);
+    display: none;
+}
+.dropdown-trigger{
+    cursor: pointer;
+    /* margin: .5em 0; */
+}
+input:not(:last-of-type){
+    margin-bottom: .55em;
+}
+.arrow {
+    cursor: pointer;
+    border: solid var(--clr-dark);
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    margin-inline: 4px;
+    padding:2.5px;
+
+    margin-bottom: .2em;
+    transition: transform 0.3s ease;
+}
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}

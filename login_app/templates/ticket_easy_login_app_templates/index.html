@@ -1,0 +1,114 @@
+{% extends 'ticket_easy_login_app_templates/base-two.html' %}
+{% load static %}
+{% block content %}
+            <div class="row">
+                <div id="homepage" class="col-9 mx-autfo gsap-cfontent title" style="height: 27vh">
+                    <h1 id="user-name"></h1>
+
+                    <a id="user-email" href="#"></a>
+                    <button id="signin" class="btn-prifmary main-button hidden"> <a href="{% url 'login-app:login-page' %}" onclick="registrationForm()">Sign in</a></button>
+                    <button id="register" class="btn-prifmary main-button hidden"><a href="{% url 'login-app:register-page' %}" onclick="registrationForm()">Join</a></button>
+
+                    <a id="different-account" href="{% url 'login-app:login-page' %}" class="inline-block hidden">Sign into a different account</a>
+                    <br>
+                    <a id="already" href="{% url 'login-app:login-page' %}" class="inline-block hidden">Already a member? Sign in here</a>
+                    <a id="not-you" href="/ticket-easy/users/accounts/forget" class="inline-block hidden">Not you? Forget this account</a>
+                    <p></p>
+                    <p></p>
+                    {% comment %} <h1>Ticket Management System</h1> {% endcomment %}
+                    {% comment %} <p class="black">A dynamic Support Ticketing System with custom-defined analytics and custom-defined automations</p> {% endcomment %}
+                </div>
+
+            </div>
+            <div class="row" id="features-container">
+                <div id="tab-container">
+                    <button id="tab-one" class="tab">
+                        Automate
+                    </button>
+
+                    <button id="tab-two" class="tab">
+                        Communicate
+                    </button>
+                    <button id="tab-three" class="tab">
+                        Analyze
+                    </button>
+                </div>
+                <div id="tab-content">
+                    <div id="tab-one-img" class="relative tab-text">
+                        {% comment %} <img id="tab-one-img" src="{% static 'login_app_static/images/bot.jpg' %}"> {% endcomment %}
+                        <img id="tab-one-img" src="{% static 'login_app_static/images/auto.jpg' %}">
+                        {% comment %} <a href="https://www.freepik.com/free-photo/businessman-pointing-his-presentation-futuristic-digital-screen_15556741.htm#query=automate&position=0&from_view=search&track=sph">Image by rawpixel.com</a> on Freepik {% endcomment %}
+                        <p class="absolute tab-two-text-one">
+                            <span class="enlarged off-white">Work less. &nbsp Accomplish more.</span>
+                            <br>&nbsp&nbsp&nbsp
+                            <span class="yellow">Automation made easy</span>
+                        </p>
+                        <p class="absolute tab-two-text-two">
+                            <br> Create custom automations to assist workflow
+                            <br> Cover thousands of different scenarios at once
+                            <br> Complex made simple
+                            <br>The possibilities are manifold
+                    
+                        </p>
+                    </div>
+                </div>
+            <div id="panes">
+                <div id="first-pane" class="inner-pane">
+                    <img class="pane-img right from-right slide-in"  src="{% static 'login_app_static/images/pane-4.jpg' %}">
+                    
+                    <p class="pane-text float-right from-right slide-in">Quisque volutpat diam id felis euismod, at auctor odio vulputate. Duis eu ex condimentum, auctor metus vel, laoreet neque. In non cursus turpis. Duis quis bibendum ante. Donec condimentum lectus sed arcu eleifend, non imperdiet odio euismod. Cras aliquet varius erat ac interdum. Aliquam accumsan pretium eros in malesuada. Sed porta velit sed turpis mattis ultrices.</p>
+                </div>
+                <div id="second-pane" class="inner-pane" >
+                    <p class="pane-text float-left from-left slide-in">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt at magna non gravida. Curabitur venenatis fermentum egestas. Mauris et ornare ex. Fusce vestibulum elementum quam vel venenatis. Fusce nec dolor placerat, lacinia nunc et, sagittis dolor. Integer non tellus a enim blandit sollicitudin. Sed sed neque quis metus fermentum finibus non quis libero. Curabitur feugiat, nisi non suscipit semper, neque orci molestie sapien, sed pellentesque arcu orci ut purus. Pellentesque venenatis metus nisl, non aliquet sem fringilla quis. Donec molestie ullamcorper felis, sed aliquam arcu volutpat sed. Duis purus diam, placerat at dignissim vel, consectetur eu ex. Vestibulum molestie, sem ut consequat ultrices, erat tortor bibendum urna, sit amet commodo nisi ipsum a nisl. In ultrices quam quis arcu luctus, nec viverra tellus cursus.
+                    </p>
+
+                    <img class="pane-img left from-left slide-in float-right"  src="{% static 'login_app_static/images/bot.jpg' %}">
+                    
+                </div>
+            </div>
+        </div>
+
+{% endblock %}
+{% block deferred_script %}
+    <script src="{% static 'login_app_static/js/faders.js' %}"></script>
+{% endblock %}
+{% comment %} {% extends 'base-two.html' %}
+{% block content %}
+            <div id="header">
+                <h3 id="header-title" class="header"><span class="enlarged">T</span>icket <span class="enlarged">E</span>asy</h3>
+                <a class="" href="/">Home</a>
+
+                <a class="signin" href="/users/signin">Sign-In</a>
+            </div>
+
+            <div class="row">
+                <div id="homepage" class="col-9 mx-auto gsap-content" style="height: 27vh">
+                    <h1>Ticket Management System</h1>
+                    <p class="black">A dynamic Support Ticketing System / Bug Tracker with custom defined analytics and custom defined automations</p>
+                    <a class="btn-primary" href="#" onclick="registrationForm()">Register</a>
+                </div>
+                <div id="registrationform" class="col-sm col-md col-lg registration-form hidfden">
+                    <h2>Registration</h2>
+                    <form action="/users/register" method="POST">
+                    {% csrf_token %}
+                        <label for="first_name">First Name</label>
+                        <input type="text" name="first_name" class="form-control">
+                        
+                        <label for="last_name">Last Name</label>
+                        <input type="text" name="last_name" class="form-control ">
+                        
+                        <label for="email">Email</label>
+                        <input type="text" name="email" class="form-control ">
+                                                
+                        <label for="password">Password</label>
+                        <input type="password" name="password" class="form-control ">
+                        
+                        <label for="confirm_password">Confirm Password</label>
+                        <input type="password" name="confirm_password" class="form-control ">
+                        
+                        <button type="submit"  class="btn-block" style="font-size: 30px;" formnovalidate>Create account</button>
+                    </form>
+                </div>
+
+{% endblock %} {% endcomment %}

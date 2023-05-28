@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+<div id="create-ticket" class="col-9">
+    <h2 class="h2">Define Priorities</h2> 
+
+    {% if user.level == 9 %}
+    <form method="POST" action="/edit-priority" class="col-12" id="new-cat">
+        {% csrf_token %}
+        <div class="field2"><span class="bolder larger">
+            <label for="hours" id="" class="black">Priority</label>
+            <select name="priority" class="select notify">
+                    {% comment %} <option value="Low">Low</option> {% endcomment %}
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="High">High</option>
+                    <option value="Crucial">Crucial</option>
+                    <option value="Overdue">Overdue</option>
+            </select>
+        </div>
+
+
+        <hr>
+        <hr>
+        <div class="message hidden">
+            {% comment %} <p>Set the time in (hours or days) before a ticket is considered to be this priority</p> {% endcomment %}
+            <p>After the set duration of time, tickets will become this status</p>
+            {% comment %} <p>Tickets with this priority will stay at this priority for</p> {% endcomment %}
+            {% comment %} <p>Keep tickets at this priority for </p> {% endcomment %}
+        </div>
+
+        <div class="field2"><span class="bolder larger">
+            <label for="hours" class="black">Hours</label>
+            <input type="text" name="hours" id="hours" class="select">
+        </div>
+        <h2 class="title">&nbsp &nbsp or</h2>
+        <div class="field2"><span class="bolder larger">
+            <label for="days" class="black">Days</label>
+            <input type="text" name="days" id="days" class="select">
+        </div>
+        <button class="send-category">Add</button>
+    </form>
+    <form method="POST" action="toggle_prios" class="col-12" id="new-cat">
+        {% csrf_token %}
+        <div class="field2"><span class="bolder larger">
+            <label for="toggle_prios_on" id="" class="black">Auto Priorities ON</label>
+            <input type="radio" id="toggle_prios_on" name="toggle_prios_on" value="dewey">
+            <label for="toggle_prios_off" id="" class="black">Auto Priorities OFF</label>
+            <input type="radio" id="toggle_prios_off" name="toggle_prios_off" value="dewey">
+        <button class="send-category">Toggle Auto Priorities</button>
+    </form>
+<hr>
+{% for p in prios %}
+{% if target.toggle_auto_priorities == true %}
+hey
+{% endif %}
+<p class="lblue">{{p.name}} --  {{p.time}}</p>
+{% endfor %}
+</div>
+
+</div>
+
+
+
+    <form method="POST" action="delete-priority" class="row marfgin-left">
+        {% csrf_token %}
+        <button type="submit">DELETE ALL PRIOS</button>
+    </form>
+    <script>
+        $(".notify").click(function(){
+            $(".message").animate({
+                height: [ "toggle"],
+            });
+        });
+    </script>
+{% endif %}
+{% endblock %}

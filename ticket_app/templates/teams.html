@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+{% if new_team %}
+<div class="margin-inline padding-block-lg">
+    <div class="center header">
+        <h3 class="title" id="{{page_title}}">New Team</h3>
+    </div>
+    {% comment %} <h5>Leave a detailed description of the issue at hand</h5> {% endcomment %}
+    <div class="center">
+        <div class="">
+            <div class="main-content">
+                <form action="/new-team" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <input type="text" class="cool-input mx-auto" name="name" placeholder="Name of team...">
+                            {% comment %} <select name="team" id="new-team" class="new-team" data-select>
+                                <option disabled selected value>Select a team member</option>
+                                {% for member in team_members %}
+                                    <option value="{{cat.name}}">{{member.full_name}}</option>
+                                {% endfor %}
+                            </select> {% endcomment %}
+                        </div>
+                    </div>
+                    <textarea name="description" id="" class="form-control" rows="6" placeholder="Description..."></textarea>
+                    <button type="submit" class="main-button" id="">Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+{% if add_member %}
+    <div class="margin-inline padding-block-lg">
+        <div class="center header">
+            <h3 class="title" id="{{page_title}}">Add to Team</h3>
+        </div>
+            <select name="team" id="new-team" class="new-team" data-select>
+            <option>Select a team</option>
+            {% for team in Teams %}
+                <option value="{{team.id}}">{{team.name}}</option>
+            {% endfor %}
+        </select>
+        <p id="error" class="center" style="color:red; display:none;">Select a Team first</p>
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox" class="check-all"></th>
+                    <th>Name</th>
+                    <th>Level</th>
+                    <th>Team(s)</th>
+                    <th>Created Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for member in team_members %}
+                    <tr>
+                        <td><input type="checkbox" class="check" data-member="{{member.id}}"></td>
+                        <td>{{member.full_name}}</td>
+                        <td>{{member.level}}</td>
+                        <td>{{member.team}}</td>
+                        <td>{{member.created_at}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button class="main-button submit-team">Add members</button>
+    </div>
+{% endif %}
+{% if all_teams or specific_team %}
+    <div class="margin-inline padding-block-lg">
+        <div class="center header">
+            <h3 class="title" id="{{page_title}}">All Teams</h3>
+        </div>
+        <div class="w-25">
+            <button class="main-button team-options-button">New Team</button>
+            {% comment %} <select class="team-options hidden" id="team-options" data-select>
+                <option>Select an Option...</option>
+                <option>New Team</option>
+                <option>Manage Teams</option>
+            </select> {% endcomment %}
+
+
+
+
+            <h5>View Teams</h5>
+            <select class="team-select" id="team-select" data-select>
+                <option>Select a Team</option>
+                {% for team in all_teams %}
+                    <option>{{team.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+{% endif %}
+
+
+        <div id="specific-team"></div>
+        
+    </div>
+
+
+{% endblock %}
+
+{% block css_stylesheet %}
+{% comment %} <link rel="stylesheet" href="{% static 'ticket_app_static/css/category-form.css' %}"> {% endcomment %}
+<link rel="stylesheet" href="{% static 'ticket_app_static/css/select-creat-forms.css' %}">
+<link rel="stylesheet" href="{% static 'ticket_app_static/css/teams.css' %}">
+{% endblock %}
+
+{% block deferred_script %}
+    <script src="{% static 'ticket_app_static/js/teams.js' %}" type="module"></script>
+    <script src="{% static 'ticket_app_static/js/import-select.js' %}" type="module"></script>
+    <script src="{% static 'ticket_app_static/js/select-scenarios-forms.js' %}" type="module"></script>
+    <script src="{% static 'ticket_app_static/js/update-selects.js' %}" type="module"></script>
+
+    {% comment %} <script src="{% static 'general-calendar.js' %}" type="module"></script> {% endcomment %}
+{% endblock %}
+

@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<div class="margin-inline-lg padding-top-lg">
+    <input type="text" id="discerner" value="MultiTable" class="hidden">
+    
+<!-- ALLOW REGULAR USERS TO CONTACT STAFF AND OTHER USERS, BUT NOT TO CONTACT SUPER-ADMIN -->
+    {% if user.level == 1  %}
+        {% if sender.level != 9 %}
+        <div id="" class="center header"><h4 class="title" style="{{title}}">{{sender.full_name}}</h4></div>
+            <p class="theme-text">Email address for {{sender.full_name}}: {{ sender.email }}</p>
+        {% endif %}
+    {% endif %}
+
+<!-- ALLOW SUPER-ADMIN OR STAFF TO CONTACT ANY USER IRRESPECTIVE OF USER'S LEVEL -->
+    {% if user.level == 8 or user.level == 9 %}
+        <div id="" class="center header"><h4 class="title" style="{{title}}">{{sender.full_name}}</h4></div>
+            <p class="theme-text">Email address for {{sender.full_name}}: {{ sender.email }}</p>
+            <a href="/ticket-easy/users/all" class="theme-accent-secondary">See All Users</a>
+    {% endif %}
+
+    <!-- set local storage for email and name (for basic users) by this 
+        Admin/Supers will have theirs set on the home.html (dashboard)
+    -->
+    <p id="caption" data-email={{user.email}} data-name={{user.first_name}} style="hidden"></p>
+
+
+<!-- USER INFORMATION -->
+
+<!--
+    <h3 class="theme-text">
+        user id : {{user.id}}<br>
+        user email--  {{user.email}}<br>
+        user level : {{user.level}}<br><br>
+
+        sender ID : {{sender.id}}<br>
+        sender email-- {{sender.email}}<br>
+        sender level : {{sender.level}}
+    </h3> 
+    
+-->
+
+<!-- GIVE BASIC USER THEIR OPTIONS DIV IF IT'S THEIR OWN PAGE -->
+{% if user.level == 1 and user == sender %}
+    <h3 class="theme-accent ticket-assignment-dropdown-trigger"><span class="table-arrow table-down options-arrow"></span>&nbsp;User Options</h3>
+    <div id="user-options">
+        <a href="{% url 'login-app:edit-user' user_id=sender.id %}">Edit Account</a>
+
+<!-- GIVE STAFF OR SUPER-ADMIN THE OPTIONS DIV  -->
+{% elif user.level == 9 or user.level == 8 %}
+    <h3 class="theme-accent ticket-assignment-dropdown-trigger"><span class="table-arrow table-down options-arrow"></span>&nbsp;User Options</h3>
+    <div id="user-options">
+
+
+<!-- ALLOW SUPER-ADMIN TO MAKE CHANGES TO ACCOUNTS  -->
+    {% if user.level == 9 %}
+        <form method = "POST" action = "{% url 'login-app:change-user-permission' user_id=sender.id %}" id="admin-form">
+        {% comment %} <form method = "POST" action = "/users/{{sender.id}}/level/change" id="admin-form"> {% endcomment %}
+            {% csrf_token %}
+
+    <!-- MAKE REGULAR USER STAFF OR SUPER-ADMIN -->
+            {% if sender.level != 8 and sender.level != 9 %}
+                <input type="checkbox" class="admin-checkbox" value="Make Administrator" name="decision">
+                <label for="admin-checkbox" class="theme-accent">Make this user a Staff member</label>
+                <br>
+            {% endif %}
+
+    <!-- MAKE USER A SUPER-ADMIN -->
+            {% if sender.level != 9 %}
+                <input type="checkbox" class="admin-checkbox" value="Make Super-Administrator" name="decision">
+                <label for="admin-checkbox" class="theme-accent">Make this user a Super-Administrator</label>
+                <br>
+            {% endif %}
+
+    <!-- REVOKE STAFF LEVEL -->
+            {% if sender.level == 8 %}
+                <input type="checkbox" class="admin-checkbox" value="Revoke Administrator" name="decision">
+                <label for="admin-checkbox" class="theme-accent">Revoke Staff Level</label>
+                <br>
+            {% endif %}
+
+    <!-- REVOKE SUPER-ADMIN LEVEL IF ON OWN PAGE -->
+            {% if sender.level == 9 and user == sender %}
+                <input type="checkbox" class="admin-checkbox" value="Revoke Super-Administrator" name="decision">
+                <label for="admin-checkbox" class="theme-accent">Revoke Super-Administrator Level</label>
+                <br>
+            {% endif %}
+
+    <!-- DO NOTHING IF ON ANOTHER SUPER-ADMIN PAGE -->
+            {% if sender.level == 9 and user != sender %}
+
+            {% else %}
+    <!-- OTHERWISE, GIVE BUTTON -->
+            <p id="user-perm-error">*Please select an option</p>
+                <button type="submit" class="alt-button initialize-disabled">Change User Permission Level</button>
+            {% endif %}
+        </form>
+
+    <!-- IF SUPER-ADMIN IS ON ANOTHER SUPER-ADMIN PAGE -->
+        {% if sender.level == 9 and user != sender %}
+            <h5><strong>This user is a Super-Administrator.</strong></h5> <br>
+            <h6>To change their permission levels, it must be done from their own account</h6><br>   
+            <h6>To delete the account, it must be done from their own account</h6>
+        {% endif %}
+
+    <!-- ALLOW SUPER-ADMIN TO DELETE ANY USERS BESIDES ANOTHER SUPER-ADMIN -->
+        {% if sender.level != 9 and sender != user %}
+            <br>
+            <button id="delete-account"class="alt-button">Delete this account?</button>
+
+            <div id="delete-the-account-div">
+                <div id="keep-the-account-div">
+                    <p class="white">Nevermind. Hide this.</p>
+                </div>
+                <form action="#" method="POST" id="delete-account-form" data-target="{{sender.id}}">
+                    {% csrf_token %}
+                    <label for="password" class="theme-accent">Enter Your Password</label>
+                    <input type="password" name="password" id="password">
+                    <p id="pw-error">*Password field cannot be empty</p>
+                    <input type="hidden" name="which_account" value="not_own_account">
+                    <button type="submit" class="alt-button delete-button"><strong>Delete Account</strong></button>
+                </form>
+            </div>
+        {% endif %}
+    {% endif %}
+{% comment %} {% elif user.level == 8 %}
+    <div id="user-options"> {% endcomment %}
+{% endif %}
+
+<!-- IF ANYONE IS ON THEIR OWN PAGE, ALLOW THEM TO DELETE ACCOUNT -->
+    {% if sender == user %}
+        <br>
+
+        <button id="delete-account"class="alt-button"><strong>Delete your account?</strong></button>
+
+        <div id="delete-the-account-div">
+            <div id="keep-the-account-div">
+                <p class="white">Nevermind. Hide this.</p>
+            </div>
+            <form action="#" method="POST" id="delete-account-form" data-target="{{sender.id}}">
+                {% csrf_token %}
+                <label for="password" class="theme-accent">Enter Your Password</label>
+                <input type="password" name="password" id="password">
+                <p id="pw-error">*Password field cannot be empty</p>
+                <input type="hidden" name="which_account" value="own_account">
+                <button type="submit" class="alt-button delete-button"><strong>Delete Your Account</strong></button>
+            </form>
+        </div>
+
+<!-- ALLOW STAFF TO DELETE REGULAR USERS, BUT DON'T ALLOW THEM TO DELETE SUPER-ADMIN OR OTHER STAFF -->
+    {% elif user.level == 8 %}
+        {% if sender.level == 1 %}
+            <br>
+            <button id="delete-account"class="alt-button">Delete this account?</button>
+
+            <div id="delete-the-account-div">
+                <div id="keep-the-account-div">
+                    <p class="white">Nevermind. Hide this.</p>
+                </div>
+                <form action="#" method="POST" id="delete-account-form" data-target="{{sender.id}}">
+                    {% csrf_token %}
+                    <label for="password" class="theme-accent">Enter Your Password</label>
+                    <input type="password" name="password" id="password">
+                    <p id="pw-error">*Password field cannot be empty</p>
+                    <input type="hidden" name="which_account" value="not_own_account">
+                    <button type="submit" class="alt-button delete-button"><strong>Delete Account</strong></button>
+                </form>
+            </div>
+        {% else %}
+            <p class="alt-text">You are not authorized to take any actions</p>
+        {% endif %}
+    {% endif %}
+    </div>
+    <hr>
+
+<!-- ALLOW SUPER-ADMIN AND STAFF TO SEE STAFF/SUPER'S TICKETS  -->
+    {% if user.level == 8 or user.level == 9 %}
+        {% if sender.level == 8 or sender.level == 9 %}
+            <h2 class=" theme-accent">Assigned Tickets</h2>
+                <button class="new-table-button main-button" data-which_table="Resolved" data-page="Assigned">Resolved</button>
+                <button class="new-table-button main-button" data-which_table="Unresolved" data-page="Assigned">Unresolved</button>
+                <button class="new-table-button main-button" data-which_table="Hold" data-page="Assigned">On Hold</button>
+            <div class="table-body" id="table-assigned" data-table data-page></div>
+        {% endif %}
+
+        <h2 class=" theme-accent">Sent Tickets</h2>
+            <button class="new-table-button main-button" data-which_table="Resolved" data-page="Sent">Resolved</button>
+            <button class="new-table-button main-button" data-which_table="Unresolved" data-page="Sent">Unresolved</button>
+            <button class="new-table-button main-button" data-which_table="Hold" data-page="Sent">On Hold</button>
+        <div class="table-body" id="table-sent" data-table data-page></div>
+
+    {% else %}
+
+<!-- SHOW REGULAR USER HIS TICKETS -->
+        {% if sender == user %}
+            <h2 class=" theme-accent">Sent Tickets</h2>
+                <button class="new-table-button main-button" data-which_table="Resolved" data-page="Sent">Resolved</button>
+                <button class="new-table-button main-button" data-which_table="Unresolved" data-page="Sent">Unresolved</button>
+                <button class="new-table-button main-button" data-which_table="Hold" data-page="Sent">On Hold</button>
+            <div class="table-body" id="table-sent" data-table data-page></div>
+        {% elif sender != user %}
+
+<!-- ALLOW REGULAR USERS TO CONTACT STAFF AND OTHER USERS, BUT NOT TO CONTACT SUPER-ADMIN -->
+            {% if sender.level != 9 %}
+                <div class="margin-inline-lg">
+                    <h3 class="theme-accent ticket-assignment-dropdown-trigger"><span class="table-arrow table-down options-arrow"></span>&nbsp;Contact this user</h3>
+                    <div id="user-options">
+                        <p class="alt-text">{{sender.email}}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+
+
+
+    {% comment %} 
+        Can do this as well, but do without the buttons, if so. 
+        The buttons and above portion allow for minimal things to be loaded upon each page refresh.
+        So it's technically inefficient to do the below, but it is an option. 
+    {% endcomment %}
+
+
+    {% comment %} 
+        {% load ticket_tags %}
+        {% tickets_table request "Sent" "Unresolved" %}
+        {% tickets_table request "Sent" "Resolved" %}
+    {% endcomment %}
+
+</div>
+{% endblock %}
+
+
+{% block deferred_script %}
+    <script src="{% static 'ticket_app_static/js/select-scenarios-all-tickets.js' %}" type="module"></script>
+    <script src="{% static 'ticket_app_static/js/all-tickets.js' %}" type="module"></script>
+    <script src="{% static 'ticket_app_static/js/update-table.js' %}" type="module"></script>
+    {% comment %} <script type="module"> import { updateTable, tablePagination } from "{% static 'update-table.js' %}"; tablePagination() updateTable()</script> {% endcomment %}
+    <script src="{% static 'ticket_app_static/js/profile.js' %}"></script>
+    <script src="{% static 'ticket_app_static/js/import-select.js' %}" type="module"></script>
+
+{% endblock %}
+
+{% block css_stylesheet %}
+    <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/all-tickets.css' %}">
+    <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/select-all-tickets.css' %}">
+    <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/paginate.css' %}">
+    <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/profile.css' %}">
+{% endblock %}

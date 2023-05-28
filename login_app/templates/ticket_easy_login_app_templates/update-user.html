@@ -1,0 +1,42 @@
+{% comment %} {% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="margin-inline-lg padding-block-lg">
+    <div class="center">
+        <h2 class="title">Edit User</h2>
+    </div>
+
+    <div class="center">
+        <div class="w-50">
+            <form action="{% url 'login-app:new-user' user_id=target_user.id %}" method="POST" class="theme-text">
+                {% csrf_token %}
+                <label for="first_name">First Name</label>
+                <input type="text" name="first_name" class="form-control">
+                
+                <label for="last_name">Last Name</label>
+                <input type="text" name="last_name" class="form-control ">
+                
+                <label for="email">Email</label>
+                <input type="text" name="email" class="form-control ">
+                                        
+                <label for="password">Password</label>
+                <input type="password" name="password" class="form-control ">
+                
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" name="confirm_password" class="form-control ">
+                
+                <input type="checkbox" id="admin-check" name="admin-check" class="">
+                <label for="admin-check" id="admin-check-label" class="">Make an Admin</label><br>
+
+                {% if user.level == 9 %}
+                    <input type="checkbox" id="super-admin-check" name="super-admin-check">
+                    <label for="super-admin-check" id="super-admin-check-label">Make a Super Admin</label><br>
+                {% endif %}
+
+                <button type="submit"  class="main-button">Create account</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} {% endcomment %}

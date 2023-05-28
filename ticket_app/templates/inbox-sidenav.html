@@ -1,0 +1,68 @@
+{% load static %}
+<div class="inbox-sidebar-container relative">
+    <div class="inbox-sidebar">
+        <div class="inbox-sidebar-menu-item-container Compose menu-option" data-menu="Compose">
+            <div class="menu-item inbox-menu-item">
+                <img data-info="{{message.id}}" data-page="Mail" id="" class ="inbox-edit-icon" src="{% static 'login_app_static/images/edit.png' %}">
+            </div>
+        </div>
+        <br>
+        <div class="inbox-sidebar-menu-item-container Mail menu-option" data-menu="Mail">
+            <div class="menu-item inbox-menu-item">
+                <img data-info="{{message.id}}" data-page="Mail" id="" class ="inbox-action-icon" src="{% static 'login_app_static/images/inbox.png' %}">
+            </div>
+        </div>
+
+        <div class="inbox-sidebar-menu-item-container Bookmarked menu-option"  data-menu="Bookmarked">
+            <div class="menu-item inbox-menu-item">
+                <img data-info="{{message.id}}" id="" data-page="Bookmarked" class ="inbox-action-icon" src="{% static 'login_app_static/images/star-regular.png' %}">
+            </div>
+        </div>
+
+        <div class="inbox-sidebar-menu-item-container Sent menu-option"  data-menu="Sent">
+            <div class="menu-item inbox-menu-item">
+                <img data-info="{{message.id}}" id="" data-page="Sent" class ="inbox-action-icon" src="{% static 'login_app_static/images/sent.png' %}">
+            </div>
+        </div>
+
+        <div class="inbox-sidebar-menu-item-container Trash menu-option"  data-menu="Trash">
+            <div class="menu-item inbox-menu-item">
+                <img data-info="{{message.id}}" id="" data-page="Trash" class ="inbox-action-icon" src="{% static 'login_app_static/images/trash.png' %}">
+            </div>
+        </div>
+    </div>
+
+
+    <div id="inbox-sidebar-expanded" class="absolutefffff">
+        <div class="inbox-menu-option-div relative Compose menu-option" data-menu="Compose" data-page="Compose">
+            <p id="Compose">Compose</p>
+        </div>
+    <br>
+        <div class="inbox-menu-option-div relative Mail menu-option" data-menu="Mail" data-page="Mail">
+            <p id="Mail">Inbox</p>
+            <div class="inbox-menu-option-count absolute">{{inbox_count}}</div>
+        </div>
+
+        {% comment %} {% if user.inbox.starred.count > 0 %} {% endcomment %}
+            <div class="inbox-menu-option-div relative Bookmarked menu-option"  data-menu="Bookmarked" data-page="Bookmarked">
+                <p id="Bookmarked">Starred</p>
+                <div class="inbox-menu-option-count absolute">{{user.inbox.starred.all.count}}</div>
+            </div>
+        {% comment %} {% else %}
+            <div class="inbox-menu-option-div relative Bookmarked menu-option"  data-menu="Bookmarked">
+                <p id="starred">Starred</p >
+                <div class="inbox-menu-option-count absolute"></div>
+            </div>
+        {% endif %} {% endcomment %}
+
+        <div class="inbox-menu-option-div relative Sent menu-option"  data-menu="Sent" data-page="Sent">
+            <p id="Sent">Sent</p>
+            <div class="inbox-menu-option-count absolute">{{user.sent.all.count}}</div>
+        </div>
+
+        <div class="inbox-menu-option-div relative Trash menu-option"  data-menu="Trash" data-page="Trash">
+            <p id="Trash">Trash</p>
+            <div class="inbox-menu-option-count absolute">{{user.inbox.trashed.all.count}}</div>
+        </div>
+    </div> 
+</div>

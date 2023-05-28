@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+{% if user.level == 9 %}
+
+    <div id="chart-info" data-type='{{ type|safe }}' data-title='{{ title|safe }}'></div>
+    <div id="chart-data" data-values='{{ values|safe }}'></div>
+
+    {% comment %} {% for t in tickets_query %}
+    <p class="margin-inline">{{t}}</p>
+    {% endfor %} {% endcomment %}
+
+    <div id="charts-container">
+        <h2 id="charts-title">{{title}}</h2>
+        {% if type == "pie" %}
+            <div id="piechart" style="width: 100vw; height: 600px;"></div>
+
+        {% elif type == "bar" %}
+            <div id="bar-chart" ></div>
+
+        {% elif type == "line" %}
+            <div id="line-chart" ></div>
+        {% endif %}
+    </div>
+
+{% endif %}
+{% endblock %}
+
+{% block deferred_script %}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="{% static 'ticket_app_static/js/reports.js' %}" type="module"></script>
+{% endblock %}
+
+{% block css_stylesheet %}
+    <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/reports.css' %}">
+{% endblock %}

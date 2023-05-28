@@ -1,0 +1,139 @@
+
+{% load static %}
+
+
+
+{% if tasks %}
+{% comment %}            GENERAL SELECT
+{% endcomment %}
+    <div class="w-25">
+        <select class="team-options" id="team-options" data-select>
+            <option>Filter By</option>
+            <option>Members</option>
+        </select>
+    </div>
+
+{% comment %}            TASK SELECT for adding to team
+{% endcomment %}
+    <div class="w-25">
+        <select class="task-options hidden" id="task-options" data-select>
+            <option value="default-value">Task</option>
+
+            {% for task in Tasks %}
+                <option value="{{task.id}}">{{task.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+
+
+{% comment %}            TASKS TABLE
+{% endcomment %}
+
+    <div id="team-tasks-table-container">
+        <table class="team-tasks-table">
+            <thead>
+                <tr>
+                    <th><input type="checkbox">Name</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Schedule</th>
+                    <th>Added on</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% comment %} ACTUAL DATA HERE {% endcomment %}
+                    {% for task in team.tasks.all %}
+                        <tr>
+                            <td><input type="checkbox" class="remove-task" data-task="{{task.id}}"> {{task.name}}</td>
+                            <td>{{task.status}}</td>
+                            <td>{{task.priority}}</td>
+                            <td>{{task.start_date}} - {{task.end_date}}</td>
+                            <td>{{task.created_at}}</td>
+                        </tr>
+                    {% endfor %}
+
+
+
+                {% comment %} DUMMY DATA HERE {% endcomment %}
+                {% with ''|center:9 as range %}
+                    {% for _ in range %}
+                        <tr>
+                            <td><input type="checkbox" class="remove-task" data-task="{{task.id}}">Demo Task</td>
+                            <td>Unresolved</td>
+                            <td>Low</td>
+                            <td>9/12/22 - 10/24/22</td>
+                            <td>November 12, 2022</td>
+                        </tr>
+                    {% endfor %}
+                {% endwith %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+{% elif members %}
+{% comment %}            GENERAL SELECT
+{% endcomment %}
+    <div class="w-25">
+        <select class="team-options" id="team-options" data-select>
+            <option>Filter By</option>
+            <option>Tasks</option>
+        </select>
+    </div>
+
+{% comment %}            TASK SELECT for adding to team
+{% endcomment %}
+
+    <div class="w-25">
+        <select class="task-options hidden" id="task-options" data-select>
+            <option>Task</option>
+
+            {% for task in Tasks %}
+                <option>Task</option>
+            {% endfor %}
+        </select>
+    </div>
+
+
+
+{% comment %}            MEMBERS TABLE
+{% endcomment %}
+    <table class="hiddenfffffffff">
+        <thead>
+            <tr>
+                <th><input type="checkbox">Members</th>
+            </tr>
+        </thead>
+        <tbody>
+                {% for member in team.members.all %}
+                    <tr>
+                        <td><input type="checkbox" class="remove-member" data-member="{{member.id}}"> {{member.full_name}}</td>
+                    </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+
+{% comment %}            SELECT SCRIPT
+{% endcomment %}
+<script type="module">
+    import Select from "{% static 'import-select.js' %}"
+        const selectElements = document.querySelectorAll('[data-select]')
+
+        selectElements.forEach(selectElement => {
+        // make new custom select 
+            new Select(selectElement)
+        // delete old select 
+            selectElement.remove()
+        })
+
+</script>
+
+{% comment %} <script src="{% static 'update-selects.js' %}" type="module"></script> {% endcomment %}
+
+

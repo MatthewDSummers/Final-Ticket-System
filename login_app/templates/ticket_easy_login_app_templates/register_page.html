@@ -1,0 +1,29 @@
+{% extends 'ticket_easy_login_app_templates/base-two.html' %}
+{% block content %}
+
+
+            <div class="row">
+                <div id="content-1" class="col-sm col-md col-lg">
+                    <h2 id="title">Register</h2>
+                    <form action="{% url 'login-app:register-user' %}" method="POST" class="login_app_form">
+                    {% csrf_token %}
+                        <label for="first_name" class="labels">First Name</label>
+                        <input type="text" name="first_name" class="form-control">
+                        
+                        <label for="last_name" class="labels">Last Name</label>
+                        <input type="text" name="last_name" class="form-control ">
+                        
+                        <label for="email" class="labels">Email</label>
+                        <input type="text" name="email" class="form-control ">
+                                                
+                        <label for="password" class="labels">Password</label>
+                        <input type="password" name="password" class="form-control ">
+                        
+                        <label for="confirm_password" class="labels">Confirm Password</label>
+                        <input type="password" name="confirm_password" class="form-control ">
+                        
+                        <button type="submit"  class="btn-block main-button alt-shadow" style="font-size: 30px;" formnovalidate>Create account</button>
+                    </form>
+                </div>
+            </div>
+{% endblock %}

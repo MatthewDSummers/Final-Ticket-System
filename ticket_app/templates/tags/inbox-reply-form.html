@@ -1,0 +1,29 @@
+<br>
+<button id="reply" class="main-button">Reply</button>
+
+<div id="message-container" style="display:none">
+
+    <div id="to" class="form-hr">
+        <a href="#" id="recipients" class="input-validation">Add recipients</a>
+
+        {% for original_recipient in single_message.recipients.all %}
+            <p class="added-recipient original-recipients">{{original_recipient.email}}</p>
+        {% endfor %}
+    </div> 
+    <form id="message-form" action="{% url 'ticket-easy:create-reply' message_id=single_message.id %}" method="POST">
+    {% comment %} <form id="message-form" action="/mail/reply/{{single_message.id}}" method="POST"> {% endcomment %}
+        {% csrf_token %}
+
+        <span id="error-no-body" style="color:red; display: none; margin-left: .7em">*Please add the message here</span>
+        <div class="editable message-body-container" >
+        {% comment %} <div class="editable message-body-container" style="white-space: pre-wrap;"> {% endcomment %}
+        </div>
+
+        <textarea name="the_message_body" id="the_message_body" style="display:none;"></textarea>
+
+        {% comment %} {{ form.media }}
+        {{ form.as_p }} {% endcomment %}
+        <input type="hidden" name="the_message_recipients" id="the_message_recipients" value="{{single_message.sender.email}}">
+        <button type="submit" class="main-button input-validation" id="send-email">Send</button>
+    </form>
+</div>

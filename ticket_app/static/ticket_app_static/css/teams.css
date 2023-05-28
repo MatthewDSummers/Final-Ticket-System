@@ -1,0 +1,49 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;500;600;700;800&display=swap'); */
+
+/* TEAM TASKS TABLE  */
+
+#team-tasks-table-container{
+    width: 60vw;
+}
+
+.team-tasks-table{
+    background-color: rgb(255, 255, 255);
+    background-color: var(--background);
+    font-family: 'Assistant', sans-serif;
+    caret-color: rgba(0,0,0,0);
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    overflow: auto;
+    min-height: 55vh;
+}
+
+/* TH  */
+    .team-tasks-table th:nth-child(1){
+        /* name  */
+        width: 25%;
+    }
+    .team-tasks-table th:nth-child(2){
+        /* status  */
+        width: 15%;
+    }
+    .team-tasks-table th:nth-child(3){
+        /* priority */
+        width: 10%;
+    }
+    .team-tasks-table th:nth-child(4){
+        /* schedule  */
+        width: 25%;
+    }
+    .team-tasks-table th:nth-child(5){
+        /* added on  */
+        width: 25%;
+    }
+/* TD  */
+    .team-tasks-table td{
+        padding-block: .24rem;
+        border-bottom: var(--td-border);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }

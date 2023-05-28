@@ -1,0 +1,447 @@
+/* TABLE OF CONTENTS
+
+    1. Global Styles
+        1.1 General
+        1.2 Main Content
+        1.3 Forms
+
+    2. Typography
+        2.1 Font Attributes
+        2.2 Selection
+        2.3 Headers
+
+    3. Layout
+        3.1 Containers
+        3.2 Displays
+        3.3 Positions
+        3.4 Paddings
+        3.5 Margins
+        3.6 Borders
+
+    4. Components
+        4.1 Inputs & Labels
+        4.2 Buttons
+
+    5. Status Handling
+        5.1 Error
+        5.2 Success
+
+*/
+
+/*  =================
+    1. Global Styles 
+    ================= */
+
+/* 1.1 General  */
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    html, body{
+        caret-color: var(--clr-dark) !important;
+        min-height: 100%;
+        height: 100%;
+        min-width: 100%;
+        overflow-x: hidden;
+        /* font-family: assistant; */
+    }
+    .theme-text{
+        color: var(--clr-dark);
+    }
+    .theme-accent{
+        color: var(--anchor);
+    }
+    .theme-accent-secondary{
+        color: var(--theme-accent-secondary);
+    }
+/* 1.2 Main Content  */
+    .contrast-background{
+        background-color: var(--clr-hr);
+    }
+    .main-content{
+        border-left: 2px solid rgb(193, 193, 193);
+        border-top: 2px solid rgb(193, 193, 193);
+        border-radius: 10px 10px;
+        margin-bottom: 1.4rem;
+        padding: 1rem .7rem 1.1rem .7rem;
+        background-color: #c7daf3;
+        background-color: #ebebeb;
+        background-color: var(--background-secondary);
+        box-shadow: var(--box-shadow-main);
+    }
+        .main-content form > * {
+            margin-block: 1em;
+        }
+        .main-content * + * {
+            margin-block: .5em;
+        }
+
+/* 1.3 Forms  */
+    /* .custom-select-options > *{
+        margin-block: 0;
+    } */
+
+    .form-comment{
+        background-color: rgb(150, 150, 150);
+
+        margin-top: .7em;
+        /* border-radius: 1px 8px 8px 9px; */
+        padding: .2em .4em .2em .4em;
+        text-align: center;
+    }
+    .form-comment::before, .form-comment::after{
+        content: "";
+        /* border-top: 2px solid red; */
+        height: .09rem;
+        background-color: red;
+    }
+
+/*  =================
+    2. Typography
+    ================= */
+
+/* 2.1 Font Attributes  */
+    .fw-900{
+        font-weight: 900;
+    }
+    .fs-600{
+        font-size: 1rem;
+    }
+    .fs-900{
+        font-size: 1.2rem;
+    }
+
+/* 2.2 Selection  */
+    ::selection{
+    background-color: rgb(0,0,0,0);
+    color: rgb(0, 56, 145);
+    background-color: rgb(214, 214, 214);
+    }
+
+/* 2.3 Headers */
+    .header{
+        margin-bottom:1em;
+    }
+    #header{
+        border-bottom: 1px solid var(--color);
+        padding:16px 20px;
+    }
+    #header-title{
+        color: var(--heading-color);
+    }
+
+    .title::before, .title::after{
+        /* width: .2em; */
+        content: "";
+        height: .09rem;
+        background-color: var(--secondary-background-color);
+        /* display: block; */
+    }
+    .title{
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        /* grid-template-columns: repeat(3, 3fr); */
+        align-items: center;
+        column-gap: 1.6rem;
+        color: var(--heading-color);
+        /* ORIGINAL COLOR ABOVE !!! ^  */
+        color: black;
+        color: var(--font-color-primary);
+    }
+
+    .white{
+        color: white !important;
+    }
+/*  =================
+    3. Layout 
+    ================= */
+
+/* 3.1 Containers  */
+
+    .container{
+        /* outline: 2px solid orange; */
+        min-height: 100%;
+        min-width: inherit;
+        opacity: .9;
+        background-color:  var(--background);
+    }
+
+    /* .container > *{
+        color: var(--font-color-primary);
+    } */
+
+/* 3.2 Display  */
+    .hidden{
+        display: none;
+    }
+    .inline{
+        display: inline;
+    }
+    .block{
+        display: block;
+    }
+    .inline-block{
+        display: inline-block !important;
+    }
+    .center{
+        display: flex;
+        justify-content: center;
+    }
+
+/* 3.3 Position  */
+    .relative{
+        position: relative;
+    }
+    .absolute{
+        position: absolute;
+    }
+
+/* 3.4 Paddings  */
+    .padding-block-lg{
+        /* padding-block: 1em; */
+        padding-block: 2em;
+    }
+    .padding-top-lg{
+        padding-top: 2em;
+    }
+/* 3.5 Margins  */
+    .margin-block-lg{
+        margin-block: 1rem;
+    }
+    .margin-block-md{
+        margin-block:.75rem;
+    }
+    .margin-block-sm{
+        margin-block:.2rem;
+    }
+    .margin-top-neg{
+        margin-top: -2em;
+    }
+    .margin-top-lg{
+        margin-top: 2.35em;
+    }
+    .margin-top-md{
+        margin-top: 1em;
+    }
+    .margin-inline-sm{
+        margin-inline: 1em;
+    }
+    .margin-inline{
+        margin-inline:4em;
+    }
+    .margin-inline-lg{
+        margin-inline:5em;
+    }
+
+/* 3.6 Borders */
+    .border-radius{
+        border-radius: 10px;
+    }
+    .border-normal{
+        border-radius: 7px;
+    }
+    .border-special{
+        border-radius: 7px 7px 0 0;
+    }
+
+/*  =================
+    4 Components 
+    ================= */
+
+/* 4.1 Inputs & Labels */
+    textarea{
+        background-color: var(--background) !important;
+        color: var(--clr-dark) !important;
+    }
+        textarea:focus{
+            background-color: var(--background);
+            outline: transparent !important;
+            caret-color: var(--clr-dark) !important;
+            box-shadow: var(--textarea-box-shadow) !important;
+        }
+
+    label{
+        color: var(--primary-font-color);
+    }
+
+    input[type=text]:not(.ticket-table input, .cool-input){
+        background-color: var(--background-secondary) !important;
+        color: var(--clr-dark);
+    }
+    input[type=password]{
+        background-color: var(--background-secondary) !important;
+        color: var(--clr-dark);
+    }
+        input[type=text]:not(.ticket-table input)::placeholder{
+            color: var(--clr-dark);
+        }
+    input[type=date]{
+        background-color: var(--background-secondary) !important;
+        color: var(--clr-dark);
+    }
+        input[type=date]:focus{
+            background-color: var(--background-secondary) !important;
+            color: var(--clr-dark);
+        }
+        ::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
+    #form-date-second-input{
+        width: 100% !important;
+        background-color: transparent;
+        border: 1px solid hsl(219, 15%, 85%);
+        padding: .3em .2em .3em .7em;
+        border-radius: 4px;
+    }
+
+/* 4.2 Buttons  */
+    a{
+        color: var(--anchor);
+    }
+    a:hover{
+        color: var(--clr-dark);
+    }
+    .plain-button{
+        padding: 0;
+        margin: 0;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        color: var(--anchor);
+        font-weight: 700;
+    }
+        .plain-button:hover{
+            color: var(--anchor-hover);
+            text-decoration: underline;
+        }
+        .plain-button:focus{
+            outline: none;
+        }
+    .main-button{
+        padding:.5em;
+        border-radius: .7em;
+        border: var(--main-button-border);
+        background-color: var(--main-button-bgr);
+        box-shadow: var(--main-button-shadow);
+        color:var(--main-button-clr);
+    }
+        .main-button:hover{
+            border: var(--main-button-border-hover);
+            background-color: var(--main-button-bgr-hover);
+        }
+
+        .main-button a{
+            color: #feffd6;
+            color: #fdff80;
+            text-shadow: 1px 1px 2px rgb(174, 89, 89);
+        }
+            .main-button a:hover{
+                text-decoration: none;
+            }
+        .main-button img{
+            width: 1.2em;
+            height: 1.2em;
+        }
+    .delete-button{
+        margin-top: .3em;
+        padding:.5em;
+        border-radius: .7em;
+        border: var(--main-button-border);
+        background-color: rgb(138, 0, 0);
+        box-shadow: var(--main-button-shadow);
+        color: white;
+    }
+    .alt-button{
+        margin-top: .3em;
+        padding:.5em;
+        border-radius: .7em;
+        border: var(--alt-button-border);
+        background-color: rgb(253, 255, 106);
+        box-shadow: var(--main-button-shadow);
+        color: rgb(53, 53, 53);
+    }
+/*  =================
+    5. Status Handling
+    ================= */
+
+/* 5.1 Error */
+
+
+    #errors-new{
+        position: relative;
+        opacity: .7;
+        height: auto;
+        margin-bottom: 20px;
+        width: 100%;
+        border: 2px solid rgb(247, 121, 121);
+        padding: 10px;
+        background-color: green;
+        background-color: #fcd6d6;
+        transition: ease-out .5s;
+    }
+    .errors-ul{
+        font-size: 18px;
+        font-weight: bolder;
+        text-align: center;
+        list-style-type: none;
+    }
+    .error-p{
+        margin-bottom: -14px;
+        font-size: 40px;
+    }
+    /* 5.2 Success  */
+    #success-new{
+        position: relative;
+        opacity: .7;
+        height: auto;
+        margin-bottom: 20px;
+        width: 100%;
+        border: 2px solid rgb(11, 0, 170);
+        padding: 10px;
+        background-color: #fdff9e;
+        transition: ease-out .5s;
+    }
+    .success-ul{
+        font-size: 18px;
+        font-weight: bolder;
+        text-align: center;
+        list-style-type: none;
+    }
+    .success-p{
+        margin-bottom: -14px;
+        font-size: 40px;
+    }
+    #see-messages-again{
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 6em;
+        z-index: 99999;
+        border-radius: 0% 0% 50% 50%;
+        padding: .15em .5em .2em .5em;
+        background-color: var(--theme-accent-secondary);
+        font-weight: 700;
+        text-shadow: var(--text-shadow);
+        cursor: pointer;
+    }
+
+    #close-messages{
+        display: none;
+        position: absolute;
+        bottom: 0;
+        left: 6em;
+        height: 1.8em;
+        border-radius: 50% 50% 0% 0%;
+        border-top: 2px solid #1a23c4;
+        border-left: 2px solid #1a23c4;
+        border-right: 2px solid #1a23c4;
+        padding: .2em 1em .6em 1em;
+        background-color: black;
+        color: white;
+        cursor: pointer;
+    }
+
+    #icon-minus{
+        width: 20px;
+    }

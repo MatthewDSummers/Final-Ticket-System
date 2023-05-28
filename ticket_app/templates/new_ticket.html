@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="margin-inline padding-block-lg">
+    <div class="center header">
+        <h3 class="title" id="{{page_title}}">New Ticket</h3>
+    </div>
+    {% comment %} <h5>Leave a detailed description of the issue at hand</h5> {% endcomment %}
+    <div class="center">
+        <div style="width: 40%;">
+            <div class="main-content">
+            <form action="{% url 'ticket-easy:create-ticket' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="row">
+                    <select name="sender" id="sefnder" class="cool-input hidden">
+                        <option value={{user.id}}>{{user.full_name}}</option>
+                    </select>
+                    <div class="col-12">
+                        {% if user.level == 9 or user.level == 8 %}
+                            <select name="priority" id="new-ticket-priority" class="new-ticket-priority" data-select>
+                                <option disabled selected value>Select a priority</option>
+                                <option value="Low">Low</option>
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="High">High</option>
+                                <option value="Crucial">Crucial</option>
+                            </select>
+                        {% endif %}
+                        <select name="category" id="new-ticket-category" class="new-ticket-category" data-select>
+                            <option disabled selected value>Select a category</option>
+                            {% for cat in categories %}
+                                <option value="{{cat.name}}">{{cat.name}}</option>
+                            {% endfor %}
+                        </select>
+                        {% comment %} <input class="table-input calendar-element" id="table-ticket-date" type="text" placeholder="Select a date . . ."> {% endcomment %}
+                        {% comment %} <input id="form-date-second-input"> {% endcomment %}
+                        
+                    </div>
+                </div>
+                    <textarea name="desc" id="new-ticket-description" class="form-control" rows="10"></textarea>
+                    <input type="hidden" data-delegate="new-ticket-priority" name="priority">
+                    <input type="hidden" data-delegate="new-ticket-category" name="category">
+                    {% comment %} <input type="file" name="image" class="file"> {% endcomment %}
+                    {% comment %} <button class="main-button" id="send-form">Send Ticket</button> {% endcomment %}
+                    <button class="main-button">Send Ticket</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% comment %} <div class="message hidden">
+        <p>If left blank, priority will be Low by default</p>
+    </div> {% endcomment %}
+</div>
+{% comment %} <script>
+    $(".notify").click(function(){
+        $(".message").animate({
+            height: [ "toggle"],
+        });
+    });
+</script> {% endcomment %}
+
+
+{% endblock %}
+
+{% block css_stylesheet %}
+{% comment %} <link rel="stylesheet" href="{% static 'ticket_app_static/css/category-form.css' %}"> {% endcomment %}
+<link rel="stylesheet" href="{% static 'ticket_app_static/css/select-creat-forms.css' %}">
+{% endblock %}
+
+{% block deferred_script %}
+    <script src="{% static 'ticket_app_static/js/import-select.js' %}" type="module"></script>
+    {% comment %} <script src="{% static 'ticket_app_static/js/select-scenarios-forms.js' %}" type="module"></script> {% endcomment %}
+    <script src="{% static 'ticket_app_static/js/new-ticket-new-category.js' %}" type="module"></script>
+
+    {% comment %} <script src="{% static 'general-calendar.js' %}" type="module"></script> {% endcomment %}
+{% endblock %}

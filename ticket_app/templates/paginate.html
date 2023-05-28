@@ -1,0 +1,29 @@
+{% comment %} <br>
+<div class="pagination-container">
+    <div class="pagination">
+        {% if the_list %}
+            <h5 class="theme-text">Page {{ the_list.number }} of {{the_list.paginator.num_pages}}</h5>
+        {% endif %}
+
+        {% if the_list.has_previous %}
+            <a  href="?page={{ the_list.previous_page_number }}" data-which_table={{tag_filter}}>Previous</a>
+        {% endif %}
+
+        <div class="pagination-a-container">
+            {% if page_range_length > 1 %}
+                    {% for page in page_range %} 
+                        {% if page != "…" %}
+                            <a class="{% if the_list.number == page  %}active-pagination{% endif %}" href="all?page={{page}}">{{ page}}</a>
+                        {% elif page == "…" %}
+                            <p class="inline-block theme-text">{{ page }}</p>
+                        {% endif %}
+                    {% endfor %}
+            {% endif %}
+        </div>
+
+        {% if the_list.has_next and the_list.number !=  the_list.paginator.page_range|last %}
+            <a href="?page={{ the_list.next_page_number }}" data-which_table={{tag_filter}}>Next</a>
+        {% endif %}
+
+    </div>
+</div> {% endcomment %}

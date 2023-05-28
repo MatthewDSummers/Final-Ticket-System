@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% if user.level == 9 %}
+    {% comment %} <div id="interactive" style="display:block"></div> {% endcomment %}
+
+
+<div class="margin-inline margin-block-lg">
+    <div class="center">
+        <h2 class="title">New Automation</h2>
+    </div>
+    <div class="margin-inline margin-block-lg">
+
+    <div class="bot-trifgger w-50 mx-auto">
+        <div class="bot-name-input-div"><p class="inline">Automation:</p>
+            <input type="text" id="bot-name-input" class="p-bgr-no-shadow" placeholder="Name this automation" name="namde" autocomplete="off">
+        </div>
+        {% comment %} <p class="p-bgr-name w-10d0"><span class="arrow down"></span>Automator:<span class="p-bgr-no-shadow">Give this bot a name</span></p> {% endcomment %}
+    </div>
+
+    <div class="bot-container w-50 mx-auto hidden">
+        <div class="bot-inner-div relative">
+            <h4 id="title" class="theme-text">Title</h4>
+            {% comment %} <div class="p-bgr-name"><p class="inline-block p-bgr-name">Automation:</p> {% endcomment %}
+            {% comment %} </div> {% endcomment %}
+            {% comment %} <p class="relatifve add-trigger"><img class="add-when-trigger-new" src="{% static 'login_app_static/images/plus.png' %}">Add a trigger</p> {% endcomment %}
+            <p class="relatifve add-condition hide-thefn theme-text" style="display:none"><img class="add-condition-trigger-new" src="{% static 'login_app_static/images/plus.png' %}">Add condition</p>
+            <p class="relatifve add-action hide-thedn theme-text" style="display:none"><img class="add-action-trigger-new" src="{% static 'login_app_static/images/plus.png' %}">Add action</p>
+
+            {% comment %} <form action="new-automator" method="POST" id="bot-form" class="select-form" style="outline: 4px solid black;"> {% endcomment %}
+            <form action="{% url 'ticket-easy:new-automator' %}" method="POST" id="new-automator-form" class="select-form" >
+                {% csrf_token %}
+                <div id="when-div" style="width: 14rem">
+                    <span class="fw-900 fs-600 theme-text">When...</span>
+                    <select id="when" class="when" name="event" data-select data-border="radius">
+                        <option selected disabled>Select an Option...</option>
+                            {% for k,v in When_Options.items %}
+                                <option value="{{v}}">{{k}}</option>
+                            {% endfor %}
+                    </select>
+{% comment %} 
+                    <div id="duration" class="hidden">
+                        <input id="duration-input" type="number" name="amount" placeholder="Type a number here..." class="p-bgr">
+                        <select id="pending" class="pending" name="event" data-select data-border="radius">
+                            <option>Hours</option>
+                            <option>Days</option>
+                            <option>Weeks</option>
+                        </select>
+                    </div> {% endcomment %}
+                </div>
+
+                <div id="conditional_div">
+
+                    <div id="condition-one-div" style="display:none">
+                        <span class="fw-900 fs-600 theme-text" id="condition-one-div-span">If...</span>
+                        <p class="remove-condition theme-text"
+                            style=""
+                            data-reset-condition-option="add-condition"
+                            data-condition-tracker="if"
+                            data-checkbox="checkbox-if">
+                            <img class="remove-condition-img" src="{% static 'login_app_static/images/minus.png' %}">
+                            Remove condition
+                        </p>
+
+                        <select id="condition-one" class="condition-one" name="condition-one" autocomplete="off" data-select data-border="radius">
+                            <option selected disabled>Select an Option...</option>
+                            {% comment %} {% for i in If_Options %} {% endcomment %}
+                                {% for k,v in If_Options.items %}
+                                    <option value="{{v}}">{{k}}</option>
+                                {% endfor %}
+                            {% comment %} {% endfor %} {% endcomment %}
+                        </select>
+                    </div>
+
+                    <div id="condition-or-div" style="display:none">
+                        {% comment %} <p id="error-field-condition-or" class="form-error" style="color:red;">*Please select a value</p> {% endcomment %}
+
+                        <span class="fw-900 fs-600 theme-text">Or...</span>
+                        <p class="remove-condition theme-text" 
+                            style="" 
+                            data-reset-condition-option="add-condition"
+                            data-condition-tracker="additional-conditional"
+                            data-checkbox="checkbox-or"
+                            >
+                            <img class="remove-condition-img" src="{% static 'login_app_static/images/minus.png' %}">
+                            Remove condition
+                        </p>
+
+                        <select id="condition-or" class="condition-or" data-select data-border="radius">
+                            <option selected disabled>Select an Option...</option>
+                            {% comment %} {% for i in If_Options %} {% endcomment %}
+                                {% for k,v in If_Options.items %}
+                                    <option value="{{v}}">{{k}}</option>
+                                {% endfor %}
+                            {% comment %} {% endfor %} {% endcomment %}
+                        </select>
+                    </div>
+                    <div id= "and_or_div" style=" display: none">
+                        {% comment %} <span class="fw-900 fs-600" id="condition-one-div-span">And / Or...</span> {% endcomment %}
+                        {% comment %} <p class="remove-condition" data-reset-condition-option="condition-and-or"><img class="remove-condition-img" src="{% static 'login_app_static/images/minus.png' %}">Remove condition</p> {% endcomment %}
+                    </div>
+
+                    
+                    <div id="condition-inclusive-div" style="display:none">
+                        <span class="fw-900 fs-600 theme-text">And...</span>
+                        <p class="remove-condition theme-text" 
+                            style=""
+                            data-reset-condition-option="add-condition"
+                            data-condition-tracker="additional-conditional"
+                            data-checkbox="checkbox-and"
+                            >
+                            <img class="remove-condition-img" src="{% static 'login_app_static/images/minus.png' %}">
+                            Remove condition
+                        </p>
+
+                        <select id="condition-inclusive" class="condition-inclusive" data-select data-border="radius">
+                            <option selected disabled>Select an Option...</option>
+                            {% comment %} {% for i in If_Options %} {% endcomment %}
+                                {% for k,v in If_Options.items %}
+                                    <option value="{{v}}">{{k}}</option>
+                                {% endfor %}
+                            {% comment %} {% endfor %} {% endcomment %}
+                        </select>
+                    </div>
+
+                    {% comment %} <div id="error" class="hidden form-error"><p class="error" style="color:red"></p></div> {% endcomment %}
+                {% comment %} </div> {% endcomment %}
+            </div>
+
+
+            {% comment %} <div id="action-container" style="display:none"> {% endcomment %}
+                <div id="then-div" style="display:none">
+                    <span class="fw-900 fs-600 theme-text">Then...</span>
+                    <p class="remove-condition theme-text"
+                        style=""
+                        data-reset-condition-option="add-action"
+                        data-condition-tracker="then-div">
+                        <img class="remove-condition-img theme-text" src="{% static 'login_app_static/images/minus.png' %}">
+                        Remove condition
+                    </p>
+                    <select id="then" class="then" data-select data-border="radius">
+                        <option selected disabled>Select an Option...</option>
+                        {% comment %} <option>Select an Option...</option> {% endcomment %}
+                        {% comment %} {% for i in Then_Options %} {% endcomment %}
+                            {% for k,v in Then_Options.items %}
+                                <option value="{{v}}">{{k}}</option>
+                            {% endfor %}
+                        {% comment %} {% endfor %} {% endcomment %}
+                    </select>
+                </div>
+            {% comment %} </div> {% endcomment %}
+            <input type="hidden" id="when_input" class="bot-form-input" name="when">
+
+            <input type="hidden" id="condition-one_input" class="bot-form-input" name="condition-one">
+            <input type="hidden" id="condition-one_supportive_input" class="bot-form-input" name="condition-one_supportive">
+
+            <input type="hidden" id="condition-or_input" class="bot-form-input" name="condition-or">
+            <input type="hidden" id="condition-or_supportive_input" class="bot-form-input" name="condition-or_supportive">
+
+            <input type="hidden" id="condition-inclusive_input" class="bot-form-input" name="condition-inclusive">
+            <input type="hidden" id="condition-inclusive_supportive_input" class="bot-form-input" name="condition-inclusive_supportive">
+
+            <input type="hidden" id="then_input" class="bot-form-input" name="then">
+            <input type="hidden" id="then_supportive_input" class="bot-form-input" name="then_supportive">
+            <input type="hidden" id="then_supportive_additional_input" class="bot-form-input" name="then_supportive_additional">
+
+            <input type="text" id="bot-name-real" class="hidden" class="bot-form-input" name="name">
+
+
+            {% comment %} Checkboxes for model validations  {% endcomment %}
+            <input type="checkbox" class="hidden" id="checkbox-if" name="condition-one-checkbox" >
+            <input type="checkbox" class="hidden" id="checkbox-or" name="condition-or-checkbox" >
+            <input type="checkbox" class="hidden" id="checkbox-and" name="condition-inclusive-checkbox" >
+            <input type="checkbox"  class="hidden" id="checkbox-then" name="then-checkbox" >
+
+            <button class="submit-bot main-button" type="submit" style="display:none">Create</button>
+            {% comment %} <br>
+            <br> {% endcomment %}
+        </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+
+{% endblock %}
+
+{% block deferred_script %}
+    <script src="{% static 'ticket_app_static/js/select-scenarios-bots.js' %}" type="module"></script>
+    {% comment %} <script src="{% static 'ticket_app_static/js/automator_page.js' %}" type="module"></script> {% endcomment %}
+{% endblock %}
+{% block css_stylesheet %}
+    <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/select-automators.css' %}">
+    <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/automators.css' %}">
+{% endblock %}

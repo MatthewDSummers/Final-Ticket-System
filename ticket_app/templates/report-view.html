@@ -1,0 +1,210 @@
+
+    {% extends 'base.html' %}
+    {% comment %} <script src="https://code.jquery.com/jquery-3.1.1.js"></script> {% endcomment %}
+    {% load static %}
+    {% block content %}
+
+
+    <!--  I made this page very early on.  It could and should definitely be refactored -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    {% if user.level == 9 %}
+    <body>
+        {% comment %} https://github.com/eKoopmans/html2pdf.js#readme
+
+        used FOR THE DOWNLOAD {% endcomment %}
+        <div id='container-report' class="padding-block-lg margin-inline-lg">
+            <div class="report-view-container">
+                <div class="report-div">
+                    <h2 class="results-title theme-text">{{the_date}}</h2><hr>
+                    <button onclick="saveReport()" class="report-save-btn button">Save Report</button>
+        {% comment %} <div class="report-view-content"> {% endcomment %}
+            {% if nothing %}
+                <h1>{{nothing}}</h1>
+                <br><br>
+            {% endif %}
+    
+            <div class="theme-text">
+        {% for r in finale %}
+                <p><span class="print">ID:</span> {{r.id}}</p>
+                <p><span class="print">Category:</span> {{r.category.name}}</p>
+                <p><span class="print">Status:</span> {{r.status}}</p>
+                <p><span class="print">Priority:</span> {{r.priority}}</p>
+                <p><span class="print">Sender:</span> {{r.sender.full_name}}</p>
+                <p><span class="print">Description:</span> {{r.desc}}</p>
+            {% if r.resolved_at != null %}
+                <p><span class="print">Resolved on:</span> {{r.resolved_at}}</p>
+                <p><span class="print">Resolved by:</span> {{r.resolved_by.full_name}}</p>
+            {% endif %}
+            </div>
+            <br>
+            {% comment %} <input type="hidden" name="ticklist" value="{{r}}"> {% endcomment %}
+        {% endfor %}
+    
+        {% for r in cat %}
+            <p><span class="print">ID:</span> {{r.id}}</p>
+            <p><span class="print">Category:</span> {{r.category.name}}</p>
+            <p><span class="print">Status:</span> {{r.status}}</p>
+            <p><span class="print">Priority:</span> {{r.priority}}</p>
+            <p><span class="print">Sender:</span> {{r.sender.full_name}}</p>
+            <p><span class="print">Description:</span> {{r.desc}}</p>
+        {% if r.resolved_at != null%}
+            <p><span class="print">Resolved on:</span> {{r.resolved_at}}</p>
+            <p><span class="print">Resolved by:</span> {{r.resolved_by.full_name}}</p>
+        {% endif %}
+        <br>
+        {% endfor %}
+    
+        {% for r in p1 %}
+            <p><span class="print">ID:</span> {{r.id}}</p>
+            <p><span class="print">Category:</span> {{r.category.name}}</p>
+            <p><span class="print">Status:</span> {{r.status}}</p>
+            <p><span class="print">Priority:</span> {{r.priority}}</p>
+            <p><span class="print">Sender:</span> {{r.sender.full_name}}</p>
+            <p><span class="print">Description:</span> {{r.desc}}</p>
+        {% if r.resolved_at != null%}
+            <p><span class="print">Resolved on:</span> {{r.resolved_at}}</p>
+            <p><span class="print">Resolved by:</span> {{r.resolved_by.full_name}}</p>
+        {% endif %}
+        <br>
+        {% endfor %}
+    
+        {% for r in st1 %}
+            <p><span class="print">ID:</span> {{r.id}}</p>
+            <p><span class="print">Category:</span> {{r.category.name}}</p>
+            <p><span class="print">Status:</span> {{r.status}}</p>
+            <p><span class="print">Priority:</span> {{r.priority}}</p>
+            <p><span class="print">Sender:</span> {{r.sender.full_name}}</p>
+            <p><span class="print">Description:</span> {{r.desc}}</p>
+        {% if r.resolved_at != null%}
+            <p><span class="print">Resolved on:</span> {{r.resolved_at}}</p>
+            <p><span class="print">Resolved by:</span> {{r.resolved_by.full_name}}</p>
+        {% endif %}
+        <br>
+        {% endfor %}
+    
+        {% for r in pst1 %}
+            <p><span class="print">ID:</span> {{r.id}}</p>
+            <p><span class="print">Category:</span> {{r.category.name}}</p>
+            <p><span class="print">Status:</span> {{r.status}}</p>
+            <p><span class="print">Priority:</span> {{r.priority}}</p>
+            <p><span class="print">Sender:</span> {{r.sender.full_name}}</p>
+            <p><span class="print">Description:</span> {{r.desc}}</p>
+        {% if r.resolved_at != null%}
+            <p><span class="print">Resolved on:</span> {{r.resolved_at}}</p>
+            <p><span class="print">Resolved by:</span> {{r.resolved_by.full_name}}</p>
+        {% endif %}
+        <br>
+        {% endfor %}
+    
+        {% for r in p2 %}
+            <p><span class="print">ID:</span> {{r.id}}</p>
+            <p><span class="print">Category:</span> {{r.category.name}}</p>
+            <p><span class="print">Status:</span> {{r.status}}</p>
+            <p><span class="print">Priority:</span> {{r.priority}}</p>
+            <p><span class="print">Sender:</span> {{r.sender.full_name}}</p>
+            <p><span class="print">Description:</span> {{r.desc}}</p>
+        {% if r.resolved_at != null%}
+            <p><span class="print">Resolved on:</span> {{r.resolved_at}}</p>
+            <p><span class="print">Resolved by:</span> {{r.resolved_by.full_name}}</p>
+        {% endif %}
+        <br>
+        {% endfor %}
+    
+        {% for r in st2 %}
+            <p><span class="print">ID:</span> {{r.id}}</p>
+            <p><span class="print">Category:</span> {{r.category.name}}</p>
+            <p><span class="print">Status:</span> {{r.status}}</p>
+            <p><span class="print">Priority:</span> {{r.priority}}</p>
+            <p><span class="print">Sender:</span> {{r.sender.full_name}}</p>
+            <p><span class="print">Description:</span> {{r.desc}}</p>
+        {% if r.resolved_at != null%}
+            <p><span class="print">Resolved on:</span> {{r.resolved_at}}</p>
+            <p><span class="print">Resolved by:</span> {{r.resolved_by.full_name}}</p>
+        {% endif %}
+        <br>
+        {% endfor %}
+    
+        {% for r in pst2 %}
+            <p><span class="print">ID:</span> {{r.id}}</p>
+            <p><span class="print">Category:</span> {{r.category.name}}</p>
+            <p><span class="print">Status:</span> {{r.status}}</p>
+            <p><span class="print">Priority:</span> {{r.priority}}</p>
+            <p><span class="print">Sender:</span> {{r.sender.full_name}}</p>
+            <p><span class="print">Description:</span> {{r.desc}}</p>
+        {% if r.resolved_at != null%}
+            <p><span class="print">Resolved on:</span> {{r.resolved_at}}</p>
+            <p><span class="print">Resolved by:</span> {{r.resolved_by.full_name}}</p>
+        {% endif %}
+        <br>
+        {% endfor %}
+                {% comment %} </div>
+    
+                {% comment %} </div> {% endcomment %}
+            </div>
+                {% comment %} <a href="report-delete-all">DELETE ALL REPORTS</a> {% endcomment %}
+                {% comment %} <a href="/test" download="allrighty">DOWNLOAD</a> {% endcomment %}
+    
+        </div>
+            </div>
+            <script>
+            /*  function saveReport(){
+                //var element = document.getElementById('container');
+                var element = document.querySelector('body');
+                window.scrollTo(100, 0);
+                var opt = {
+                    margin:       1,
+                    filename:     $(".results-title").text() + '.pdf',
+                    //image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2 },
+                    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+                };
+                //html2pdf(element);
+                $(".report-save-btn").css("display", "none");
+                html2pdf().set(opt).from(element).save();
+                $(".report-save-btn").css("display", "block");
+                }
+
+*/
+            function saveReport() {
+                    var element = document.querySelector('body');
+                    window.scrollTo(100, 0);
+                    var opt = {
+                    margin:       1,
+                    filename:     $(".results-title").text() + '.pdf',
+                    html2canvas:  { scale: 2 },
+                    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+                    //jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+
+                    };
+                    var saveBtn = $(".report-save-btn");
+                    saveBtn.css("display", "none"); // hide the button
+                    html2pdf().set(opt).from(element).save().then(function() {
+                    saveBtn.css("display", "block"); // show the button again
+                    });
+                    console.log(getNumberOfPages(element))
+                }
+
+
+                
+                function getNumberOfPages(element) {
+                    // Get the height of the element to print
+                    var element_height = element.clientHeight;
+                
+                    // Get the height of the viewport
+                    var viewport_height = window.innerHeight;
+                
+                    // Divide the element height by the viewport height to get the total number of pages
+                    var totalPages = Math.ceil(element_height / viewport_height);
+                
+                    return totalPages;
+                }
+/*
+
+            </script>
+        </body>
+        {% endif %}
+        {% endblock %}
+        {% block css_stylesheet %}
+            {% comment %} <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/running-old.css' %}"> {% endcomment %}
+        {% endblock %}

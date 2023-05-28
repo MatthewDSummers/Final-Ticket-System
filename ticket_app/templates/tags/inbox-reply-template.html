@@ -1,0 +1,132 @@
+
+{% load reply_tag %}
+<div class="margin-inline-lg margin-block-lg">
+
+    <div id="single-message-title-container">
+        <div id="email-title-container" class="center">
+            <div id="email-title">
+                <h3>{{page_title}}</h3>
+                <h3 class="title" id="{{page_title}}" style="display:none;">Blank</h3>
+            </div>
+        </div>
+
+
+        <div id="full-title-container" class="center">
+            <div id="full-title">
+                <div>{{full_title}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="margin-inline-lg margin-block-lg">
+
+        <div id="original-message-div">
+
+            <!-- FROM  -->
+            <div  class="message-container" style="border-bottom:none">
+
+                <p class="margin-bottom-neg-sm"><strong>From: {{single_message.sender.full_name}}</strong></p>
+
+                <!-- TO -->
+                    {% if single_message.recipients.all.count < 2 %}
+                        <p class="who-it-is-to">to: {{single_message.recipients.first.full_name }}</p>
+                    {% else %}
+                        {% if single_message.recipients.all.count > 1 %}
+                            <p class="who-it-is-to">to: {{single_message.recipients.first.full_name }}...&nbsp;&nbsp;&nbsp;</p><div class="arrow-container"><span class=arrow-down></span></div>
+                        {% else %}
+                            <p class="who-it-is-to">to: {{single_message.recipients.first.full_name }}</p>
+                        {% endif %}
+                            <div class="message-details-div">
+                                <div class="replier-header">
+                                    <p><strong>to:</strong>
+                                </div>
+                                <div class="replier-recipients-details-div"><p>
+                                    {% for recipient in single_message.recipients.all %}
+                                        <span class="replier-recipient"><span>"{{recipient.full_name}}"</span><span class="replier-email">{{recipient.email}}</span>{% if not forloop.last %},{% endif %}</span>
+                                    {% endfor %}</p>
+                                </div>
+                                <br>
+                                <div class="replier-header">
+                                    <p><strong>date:</strong>
+                                </div>
+                                <div class="replier-recipients-details-div">
+                                    <p>{{single_message.created_at.date}}</p>
+                                </div>
+                                <br>
+                                <div class="replier-header">
+                                    <p><strong>subject:</strong>
+                                </div>
+                                <div class="replier-recipients-details-div">
+                                    <p>{{single_message.subject}}</p>
+                                </div>
+                            </div>
+                        {% comment %} <p class="reply-body">{{single_message.body|safe}}</p> {% endcomment %}
+                    {% endif %}
+        <!-- SUBJECT  -->
+                <p><strong>Subject:</strong> {{single_message.subject|safe}}</p>
+        <!-- BODY  -->
+                            <hr>
+                <div class="reply-body">{{single_message.body|safe}}</div>
+        <!-- CREATED_AT DATE  -->
+                <p><strong>Sent on: {{single_message.created_at.date}}</strong></p>
+            </div>
+
+        </div>
+        <br>
+    {% if not single_message.replies.all %}
+        {% message_reply_form single_message.id %}
+    {% endif %} 
+{% comment %} <hr> {% endcomment %}
+    {% if single_message.replies.all %}
+        <div class="replies-container">
+        {% for reply in single_message.replies.all %}
+
+            <div class="message-container">
+                <p class="margin-bottom-neg-sm"><strong>{{ reply.sender.full_name }}</strong> <span class="replier-email">{{reply.sender.email}}</span></p>
+                <p class="reply-created-date">{{ reply.created_at.date }} at {{ reply.created_at.time }}</p>
+                
+                {% if reply.recipients.count > 1 %}
+                    <p class="who-it-is-to margin-bottom-neg-sm">to: {{reply.recipients.first.full_name }}...&nbsp;&nbsp;&nbsp;</p><div class="arrow-container"><span class=arrow-down></span></div>
+                {% else %}
+                    <p class="who-it-is-to margin-bottom-neg-sm">to: {{reply.recipients.first.full_name }}</p>
+                {% endif %}
+                    <div class="message-details-div">
+                        <div class="replier-header">
+                            <p><strong>from:</strong></p>
+                        </div>
+                        <div class="replier-recipients-details-div">
+                            <p><strong>{{ reply.sender.full_name }} <span class="replier-email">{{reply.sender.email}}</span></strong></p>
+                        </div>
+                        <br>
+                        <div class="replier-header">
+                            <p><strong>to:</strong>
+                        </div>
+                        <div class="replier-recipients-details-div"><p>
+                            {% for recipient in reply.recipients.all %}
+                                <span class="replier-recipient"><span>"{{recipient.full_name}}"</span><span class="replier-email">{{recipient.email}}</span>{% if not forloop.last %},{% endif %}</span>
+                            {% endfor %}</p>
+                        </div>
+                        <br>
+                        <div class="replier-header">
+                            <p><strong>date:</strong>
+                        </div>
+                        <div class="replier-recipients-details-div">
+                            <p>{{reply.created_at.date}}</p>
+                        </div>
+                        <br>
+                        <div class="replier-header">
+                            <p><strong>subject:</strong>
+                        </div>
+                        <div class="replier-recipients-details-div">
+                            <p>Re: {{single_message.subject}}</p>
+                        </div>
+                    </div>
+                <div class="reply-body">{{reply.body|safe}}</div>
+            </div>
+            {% if forloop.last %}
+                {% message_reply_form single_message.id %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+        </div>
+    </div>
+</div>

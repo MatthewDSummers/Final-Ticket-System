@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="margin-inline-lg padding-block-lg">
+    <div class="center">
+        <h4 class="title">Ticket #{{ticket.id}}</h4>
+    </div>
+        {% comment %} <button class="main-button" onclick="goBack()">Go back</button> {% endcomment %}
+    <div class="row margin-top-lg">
+        <div id="ticket-top-right" class="theme-text col-lg-9">
+            {% if ticket.assigned.all  %}
+                <h4 class="theme-accent ticket-assignment-dropdown-trigger"><span class="table-arrow table-down"></span>&nbsp;<strong>Assigned To</strong></h4>
+                <div id="assignment-div" style="display: none">
+                    {% for administrator in ticket.assigned.all %}
+                        <a class="block" href="{% url 'login-app:user-tickets' user_id=administrator.id %}?type=Sent&page=1"><strong>{{administrator.full_name}}</strong> </a>
+                    {% endfor %}
+                </div>
+                <br>
+            {% endif %}
+
+            {% if ticket.priority == "Crucial" %}
+                <p class="crucial priority"><strong>Priority:</strong> {{ticket.priority}}</p>
+            {% elif ticket.priority == "High" %}
+                <p class="high priority "><strong>Priority:</strong> {{ticket.priority}}</p>
+            {% elif ticket.priority == "Intermediate" %}
+                <p class="intermediate priority"><strong>Priority:</strong> {{ticket.priority}}</p>
+            {% elif ticket.priority == "Low" %}
+                <p class="low priority"><strong>Priority:</strong> {{ticket.priority}}</p>
+            {% elif ticket.priority == "Not Set" %}
+                <p class="not-set priority"><strong>Priority:</strong> {{ticket.priority}}</p>
+            {% endif %}
+
+<!-- PRIORITY  -->
+            <h6 class="theme-accent ticket-assignment-dropdown-trigger" style="display: inline-block; margin-left: 1em;">
+                <span class="table-arrow table-down"></span>&nbsp;
+                <strong>Change Priority</strong>
+            </h6>
+            <div class="hidden">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <select id="change-priority" class="priority-form-custom-select" data-select data-border="radius">
+                        <option value="none">Change Priority...</option>
+                        <option value="Not Set">To Not Set</option>
+                        <option value="Low">To Low</option>
+                        <option value="Intermediate">To Intermediate</option>
+                        <option value="High">To High</option>
+                        <option value="Crucial">To Crucial</option>
+                    </select>
+                    <input type="hidden" value="priority" name="action-type" data-ticket={{ticket.id}}>
+                </form>
+            </div>
+
+<!-- CATEGORY  -->
+            <p><strong>Category:</strong> {{ticket.category.name}} </p>
+<!-- SENDER  -->
+                <a class="block" href="{% url 'login-app:user-tickets' user_id=ticket.sender.id %}?type=Sent&page=1"><strong>Sender: {{ticket.sender.full_name}}</strong> </a>
+<!-- STATUS UNRESOLVED -->
+                {% if ticket.status == "Unresolved" %}
+                    <p class=" unresolved-id">
+                        <strong>Status:</strong>
+                        <span class="unresolved">{{ticket.status}}<span>
+                    </p>
+                {% endif %}
+
+<!-- ON HOLD  -->
+            {% if ticket.hold == "Hold" %}
+                <p class=""><strong>Hold:</strong> On Hold </p>
+            {% endif %}
+
+<!-- STATUS RESOLVED -->
+            {% if ticket.status == "Resolved" %}
+                <p>
+                    <strong>Status:</strong>
+                    <span class="resolved">{{ticket.status}}</span>
+                </p>
+<hr>
+                <p class="inline-block"><strong>Originally resolved by:</strong></p>
+
+                <a href="{% url 'login-app:user-tickets' user_id=ticket.first_resolved_by.id %}?type=Profile">{{ticket.first_resolved_by.full_name}}</a>
+                <p><strong>Originally resolved at:</strong> {{ticket.first_resolved_at}} </p>
+
+                <p class="inline-block"><strong>Last resolved by:</strong></p>
+                <a  href="{% url 'login-app:user-tickets' user_id=ticket.resolved_by.id %}?type=Profile">{{ticket.resolved_by.full_name}}</a>
+                <p><strong>Last resolved at:</strong> {{ticket.resolved_at}} </p>
+            {% endif %}
+
+            <p><strong>Created On:</strong> {{ticket.created_at}}</p>
+
+<!-- DESCRIPTION  -->
+<hr>
+                <div class="single-ticket-description">
+                    <p><strong>Description:</strong>{{ticket.desc}}</p>
+                </div>
+
+<!-- RESOLVE / UNRESOLVE FORM  -->
+            {% if user.level == 8 or user.level == 9 %}
+                {% if ticket.status == "Resolved" %}
+                    {% comment %} <form action="{% url 'ticket-easy:unresolve' ticket_id=ticket.id %}" method="POST"> {% endcomment %}
+                    <form action="{% url 'ticket-easy:ticket-status' ticket_id=ticket.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="method" value="unresolve">
+
+                        <button type="submit" class="main-button">Unresolve Ticket</button>
+                    </form>
+                {% elif ticket.status == "Unresolved" %}
+                    {% comment %} <form action="{% url 'ticket-easy:resolve' ticket_id=ticket.id %}" method="POST"> {% endcomment %}
+                    <form action="{% url 'ticket-easy:ticket-status' ticket_id=ticket.id %}" method="POST">
+
+                        {% csrf_token %}
+                        <input type="hidden" name="method" value="resolve">
+                        <button type="submit" class="main-button">Resolve Ticket</button>
+                    </form>
+                {% endif %}
+            {% endif %}
+        </div>
+
+
+
+<!-- ASSIGNMENT -->
+
+        {% if user.level == 8 or user.level == 9 %}
+
+            {% if ticket.status == "Unresolved" %}
+            <div class="col-lg-2">
+
+                {% if ticket.assigned.all|length < admins|length %}
+                    <h4 class="theme-accent">Assign ticket</h4>
+                    <form action="" method="POST" class="">
+                    {% csrf_token %}
+                        <select name="assign" id="assign"  class="assignment-form-custom-select" data-select data-border="radius">
+                            {% for admin in admins %}
+                                {% if ticket not in admin.assigned.all %}
+                                    <option value={{admin.id}}>{{admin.full_name}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <input type="hidden" value="assign" name="action-type" data-ticket={{ticket.id}}>
+                        <button type="submit" class="alt-button admin-form-button">Assign Ticket</button>
+                    </form>
+                {% endif %}
+
+                {% if ticket.assigned.all %}
+                <br>
+                <h4 class="theme-accent">Unassign Ticket</h4>
+                <form action="" method="POST" class="fish">
+                    {% csrf_token %}
+                    <select name="unassign" id="unassign" class="assignment-form-custom-select" data-select data-border="radius">
+                        {% for admin in admins %}
+                            {% if ticket in admin.assigned.all %}
+                                <option value="{{admin.id}}">{{admin.full_name}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <input type="hidden" value="unassign" name="action-type" data-ticket={{ticket.id}}>
+                    <button type="submit" class="alt-button admin-form-button">Unassign Ticket</button>
+                </form>
+                {% endif %}
+            </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+{% comment %} <script>
+    function goBack() {
+        window.history.back();
+    }
+</script> {% endcomment %}
+{% endblock %}
+
+{% block deferred_script %}
+    <script src="{% static 'ticket_app_static/js/single-ticket.js' %}" ></script>
+    <script src="{% static 'ticket_app_static/js/import-select.js' %}" type="module"></script>
+{% endblock %}
+{% block css_stylesheet %}
+    {% comment %} <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/running-old.css' %}"> {% endcomment %}
+    <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/select-automators.css' %}">
+    <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/single-ticket.css' %}">
+{% endblock %}

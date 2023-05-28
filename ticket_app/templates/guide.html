@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<div class="padding-block-lg margin-inline-lg">
+    <div class="rowf center">
+            <h2 class="title">The Guide</h2>
+    </div>
+
+    <div class="margin-inline row">
+        <div class="col-sm-12 col-md-12 col-lg-8">
+            <div class="theme-text">
+                        <h2 class="theme-accent">Admin</h2>
+                <h4><u class="theme-accent-secondary">General</u></h4>
+                <ul class="margin-inline-sm">
+                    <li>The app is designed to meet a company's specific needs</li>
+                    <ul class="margin-inline-sm">
+                        {% comment %} <li> Automatic Priorities for tickets can be defined by admins and enabled/disabled</li> {% endcomment %}
+                        <li> Custom categories and automations for tickets</li>
+                        <li> Custom canned responses</li>
+                        <li> Custom dashboard (Staff or Super-Admin)</li>
+                        <li> Custom e-mailer <strong>(In development. Works in-house)</strong> </li>
+                        <li> The first user created will be a Super-Admin with all privileges</li>
+                    </ul>
+                    <li>Dark/Light mode</li>
+                </ul>
+
+                <h4><u class="theme-accent-secondary">Home</u></h4>
+                <ul class="margin-inline-sm">
+                    <li>Add a frequently visited website by clicking the blue plus
+                        <img id="icon-minus" src="{% static 'login_app_static/images/plus.png' %}" % alt="blue plus icon">
+                        icon.
+                    </li>
+                    <li>Name your resource</li>
+                    <li>Paste the full link</li>
+                    <li>Remove a resource by clicking the red minus.
+                        <img id="icon-minus" src="{% static 'login_app_static/images/minus2.png' %}" % alt="red minus icon">
+                        icon.
+                    </li>
+                </ul>
+
+                <h4><u class="theme-accent-secondary">Inbox</u></h4>
+                <ul class="margin-inline-sm">
+                    <li>Standard inbox functionality</li>
+                </ul>
+
+                <h4><u class="theme-accent-secondary">New</u></h4>
+                <ul class="margin-inline-sm">
+                    <li>Automation - define a new automation for handling tickets (Super-Admin only) </li>
+                    <li>Category - define a new category. When a ticket is created, the user selects a category
+                        <br>
+                        <span style="color: #6b6b6b; font-size: .95rem; font-weight: 200">⚬</span>
+                        Super-Admins can delete categories
+                    </li>
+                    <li>Response - define a new canned response which can be linked with an automation</li>
+                    <li>Ticket - create a new ticket</li>
+                    <li>User/Admin - create a new user or admin
+                        <br>
+                        <span style="color: #6b6b6b; font-size: .95rem; font-weight: 200">⚬</span>
+                        Only a Super-Admin can make a new Super-Admin
+                    </li>
+                </ul>
+
+                <h4><u class="theme-accent-secondary">Tickets Table (General)</u></h4>
+                <ul class="margin-inline-sm">
+                    <li>Click any of the table headers to interact and filter the table</li>
+                </ul>
+
+                <h4><u class="theme-accent-secondary">Pinned</u></h4>
+                <ul class="margin-inline-sm">
+                    <li>From any page having a table of tickets, any ticket can be pinned</li>
+                    <li>The Pinned page is a collection of every <strong>non-archived</strong> ticket that has been pinned</li>
+                </ul>
+
+                <h4><u class="theme-accent-secondary">Active</u></h4>
+                <ul class="margin-inline-sm">
+                    <li>A table of every ticket that is <strong>not archived, not on hold, and not resolved</strong></li>
+                </ul>
+
+                <h4><u class="theme-accent-secondary">Resolved</u></h4>
+                <ul class="margin-inline-sm">
+                    <li>If a ticket is Resolved <strong>and not archived</strong>, it will appear here</li>
+                </ul>
+
+                <h4><u class="theme-accent-secondary">Withheld</u></h4>
+                <ul class="margin-inline-sm">
+                    <li>If a ticket is placed on Hold, it will appear here</li>
+                </ul>
+
+                <h4><u class="theme-accent-secondary">Bots</u></h4>
+                <ul class="margin-inline-sm">
+                    <li>A list of every custom automation (Super-Admin only) </li>
+                    <li>(<strong>In development.</strong> Eventually, you will be able to edit the automation from this page)</li>
+                </ul>
+
+                <h4><u class="theme-accent-secondary">Analytics</u></h4>
+                <ul class="margin-inline-sm">
+                    <li>Provide a single date in the top field in order to view tickets from that date</li>
+                    <li>Alternatively, provide a date range</li>
+                    <li>If there are tickets within the range, you will be presented with many options</li>
+                    <li>"See Full Report" will provide a printable version of every ticket within range</li>
+                    <ul class="margin-inline-sm">
+                        <li>basically works. If a list is too long, error; margins are also a problem. <strong>(In development)</strong></li>
+                    </ul>
+                    <li>Below "See Full Report", you will see methods for filtering the results</li>
+                    <li>"Report Type" will present you with pie or line charts</li>
+                </ul>
+
+                <h4><u class="theme-accent-secondary">Archives</u></h4>
+                <ul class="margin-inline-sm">
+                    <li>A table of every ticket that is archived</li>
+                    <li>If removed, they will return to the Tickets page</li>
+                </ul>
+
+                <h4><u class="theme-accent-secondary">Users</u></h4>
+                <ul class="margin-inline-sm">
+                    <li>View all tickets you have created and tickets assigned to you</li>
+                    <li>View other people's tickets by seeing their profile</li>
+                    <li>All Users - A table of all users (can be reached from any Profile)</li>
+                    <ul class="margin-inline-sm">
+                        <li> Select a user to see their profile</li>
+                        <li> From there, you can start/revoke their admin status (Super-Admin only)</li>
+                        <li>If only one Super-Admin account exists, it can't be deleted,<br>and its Super-Admin status can't be revoked.</li>
+                    </ul>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-4">
+            <h2 class="theme-accent">User</h2>
+            <div class="theme-text">
+                <h4><u class="theme-accent-secondary">Home</u></h4>
+                <ul class="margin-inline-sm">
+                    <li>Create a new ticket</li>
+                </ul>
+
+                <h4><u class="theme-accent-secondary">Profile</u></h4>
+                <ul class="margin-inline-sm">
+                    <li>See all tickets you have created and their statuses</li>
+                    <li>Delete tickets which have not been resolved</li>
+                    <li>Edit tickets if.. <strong>(in development)</strong></li>
+                </ul>
+
+                <h4><u class="theme-accent-secondary">Inbox</u></h4>
+                <ul class="margin-inline-sm">
+                    <li>Standard inbox functionality</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% block content %}
+{% include 'inbox-sidenav.html' %}
+
+{% comment %} {% include 'inbox-sidenav.html' with user=user %} {% endcomment %}
+{% load messages_tag %}
+{% load static %}
+<div class="margin-inline-lg margin-block-lg">
+    <div class="center header">
+        <h3 class="title" id="{{page_title}}">{{page_title}}</h3>
+    </div>
+
+    <div class="inbox-content">
+        <table class="inbox-table">
+            <tbody>
+                {% comment %} <input type="checkbox" class="inbox-checkbox">  {% endcomment %}
+                {% for message in mail %}
+                    {% if message in user.inbox.viewed.all %}
+<!-- VIEWD MSGS -->
+
+                <tr id="{{message.id}}" data-tr="message-row-{{message.id}}" data-url="{{message.url}}" data-inbox="{{user.inbox.id}}" class="relative">
+                    {% else %}
+<!-- UNVIEWD MSGS --> 
+                    <tr id="{{message.id}}" data-tr="message-row-{{message.id}}" data-url="{{message.url}}" data-inbox="{{user.inbox.id}}" class="viewed relative">
+                    {% endif %}
+                        <td class="table-actions">
+                            {% if page_title != "Trash" %}
+<!-- ANY PAGE BUT TRASH -->     <img
+                                    {% if message in user.inbox.starred.all %}
+                                        src="{% static 'login_app_static/images/star-solid.png' %}"
+                                        data-action="unfavorite"
+                                    {% else %}
+                                        src="{% static 'login_app_static/images/star-regular.png' %}"
+                                        data-action="favorite"
+                                    {% endif %}
+
+                                    class="inbox-icon table-action-icon"
+                                    data-message="{{message.id}}"
+                                    data-inbox="{{user.inbox.id}}"
+                                >
+<!-- TRASH PAGE  -->        {% else %}
+                                <a title="Restore">
+                                    <img
+                                        src="{% static 'login_app_static/images/up-arrow-circle.png' %}"
+
+                                        data-action="restore"
+                                        class="inbox-icon table-action-icon"
+                                        data-message="{{message.id}}"
+                                        data-inbox="{{user.inbox.id}}"
+                                    >
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td id="inbox-table-td-sender-and-recipients">{{message.sender.full_name}}{% if message.replies.all %}{% if message.replies.first.sender == user %}, me{% endif %} - {{message.replies.all.count}}{% endif %}
+                        </td>
+                        <td id="{{message.id}}-message-body"><span class=" message-body">{{message.truncateSubject}} - {{message.truncateBody|strip_html}}</span></td>
+                        <td id="{{message.id}}-message-date" class="hoverable-actions-td"> {{message.created_at.date}}
+                            {% comment %} {{message.created_at.time}} {% endcomment %}
+
+
+
+
+
+                            <div class="actions-hoverable inbox-actions absolute">
+                                    <div class='actions-hoverable-inner' id="{{message.id}}-actions" data-action="{{message.id}}">
+                                        {% comment %} <a href="#" title="Archive">
+                                            <img src="{% static 'login_app_static/images/archive-in.png' %}"
+                                                class ="inbox-icon table-action-icon"
+                                                data-message="{{message.id}}" 
+                                                data-inbox="{{user.inbox.id}}" 
+                                                data-action="archive"
+                                            >
+                                        </a> {% endcomment %}
+                                        <a href="#" 
+                                            {% if page_title != "Trash" %}
+                                                title="Move to trash"
+                                            {% else %}
+                                                title="Delete Forever"
+                                            {% endif %}
+                                        >
+                                            <img src="{% static 'login_app_static/images/trash.png' %}"
+                                                class="inbox-icon table-action-icon"
+                                                data-message="{{message.id}}" 
+                                                data-inbox="{{user.inbox.id}}"
+
+                                                {% if page_title != "Trash" %}
+                                                    data-action="delete"
+                                                {% else %}
+                                                    data-action="destroy"
+                                                {% endif %}
+                                            >
+                                        </a>
+ 
+                                        {% if message not in user.inbox.viewed.all %}
+                                        <a href="#" title="Mark as read">
+                                            <img src="{% static 'login_app_static/images/envelope-open.png' %}"
+                                                class="inbox-icon table-action-icon"
+                                                data-message="{{message.id}}" 
+                                                data-inbox="{{user.inbox.id}}" 
+                                                data-action="mark_as_read"
+                                            > 
+                                        </a>
+                                        {% else %}
+                                        <a href="#" title="Mark as unread">
+                                            <img src="{% static 'login_app_static/images/envelope.png' %}"
+                                                class="inbox-icon table-action-icon"
+                                                data-message="{{message.id}}" 
+                                                data-inbox="{{user.inbox.id}}" 
+                                                data-action="mark_as_unread"
+                                            > 
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                            </div>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+<!-- HOVERABLE ACTIONS -->
+
+
+        {% comment %} <div class="actions-hoverable-explanation absolute">
+            {% for message in mail %}
+                <div class="ahe-inner">
+                    <p class="inline-block">Archive</p>
+                    <p class="inline-block">Delete</p>
+                    <p class="inline-block">Mark as Read</p>
+                </div>
+            {% endfor %}
+        </div> {% endcomment %}
+    </div>
+
+    <br>
+    <div class="pagination-container">
+        <div class="pagination">
+            {% if mail %}
+                <h5 class="theme-text">Page {{ mail.number }} of {{mail.paginator.num_pages}}</h5>
+            {% endif %}
+
+            {% if mail.has_previous %}
+                <a  href="?page={{ mail.previous_page_number }}" data-which_table={{tag_filter}}>Previous</a>
+            {% endif %}
+
+            <div class="pagination-a-container">
+                {% if page_range_length > 1 %}
+                        {% for page in page_range %} 
+                            {% if page != "…" %}
+                                <a class="{% if mail.number == page  %}active-pagination{% endif %}" href="{{elided_page_number}}{{page}}">{{ page}}</a>
+                            {% elif page == "…" %}
+                                <p class="inline-block theme-text">{{ page }}</p>
+                            {% endif %}
+                        {% endfor %}
+                {% endif %}
+            </div>
+
+            {% if mail.has_next and mail.number !=  mail.paginator.page_range|last %}
+            {% comment %} GIVES LAST PAGE NUMBER {% endcomment %}
+                <a href="?page={{ mail.next_page_number }}" data-which_table={{tag_filter}}>Next</a>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block deferred_script %}
+    {% comment %} <script defer src="{% static 'inbox.js' %}"></script>
+    <script>
+        $('label[for="id_body"]').hide();
+    </script> {% endcomment %}
+
+
+        {% comment %} <script src="{% static 'csrf.js' %}"></script>
+        <script src="{% static 'inbox.js' %}" type="module"></script> {% endcomment %}
+
+
+   <script>
+        //var cs = "{% static 'ticket_app_static/js/csrf.js' %}";
+        //$.getScript(cs);
+        var url = "{% static 'ticket_app_static/js/inbox.js' %}";
+        $.getScript(url);
+        var navscript = "{% static 'ticket_app_static/js/inbox-sidenav.js' %}";
+        $.getScript(navscript);
+        
+
+    </script>
+{% endblock %}
+
+{% block head_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+{% endblock %}
+
+
+{% block css_stylesheet %}
+<link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/inbox.css' %}">
+<link rel="stylesheet" href="{% static 'ticket_app_static/css/paginate.css' %}">
+{% endblock %}
+
+
+{% comment %} {% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<div class="margin-inline">
+    {% for message in user.messages.all %}
+        <td class="message-trigger" id="{{message.id}}">{{message.truncateSubject}}</td>
+        <p class="hidden message-body">{{message.body}}</p>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block deferred_script %}
+    <script defer src="{% static 'profile.js' %}"></script>
+{% endblock %} {% endcomment %}

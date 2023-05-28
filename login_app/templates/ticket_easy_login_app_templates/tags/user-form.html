@@ -1,0 +1,151 @@
+
+{% url 'login-app:new-user' as new_user_url %}
+
+{% with the_path=request.path  %}
+    {% if the_path == new_user_url %}
+        <form action="{% url 'login-app:new-user' %}" method="POST" id="user-form" class="theme-text" autocomplete="off">
+    {% elif target_user %}
+        <form action="{% url 'login-app:edit-user' user_id=target_user.id %}" method="POST" id="user-form" class="theme-text" autocomplete="off">
+    {% endif %}
+            {% csrf_token %}
+            <label for="first_name">First Name</label>
+            <input type="text" name="first_name" id="first-name" class="form-control user-form-input required" autocomplete="off" 
+                {% if target_user %}
+                    value="{{ target_user.first_name }}"
+                {% endif %}
+                readonly
+            >
+            <p id="first-name-error" class="input-error">*Required Field</p>
+
+
+            <label for="last_name">Last Name</label>
+            <input type="text" name="last_name" id="last-name" class="form-control user-form-input required" autocomplete="off"
+                {% if target_user %}
+                    value="{{ target_user.last_name }}"
+                {% endif %}
+                readonly
+            >
+            <p id="last-name-error" class="input-error">*Required Field</p>
+
+            {% if user.level != 1 %}
+                <label for="email">Email</label>
+                <input type="text" name="email" id="email" class="form-control user-form-input required" autocomplete="off"
+                    {% if target_user %}
+                        value="{{ target_user.email }}"
+                    {% endif %}
+                    readonly
+                >
+                <p id="email-error" class="input-error">*Required Field</p>
+                <p id="email-error-regex" class="input-error">*Must be an email</p>
+            {% endif %}
+    <!-- USER'S CURRENT PASSWORD TO AUTHORIZE ACTION -->
+            {% if target_user %}
+                <label for="own-password">
+                    {% if user.level == 1 %}
+                        Current Password 
+                    {% elif user.level == 8 or user.level == 9 %}
+                        Your Password 
+                    {% endif %}
+                        (to authorize this action)
+                </label>
+                <input type="password" name="own_password" id="own-password"  class="form-control user-form-input required" autocomplete="off"
+                    readonly
+                >
+                <p id="own-password-error" class="input-error">*Required Field</p>
+            {% endif %}
+
+    <!--  CHANGE PASSWORD  -->
+
+            {% if target_user %}
+                <h6 class="theme-accent dropdown-trigger">
+                    <span class="arrow down"></span>
+                    &nbsp;Change Password
+                </h6>
+            {% endif %}
+            <div id="change-password-div" style="{% if target_user %} display: none; {% endif %}">
+                <label for="new-password">
+                    {% if target_user %}
+                        New Password
+                    {% if user.level != 1 %}
+                        {% if target_user != user %}
+                            for {{target_user.full_name}}
+                        {% endif %}
+                    {% endif %}
+                    {% else %}
+                        Password
+                    {% endif%}
+                </label>
+                <input type="password" name="password" id="new-password" 
+                    class=
+                    "form-control user-form-input 
+                        {% if not target_user %}
+                        
+                            required
+                        
+                        {% endif %}
+                    " 
+                    autocomplete="off"
+                    readonly
+                >
+                <p id="new-password-error" class="input-error">*Required Field</p>
+
+                <label for="confirm-password">Confirm New Password</label>
+                <input type="password" name="confirm_password" id="confirm-password"
+                    class=
+                    "form-control user-form-input 
+                        {% if not target_user %}
+                        
+                            required
+                        
+                        {% endif %}
+                    "
+                    autocomplete="off"
+                    readonly
+                >
+                <p id="confirm-password-error" class="input-error">*Required Field</p>
+                <p id="confirm-password-error-not-match" class="input-error">*Password must match</p>
+
+                {% if not target_user %}
+                    <input type="checkbox" id="password-checkbox" name="password-checkbox" style="display: none" checked>
+                {% else %}
+                    <input type="checkbox" id="password-checkbox" name="password-checkbox" style="display: none">
+                {% endif %}
+            </div>
+
+        <!-- ALLOW STAFF or SUPER-ADMIN TO...  -->
+            {% if user.level == 8 or user.level == 9 %}
+            <!-- MAKE TARGET USER STAFF, IF NOT STAFF   -->
+                {% if target_user and target_user.level != 8 %}
+
+                <!-- ONLY LET SUPER-ADMINS REVOKE THEIR OWN SUPER STATUS   -->
+                    {% if target_user.level == 9 and user == target_user %}
+                        <input type="checkbox" id="admin-check" name="admin-check" class="">
+                        <label for="admin-check" id="admin-check-label" class="">Make Staff</label><br>
+
+                <!-- IF TARGET USER IS BASIC USER, MAKE IT STAFF -->
+                    {% elif target_user.level == 1 %}
+                        <input type="checkbox" id="admin-check" name="admin-check" class="">
+                        <label for="admin-check" id="admin-check-label" class="">Make Staff</label><br>
+                    {% endif %}
+                {% elif request.path == new_user_url %}
+                        <input type="checkbox" id="admin-check" name="admin-check" class="">
+                        <label for="admin-check" id="admin-check-label" class="">Make Staff</label><br>
+                {% endif %}
+            <!-- ALLOW SUPER-ADMIN TO... -->
+                {% if user.level == 9 %}
+                <!-- IF THE TARGET IS NOT A SUPER-ADMIN, MAKE IT A SUPER-ADMIN .... or if it's the NEW USER PAGE -->
+                    {% if target_user.level != 9 %}
+                        <input type="checkbox" id="super-admin-check" name="super-admin-check">
+                        <label for="super-admin-check" id="super-admin-check-label">Make a Super-Admin</label><br>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+            <br>
+        
+        {% if target_user %}
+            <button type="submit" id="user-form-submit" class="main-button">Edit User</button>
+        {% else %}
+            <button type="submit" id="user-form-submit" class="main-button">Create account</button>
+        {% endif %}
+    </form>
+{% endwith %}

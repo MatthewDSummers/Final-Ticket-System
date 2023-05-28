@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% block content %}
+{% include 'inbox-sidenav.html' %}
+{% comment %} {% include 'inbox-sidenav.html' with user=user %} {% endcomment %}
+{% load messages_tag %}
+{% load static %}
+<div class="margin-inline-lg margin-block-lg">
+        <div class="center header">
+            <h3 class="title" id="{{page_title}}">{{page_title}}</h3>
+        </div>
+    {% if not single_message %}
+
+        <div class="inbox-content">
+            {% comment %} <input type="hidden" id="toke" value='{{csrf_token}}'> {% endcomment %}
+            {% comment %} <input type="checkbox" id="check-all">check all {% endcomment %}
+            <table class="inbox-table">
+                <tbody>
+                    {% for message in mail %}
+                            {% if message not in user.inbox.viewed.all %}
+                                <tr class="viewed" id="{{message.id}}" data-tr="message-row-{{message.id}}">
+                                    {% if message in user.inbox.starred.all %}
+                                        {% if page_title != "Trash" %}
+                                            <td class="inbox-actions"><input type="checkbox" class="inbox-checkbox"> <img data-info="{{message.id}}" data-url="{{message.url}}" data-inbox="{{user.inbox.id}}" id="unfavorite" class="star inbox-action-icon" src="{% static 'login_app_static/images/star-solid.png' %}"> </td>
+                                        {% else %}
+                                            <td class="inbox-actions">  
+                                                <input type="checkbox" class="inbox-checkbox"> 
+                                                <img data-info="{{message.id}}"  data-url="{{message.url}}"  data-inbox="{{user.inbox.id}}" id="unfavorite" class="star inbox-action-icon" src="{% static 'login_app_static/images/star-solid.png' %}"> 
+                                                {% comment %} <img data-message="{{message.id}}" id="{{user.inbox.id}}" class="inbox-action-icon trash" src="{% static 'login_app_static/images/up-arrow-circle.png' %}"> {% endcomment %}
+                                            </td>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if page_title != "Trash" %}
+                                            <td class="inbox-actions"><input type="checkbox" class="inbox-checkbox"> <img data-info="{{message.id}}" data-url="{{message.url}}"  data-inbox="{{user.inbox.id}}" id="favorite" class="star inbox-action-icon" src="{% static 'login_app_static/images/star-regular.png' %}"> </td>
+                                        {% else %}
+                                            <td class="inbox-actions"><input type="checkbox" class="inbox-checkbox"> <img data-info="{{message.id}}" data-url="{{message.url}}"  data-inbox="{{user.inbox.id}}" id="favorite" class="star inbox-action-icon" src="{% static 'login_app_static/images/star-regular.png' %}"> <img data-message="{{message.id}}" id="{{user.inbox.id}}" class="inbox-action-icon trash" src="{% static 'login_app_static/images/up-arrow-circle.png' %}"></td>
+                                        {% endif %}
+                                    {% endif %}
+                                    <td id="{{message.id}}"> {{forloop.counter}} - {{message.sender.full_name}}, me</td>
+                                    {% comment %} <td id="{{message.id}}-message-body"><span class=" message-body">{{message.truncateSubject}} - {{message.truncateBody}}</span></td> {% endcomment %}
+
+                                    {% comment %} 
+                                    
+                                    
+                                    
+strip_html is kind of lame.  use Bleach instead. it has template tag filters to allow for certain tags and disallow others.  [see below. i'm using strip_html]
+                                    
+                                    
+                                    
+                                    {% endcomment %}
+                                    <td id="{{message.id}}-message-body"><span class=" message-body">{{message.truncateSubject}} - {{message.truncateBody|strip_html}}</span></td>
+                                    {% comment %} <td id="{{message.id}}-message-body"><span class=" message-body">{{message.truncateSubject}} - {{message.truncateBody|safe}}</span></td> {% endcomment %}
+
+                                    {% comment %} {% for content in body %}
+                                        {% for k, v in content.items %}
+                                            {% if v == message.id %}
+                                            <td id="{{message.id}}-message-body"><span class=" message-body">{{message.truncateSubject}}</span> - {{k}}</td>
+
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %} {% endcomment %}
+                                    <td id="{{message.id}}-message-date">{{message.created_at.time}}
+                                </tr>
+
+                            {% else %}
+                                <tr id="{{message.id}}"  data-tr="message-row-{{message.id}}">
+                                    {% if message in user.inbox.starred.all %}
+                                        {% if page_title != "Trash" %}
+                                            <td class="inbox-actions"><input type="checkbox" class="inbox-checkbox"> <img data-info="{{message.id}}"  data-url="{{message.url}}" data-inbox="{{user.inbox.id}}" id="unfavorite" class="star inbox-action-icon" src="{% static 'login_app_static/images/star-solid.png' %}"> </td>
+                                        {% else %}
+                                            <td class="inbox-actions"><input type="checkbox" class="inbox-checkbox"> <img data-info="{{message.id}}" data-url="{{message.url}}"  data-inbox="{{user.inbox.id}}" id="unfavorite" class="star inbox-action-icon" src="{% static 'login_app_static/images/star-solid.png' %}"> <img data-message="{{message.id}}" id="{{user.inbox.id}}" class="inbox-action-icon trash" src="{% static 'login_app_static/images/up-arrow-circle.png' %}"></td>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if page_title != "Trash" %}
+                                            <td class="inbox-actions"><input type="checkbox" class="inbox-checkbox"> <img data-info="{{message.id}}" data-url="{{message.url}}"  data-inbox="{{user.inbox.id}}" id="favorite" class="star inbox-action-icon" src="{% static 'login_app_static/images/star-regular.png' %}"> </td>
+                                        {% else %}
+                                            <td class="inbox-actions"><input type="checkbox" class="inbox-checkbox"> <img data-info="{{message.id}}" data-url="{{message.url}}"  data-inbox="{{user.inbox.id}}" id="favorite" class="star inbox-action-icon" src="{% static 'login_app_static/images/star-regular.png' %}"> <img data-message="{{message.id}}" id="{{user.inbox.id}}" class="inbox-action-icon trash" src="{% static 'login_app_static/images/up-arrow-circle.png' %}"></td>
+                                        {% endif %}
+                                    {% endif %}
+                                    <td id="{{message.id}}"> {{forloop.counter}} - {{message.sender.full_name}}, me</td>
+
+                                    {% comment %} <td class="inbox-subject" id="{{message.id}}">{{message.truncateSubject}}</td> {% endcomment %}
+                                    {% comment %} <td id="{{message.id}}-message-body"><span class=" message-body">{{message.truncateSubject}} - {{message.truncateBody|safe}}</span></td> {% endcomment %}
+                                    <td id="{{message.id}}-message-body"><span class=" message-body">{{message.truncateSubject}} - {{message.truncateBody|strip_html}}</span></td>
+
+                                    {% comment %} {% for content in body %}
+                                        {% for k, v in content.items %}
+                                            {% if v == message.id %}
+                                                <td id="{{message.id}}-message-body"><span class=" message-body">{{message.truncateSubject}}</span> - {{k}}</td>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}  {% endcomment %}
+                                    {% comment %} pass 24 HOURS AGO and say "IF GREATER THAN 24 HOURS AGO"... message.created_at.time 
+                                                    else
+                                    MESSAGE.CREATED_AT.DATE {% endcomment %}
+                                    <td id="{{message.id}}-message-date">{{message.created_at.time}}</td>
+
+                                </tr>
+
+                            {% endif %}
+
+                    {% endfor %}
+
+
+                </tbody>
+            </table>
+            <div class="actions-hoverable inbox-actions absolute">
+                    {% for message in mail %}
+                        <div class='actions-hoverable-inner' id="{{message.id}}-actions" data-action="{{message.id}}">
+                            <img data-info="{{message.id}}" id="" class ="inbox-action-icon" src="{% static 'login_app_static/images/archive-in.png' %}" >
+                            <img data-message="{{message.id}}" id="{{user.inbox.id}}" class="inbox-action-icon trash" src="{% static 'login_app_static/images/trash.png' %}" >
+                            <img data-info="{{message.id}}" id="" class ="inbox-action-icon" src="{% static 'login_app_static/images/envelope.png' %}" >
+                        </div>
+                    {% endfor %}
+            </div>
+
+                {% comment %} HOW TO MAKE IT FUNCTIONAL {% endcomment %}
+{% comment %} have a selector (possibly another data attribute ...  to compare each ahe-inner with its relevant actions-hoverable (with JS)) {% endcomment %}
+            <div class="actions-hoverable-explanation absolute">
+                {% for message in mail %}
+                <div class="ahe-inner">
+                    <p class="inline-block">Archive</p>
+                    <p class="inline-block">Delete</p>
+                    <p class="inline-block">Mark as Read</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+ 
+{% comment %} SINGLE MESSAGE  {% endcomment %}
+    {% else %}
+{% comment %} {% if user.id in single_message.recipients %} {% endcomment %}
+
+{% comment %} {% endif %} {% endcomment %}
+{% endif %}
+</div>
+{% endblock %}
+
+
+{% block deferred_script %}
+    {% comment %} <script defer src="{% static 'inbox.js' %}"></script>
+    <script>
+        $('label[for="id_body"]').hide();
+    </script> {% endcomment %}
+
+
+        {% comment %} <script src="{% static 'csrf.js' %}"></script>
+        <script src="{% static 'inbox.js' %}" type="module"></script> {% endcomment %}
+
+
+   <script>
+        var cs = "{% static 'ticket_app_static/js/csrf.js' %}";
+        $.getScript(cs);
+        var url = "{% static 'ticket_app_static/js/inbox.js' %}";
+        $.getScript(url);
+        var navscript = "{% static 'ticket_app_static/js/inbox-sidenav.js' %}";
+        $.getScript(navscript);
+        
+
+    </script>
+{% endblock %}
+
+{% block head_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+{% endblock %}
+
+
+{% block css_stylesheet %}
+<link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/inbox.css' %}">
+{% endblock %}
+
+
+{% comment %} {% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<div class="margin-inline">
+    {% for message in user.messages.all %}
+        <td class="message-trigger" id="{{message.id}}">{{message.truncateSubject}}</td>
+        <p class="hidden message-body">{{message.body}}</p>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block deferred_script %}
+    <script defer src="{% static 'profile.js' %}"></script>
+{% endblock %} {% endcomment %}

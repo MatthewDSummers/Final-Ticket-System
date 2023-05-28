@@ -1,0 +1,77 @@
+
+
+
+.alt-button{
+    box-shadow: var(--alt-button-shadow);
+}
+
+.alt-text{
+    color: var(--anchor-alt) !important;
+}
+
+#user-options{
+    background-color: var(--clr-secondary);
+    width: 25em;
+    padding: 2em;
+    border-radius: 9px;
+    display: none;
+}
+    #user-options > h5, h6, label{
+        color: var(--anchor-alt) !important;
+    }
+    /* #user-options form > label{
+        color: var(--anchor-alt) !important;
+    } */
+    #user-options form > button, #user-options button{
+        width: 100%;
+    }
+    .options-arrow{
+        border: 6px solid var(--clr-dark) !important;
+    }
+    .ticket-assignment-dropdown-trigger{
+        cursor: pointer;
+    }
+
+
+
+#delete-the-account-div{
+    border: 2px solid red;
+    background-color: var(--crucial);
+    margin-top: 1em;
+    display: none;
+}
+    #keep-the-account-div{
+        background-color: rgb(0, 0, 0);
+        padding-inline: 1em;
+        text-align: center;
+        cursor: pointer
+    }   
+    #password{
+        border-radius: 7px;
+        margin: .2em 0 .5em 0;
+        width: 15em;
+    }
+
+    #delete-account-form{
+        padding: .7em;
+        background-color: var(--crucial);
+    }
+
+        .delete-button{
+            background-color: rgb(0, 0, 0) !important;
+            color: rgb(255, 208, 138);
+            width: 100%;
+        }
+
+
+
+/* errors  */
+        #user-perm-error{
+            display: none;
+            margin: 0 0 1em 0s;
+            color: #ffd2d2;
+        }
+        #pw-error{
+            color: rgb(132, 255, 185) !important;
+            display: none;
+        }

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <title>Support Ticketing System</title>
+        <meta name="description" content="This is an IT support ticketing system!">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        {% load static %}
+        <link rel='stylesheet' type='text/css' href="{% static 'login_app_static/css/style.css' %}">
+        <link rel='stylesheet' type='text/css' href="{% static 'login_app_static/css/login.css' %}">
+        <link rel='stylesheet' type='text/css' href="{% static 'login_app_static/css/theme.css' %}">
+        {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'dark.css' media='(prefers-color-scheme: dark)' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'light.css' media='(prefers-color-scheme: no-preference), (prefers-color-scheme: light)' %}"> {% endcomment %}
+        <script defer src="{% static 'login_app_static/js/index.js' %}"></script>
+        {% comment %} <script defer src="{% static 'gsap.js' %}"></script> {% endcomment %}
+        <script defer src="{% static 'login_app_static/js/home.js' %}"></script>
+        <script defer src="{% static 'login_app_static/js/theme.js' %}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Arya&family=Montserrat:wght@300&display=swap');
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --heading-color: rgb(175, 21, 21);
+                    --color: rgb(177, 177, 177);
+                    --secondary-color: rgb(28, 28, 28);
+                    --background-color: #060606;
+                    --secondary-background-color: #acacac;
+                
+                    --box-shadow: 15px 13px 3px #3a3a3a;
+                    --th: rgb(255, 250, 105);
+                
+                    --pin-color: #e7e7a1;
+                    --pin-crucial: #d50000;
+                    --pin-high: #ac6d00;
+                    --pin-intermediate: #828282;
+                    --pin-low: #c2c2c2;
+                    /* ------------ */
+                    --green: rgb(182, 240, 180);
+                    --lblue: rgb(29, 117, 223);
+                }
+            }
+            @media (prefers-color-scheme: light) {
+                :root {
+                    --heading-color: #0c942a;
+                    --color: #050505;
+                    --secondary-color: #bbbbbb;
+                
+                    --background-color: #cdc4c4;
+                    --secondary-background-color: #c9c9c9;
+                
+                    --box-shadow: 15px 13px 3px #3a3a3a;
+                    --th: #212121;
+                
+                    --pin-color: #000000;
+                    --pin-crucial: #bd0000;
+                    --pin-high: #a56900;
+                    --pin-intermediate: #4f4f4f;
+                    --pin-low: #1d1d1d;
+                    /* --------------- */
+                    --green: #292929;
+                    --lblue: #0040ae;
+                }
+            }
+        </style>
+    </head>
+    <body> 
+        <div class="container" id="container" >
+            {% if messages %}
+                {% if "success" in request.session.message_status %}
+                <div class="col-12" id="success-new">
+                    <ul class = "success-ul">
+                    <p class="success-p">&#9888;</p>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div> 
+
+                {% else %}
+                
+                <div class="col-12" id="errors-new">
+                    <ul class = "errors-ul">
+                    <p class="error-p">&#9888;</p>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div> 
+                {% endif %}
+            {% endif %}
+
+            {% comment %} <button id="dark-mode-toggle" class="dark-mode-toggle-login" aria-label="toggle dark mode">
+                <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M12 11.807A9.002 9.002 0 0 1 10.049 2a9.942 9.942 0 0 0-5.12 2.735c-3.905 3.905-3.905 10.237 0 14.142 3.906 3.906 10.237 3.905 14.143 0a9.946 9.946 0 0 0 2.735-5.119A9.003 9.003 0 0 1 12 11.807z"></path></svg>
+                </span>
+            </button> {% endcomment %}
+            <div id="header">
+                <h3 id="header-title" class="header inline-block"><span class="enlarged">T</span>icket <span class="enlarged">E</span>asy</h3>
+                <div id="header-inner"  class="inline-block">
+                    <a class="" href="/ticket-easy/users">Home</a>
+                    {% comment %} <a class="signin" href="/users/signin">Sign-In</a> {% endcomment %}
+                    <a class="btnn" href="{% url 'login-app:register-page' %}" onclick="registrationForm()">Register</a>
+                    <a href="#">Buy now</a>
+                </div>
+            </div>
+<hr class="clr-hr">
+            {% block content %}
+            {% endblock %}
+        </div>
+        {% block deferred_script %}
+        {% endblock %}
+    </body>
+</html>

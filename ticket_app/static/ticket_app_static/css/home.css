@@ -1,0 +1,90 @@
+.padding-block{
+    padding-block: 2em;
+}
+.padding-inline{
+    padding-inline: 5em;
+}
+.content{
+    padding-inline: 3em;
+    margin-bottom: 2em;
+}
+
+table{
+    font-family: 'Assistant', sans-serif;
+    caret-color: rgba(0,0,0,0);
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+table td{
+    border-bottom: 1px solid silver;
+}
+.dash-count-div{
+    border: 1px solid var(--secondary-background-color);
+    padding: 2em;
+    background-color: rgb(231, 231, 231);
+}
+
+#icon-minus{
+    width: 20px;
+}
+.website-td{
+    position: relative;
+}
+.remove-website-form{
+    position: absolute; left:0px; top:0px;
+}
+.remove-website-btn{
+    background-color: transparent;
+    color: black;
+    padding: 0 12px;
+    border: none;
+    display: inline;
+    box-shadow: none;
+}
+
+.hidden-label{
+    /* opacity: 0; */
+    display: none;
+    /* transition: ease-in-out 6s; */
+}
+.hide-br-on-trigger{
+    display: block;
+}
+.website-name{
+    padding-left: 3em;
+}
+#add-site-div{
+    position: absolute;
+    /* min-height: 20em; */
+    /* border: 1px solid red; */
+    /* outline: 2px solid red; */
+}
+
+.relative{
+    position: relative;
+}
+.absolute{
+    position: absolute;
+}
+.add-site-trigger{
+    /* position: absolute; left:20px; */
+    margin-left: -8px;
+}
+#caption{
+    position: absolute; right:0px; top: 0px;
+    /* margin-left: 800px; */
+}
+.add-website-btn{
+    position: relative;
+    top: 0px; right:0px;
+    display: inline-block;
+    padding: 0 12px;
+    /* margin-left: 140px; */
+}
+.workflow-img{
+    width: 140px;
+    height: 80px;
+    visibility: hidden;
+    display: none;
+}

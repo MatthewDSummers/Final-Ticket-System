@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    {% if user.level == 9 or user.level == 8 %}
+        <input type="text" id="discerner" value="SingleTable" class="hidden">
+        <div class="margin-inline-lg padding-block-lg">
+            <div id="" class="center header"><h4 class="title" style="{{title}}">{{grand_title}}</h4></div>
+
+            {% comment %} 
+                !IMPORTANT:  If multiple tags on same page, do not have this `table-body` div below. simply use the tags and nothing more. 
+            {% endcomment %}
+
+            {% comment %} <div class="table-body" data-table="{{tag_filter}}" data-page="{{request.GET.type}}"> {% endcomment %}
+                {% load ticket_tags %}
+                {% if request.GET.type == "Active" %}
+                    {% tickets_table request "Active" %}
+                {% elif request.GET.type == "Pinned" %}
+                    {% tickets_table request "Pinned" %}
+                {% elif request.GET.type == "Archived" %}
+                    {% tickets_table request "Archived" %}
+                {% elif request.GET.type == "Withheld" %}
+                    {% tickets_table request "Withheld" %}
+                {% elif request.GET.type == "Resolved" %}
+                    {% tickets_table request "Resolved" %}
+                {% endif %}
+            {% comment %} </div>  {% endcomment %}
+    {% else %}
+            <div class="margin-inline-lg margin-block-lg">
+                <h3>Lost?  <a href="/">Go Home</a> </h3>
+            </div>
+    {% endif %}
+        </div>
+{% endblock %}
+
+{% block deferred_script %}
+    <script src="{% static 'ticket_app_static/js/select-scenarios-all-tickets.js' %}" type="module"></script>
+    <script src="{% static 'ticket_app_static/js/all-tickets.js' %}" type="module"></script>
+    <script src="{% static 'ticket_app_static/js/import-select.js' %}" type="module"></script>
+    <script src="{% static 'ticket_app_static/js/update-table.js' %}" type="module"></script>
+
+    {% comment %} <script src="{% static 'update-table.js' %}" type="module"></script> {% endcomment %}
+{% endblock %}
+
+{% block css_stylesheet %}
+
+
+    <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/all-tickets.css' %}">
+    <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/select-all-tickets.css' %}">
+    <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/paginate.css' %}">
+{% endblock %}

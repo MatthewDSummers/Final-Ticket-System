@@ -1,0 +1,369 @@
+
+
+#ticket-table-container{
+    overflow: auto;
+    width: 94vw;
+    /* background-color: red; */
+    /* min-height: 55vh; */
+    min-height: 35vh;
+}
+
+.title{
+    color: var(--font-color-primary);
+}
+    .ticket-table{
+        z-index: 999999999;
+        background-color: rgb(255, 255, 255);
+        background-color: var(--background);
+        font-family: 'Assistant', sans-serif;
+        /* caret-color: rgba(0,0,0,0); */
+        width: 98.5%;
+        table-layout: fixed;
+        border-collapse: collapse;
+    }
+    .ticket-table td{
+        color: var(--font-color-primary);
+    }
+
+/* ASSIGNED */
+    .content-tr a.assigned {
+        color: var(--assigned);
+    }
+    .content-tr a.unassigned {
+        color: var(--unassigned);
+    }
+/* HEADERS  */
+        .ticket-table th:not(.ticket-table th:nth-child(1), .ticket-table th:nth-child(2),.ticket-table th:nth-child(3)){
+            width: 100%;
+        }
+        .ticket-table th:nth-child(1){
+            width: 35%;
+        }
+        .ticket-table th:nth-child(2){
+            width: 16%;
+            transition: width .3s ease;
+        }
+        .ticket-table th:nth-child(3){
+            width: 200%;
+            /* background-color: red; */
+        }
+
+            .table-input.form-control, .table-input{
+                width: 100%;
+                height: 2em;
+
+                box-sizing: border-box;
+                -webkit-box-sizing: border-box; 
+                -moz-box-sizing: border-box;
+
+                margin-bottom: -.001rem;
+
+                border-left: 1px solid black;
+                border-right:none;
+                border-top:1px solid black;
+                border-bottom: 1px solid black;
+
+                padding: 0;
+
+                background-color: rgb(193, 215, 242);
+                background-color: var(--table-nav-color);
+                text-align: center;
+            }
+                .table-input:focus{ 
+                    outline: none;
+                }
+            .table-ticket-id{
+                border-radius: 10px 0 0 0;
+            }
+            .menu-sort{
+                background:hsl(212,74%,95%);
+                z-index: 999;
+                /* padding: .5em .75em 0 .75em; */
+                width: 6.7em;
+                border-right: 2px solid black;
+                border-left: 2px solid black;
+                border-bottom: 2px solid black;
+                color:rgb(26, 26, 26);
+                cursor: pointer;
+            }
+                .menu-sort p{
+                    margin: 0;
+                    padding-block: .5em;
+                    font-weight: 500;
+                }
+                .menu-sort p::before{
+                    content:"";
+                    padding-left: .56em;
+
+                }
+                .menu-sort p:hover{
+                    background-color: hsl(214, 39%, 40%);
+                    color: white;
+                }
+            .table-input.form-control{
+                /* position: relative; right: .67rem; */
+                margin-top: -.001rem;
+
+                border-left: none;
+                border-right: 1px solid black;
+                border-radius: 0 7px 0px 0px;
+            }
+
+            .ticket-table th:nth-child(1) input{
+                background-color: rgb(69, 69, 69);
+                /* min-width: 5.2em;
+                max-width: 5.2em; */
+                color: white;
+                caret-color: white;
+
+                width: 100%;
+            }
+                .ticket-table thead th:nth-child(1) input::placeholder{
+                    color:white;
+                }
+                .ticket-table th:nth-child(3) input{
+                    color: var(--font-color-primary);
+                }
+                input:-webkit-autofill,
+                input:-webkit-autofill:hover,
+                input:-webkit-autofill:focus,
+                input:-webkit-autofill:active {
+                    transition: background-color 5000s ease-in-out 0s;
+                }
+                input:-webkit-autofill{
+                    -webkit-text-fill-color: var(--font-color-primary);
+                }
+                .ticket-table thead th:nth-child(1) input:-webkit-autofill{
+                    -webkit-text-fill-color: white;
+                }
+                /* .ticket-table th:nth-child(3) input::placeholder{ */
+                    /* background-color: red !important; */
+
+                /* } */
+                .table-ticket-description::placeholder{
+                    color: var(--font-color-primary);
+                }
+                .table-ticket-description{
+                    caret-color: var(--font-color-primary);
+                }
+                
+                .table-date-input::placeholder{
+                    color: var(--font-color-primary);
+                }
+
+
+        
+/* CELL ROWS  */
+        .ticket-table .content-tr td{
+            padding-block: .24rem;
+            border-bottom: var(--td-border);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .ticket-table .content-tr td:not(td:nth-child(1)){
+            padding-inline: .4rem;
+        }
+        .ticket-table .content-tr td:nth-child(1){
+            font-weight: 600;
+        }
+
+            .ticket-table .content-tr td:nth-child(3){
+                padding-left: .5rem;
+            }
+
+
+.ticket-actions{
+    margin-inline: .3em;
+}
+
+/* DROPDOWN */
+
+.sub-info-trigger{
+    cursor: pointer;
+}
+.table-arrow {
+    cursor: pointer;
+    border: solid var(--clr-dark);
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    margin-inline: 4px;
+    padding:2.5px;
+    /* position: relative; */
+    /* left: 0px; */
+    transition: transform 0.3s ease;
+
+}
+.table-down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+
+}
+
+.table-up{
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+
+.action-view{
+    color: rgb(56, 56, 56); 
+    font-size: .9rem;
+    cursor: pointer;
+}
+.action-div{
+    height: 2rem;
+    font-size: 1rem;
+}
+
+
+
+/* DATES  */
+    .flatpickr-current-month{
+        color: white;
+        text-shadow: 1px 1px rgb(118, 118, 118);
+
+    }
+    .flatpickr-months{
+        background: linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c, red);
+        background: linear-gradient(0.25turn, hsl(240, 84%, 20%),hsl(240, 84%, 30%), hsl(240, 84%, 30%),hsl(240, 84%, 20%));
+        background: linear-gradient(0.25turn, hsl(223, 51%, 50%),hsl(222, 90%, 35%),hsl(222, 90%, 35%), hsl(223, 51%, 50%));
+        border-radius: 6px 6px 0 0 ;
+        /* hsl(222, 90%, 31%);
+        rgb(68, 103, 194); */
+        padding-bottom: 1rem;
+    }
+    /* .flatpickr-input::placeholder{
+        background-color: red;
+    } */
+    /* .hidden{
+        display: none;
+    } */
+    .numInputWrapper{
+        color: white;
+
+        /* padding-left: 2rem; */
+        /* border: 4px solid brown; */
+        /* background: transparent; */
+        /* border: none; */
+            /* width: 81rem; */
+    }
+    .numInput{
+        text-shadow: 1px 1px rgb(118, 118, 118);
+        /* width: 81rem; */
+    }
+    /* .flatpickr-monthDropdown-months{
+
+    } */
+.priority{
+    display: inline-block;
+    padding-inline: .4rem;
+    border-radius: 1em;
+    text-shadow: 1px 1px 1px black;
+    width: 1em;
+    height: 1em;
+    text-align: center;
+    box-shadow: 1px 1px 3px rgba(111, 109, 109, 0.765);
+
+}
+/* .priority{
+    display: inline-block;
+    padding-inline: .4rem;
+    border-radius: 1em;
+    text-shadow: 1px 1px 1px black;
+    width: 6.25rem;
+    height: ;
+    text-align: center;
+    box-shadow: 1px 1px 3px rgba(111, 109, 109, 0.765);
+
+} */
+    .crucial{
+        color: rgb(255, 255, 255);
+        background-color: rgb(177, 38, 38);
+        background-color: var(--crucial);
+    }
+    .high{
+        color: hsl(0, 0%, 100%);
+        background-color: hsl(34, 64%, 53%);
+        background-color: var(--high);
+    }
+    .intermediate{
+        color: rgb(255, 255, 255);
+        background-color: rgb(113, 113, 113);
+        background-color: var(--intermediate);
+        font-size: .9rem;
+    }
+    .low{
+        color: rgb(50, 50, 50);
+        background-color: rgb(221, 221, 221);
+        background-color: var(--low);
+        text-shadow: 1px 1px 1px rgb(217, 217, 217);
+        font-weight: 600;
+    }
+    .not-set{
+        background: yellow;
+        text-shadow: none;
+        color: black;
+    }
+
+.resolved{
+    /* color: rgb(12, 152, 12); */
+    color: var(--resolved) !important;
+    font-weight: 600;
+
+}
+.unresolved{
+    color: var(--unresolved) !important;
+    font-weight: 600;
+}
+
+.pinned{
+    background-color: hsl(219,76%,82%);
+    /* matches inbox highlight ^^ */
+    background-color: hsl(219, 76%, 92%);
+    background: linear-gradient(0.25turn, hsl(219, 76%, 92%),hsl(219, 76%, 94%), hsl(219, 76%, 100%));
+    background: var(--pinned);
+    background-color: var(--pinned);
+}
+    .ticket-sub-info:not(.pinned-sub-info){
+        /* background:linear-gradient(0.25turn, hsl(290, 76%, 92%),hsl(290, 76%, 94%), hsl(290, 76%, 100%)) !important; */
+        background: var(--sub-info-not-pinned);
+    }
+    .pinned-sub-info{
+        /* background:linear-gradient(0.25turn, hsl(50, 76%, 92%),hsl(50, 76%, 94%), hsl(50, 76%, 100%)) !important; */
+        background: var(--sub-info-pinned);
+    }
+    .ticket-sub-info:nth-of-type(3n) {
+        border-bottom: 2px solid black;
+    }
+.pinned td:not(.unresolved, .resolved){
+    color: var(--pinned-font);
+    text-shadow: var(--text-shadow-secondary);
+}
+.pinned > .resolved{
+    color: var(--pinned-resolved) !important;
+}
+.pinned td{
+    border-bottom: var(--pinned-border) !important;
+}
+.ajax-person-input{
+    width: 100%;
+    height: 2em;
+
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box; 
+    -moz-box-sizing: border-box;
+
+    margin-bottom: -.001rem;
+
+    border: 1px solid black;
+    /* margin-right: 21em; */
+    /* outline: 1px solid black; */
+
+    padding-inline: .3em;
+
+    /* background-color: rgb(193, 215, 242); */
+    background-color: var(--table-nav-color);
+    text-align: left;
+    caret-color: black;
+}

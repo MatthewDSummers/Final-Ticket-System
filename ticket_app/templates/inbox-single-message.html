@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load messages_tag %}
+
+{% block content %}
+
+{% include 'inbox-sidenav.html' %}
+
+
+    {% if new_message %}
+        {% message_template request %}
+    {% elif message_exists %}
+        {% reply_template request single_message.id %}
+    {% endif %}
+
+    {% if no_recipients_found %}
+        <div id="retrieved_body" style="display:none";>{{the_body}}</div>
+    {% endif %}
+
+{% endblock %}
+
+{% block deferred_script %}
+    <script src="{% static 'ticket_app_static/js/inbox-sidenav.js' %}"></script>
+    <script src="{% static 'ticket_app_static/js/inbox-single-message.js' %}"></script>
+{% endblock %}
+
+{% block css_stylesheet %}
+<link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/inbox.css' %}">
+<link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/inbox-message.css' %}">
+{% endblock %}

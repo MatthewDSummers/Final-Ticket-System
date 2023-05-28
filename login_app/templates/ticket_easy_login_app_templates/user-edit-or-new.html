@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+{% load user_form_tag %}
+
+<div class="margin-inline-lg padding-block-lg">
+    <div class="center">
+        {% if not target_user %}
+            <h2 class="title">New User</h2>
+        {% else %}
+            <h2 class="title">Edit User</h2>
+        {% endif %}
+    </div>
+
+    <div class="center">
+        <div class="w-50">
+        {% if target_user  %}
+            {% if user.level == 8 %}
+                <!-- EDIT USER for staff (can edit basic users and their own account) -->
+                {% if target_user.level != 1 and user != target_user %}
+                    <br>
+                    <div class="center">
+                        <p>You are not authorized to edit this user's account</p>
+                    </div>
+                {% else %}
+                    {% user_form request target_user_id=target_user.id %}
+                {% endif %}
+            {% elif user.level == 9 %}
+            <!-- EDIT USER for super-admin (can't edit other super-admins)-->
+                {% if target_user.level == 9 and target_user != user %}
+                    <br>
+                    <div class="center">
+                        <p>You are not authorized to edit this user's account</p>
+                    </div>
+                {% else %}
+                    {% user_form request target_user_id=target_user.id %}
+                {% endif %}
+            {% elif user.level == 1 %}
+                <!-- EDIT USER for basic user (can only edit their own account) -->
+                {% if user != target_user %}
+                    <br>
+                    <div class="center">
+                        <p>You are not authorized to edit this user's account</p>
+                    </div>
+                {% else %}
+                    {% user_form request target_user_id=target_user.id %}
+                {% endif %}
+            {% endif %}
+        {% elif not target_user %}  
+            <!-- NEW USER -->
+            {% user_form request %}
+                <!-- basic users are kept at out of the New User page at the view function level; and therefore they won't even see this comment -->
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block css_stylesheet %}
+    <link rel='stylesheet' type='text/css' href="{% static 'login_app_static/css/user-form.css' %}">
+{% endblock %}
+
+{% block deferred_script %}
+    <script src="{% static 'login_app_static/js/user-form.js' %}" type="module"></script>
+{% endblock %}
+

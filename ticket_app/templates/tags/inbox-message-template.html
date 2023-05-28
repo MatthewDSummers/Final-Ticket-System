@@ -1,0 +1,58 @@
+{% comment %} {% extends 'base.html' %} {% endcomment %}
+
+<div class="margin-inline-lg margin-block-lg">
+    <div class="center">
+        <h3>{{page_title}}</h3>
+        <h3 class="title" id="{{page_title}}" style="display:none;">Blank</h3>
+
+    </div>
+<br>
+    <div class="margin-inline-lg margin-block-lg">
+            <div id="message-container">
+
+                <div id="to" class="form-hr">
+                    <a href="#" id="recipients" class="input-validation">Add recipients</a>
+                    <span id="error-no-recipients" style="color:red; display: none;">*Please add a recipient</span>
+                </div>
+                <form id="message-form" action="{% url 'ticket-easy:create-mail' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-hr" style="position:relative;">
+                        <input type="text" name="the_message_subject" id="the_message_subject" placeholder="Subject" autocomplete="off">
+                        {% comment %} <span id="error-no-subject" style="color:red; position:absolute; left: 0;">*Please add a subject</span> {% endcomment %}
+                    </div>
+                    <span id="error-no-body" style="color:red; display: none; margin: .7em;">*Please add the message here</span>
+                    {% comment %} <div class="editable message-body-container" style="white-space: pre-wrap;"> {% endcomment %}
+                    <div class="editable message-body-container">
+                    </div>
+                    <textarea name="the_message_body" id="the_message_body" style="display:none;"></textarea>
+
+                    <input 
+                        type="hidden" 
+                        id="the_message_recipients"
+                        class="new-message-form-recipients"
+                        name="the_message_recipients"
+                        value="{{single_message.sender.email}}"
+                    >
+                    <button type="submit" class="main-button input-validation" id="send-email">Send</button>
+                </form>
+            </div> 
+    </div>
+</div>
+
+{% comment %} <script>
+    var visible_body = $('.editable');
+    var hidden_input_body = $("#the_message_body");
+    var retrieved_body = $('#retrieved_body');
+    if (retrieved_body.length) {  // check if #retrieved_body element exists
+        hidden_input_body.val(retrieved_body.text().trim());
+        visible_body.text(retrieved_body.text().trim());
+    }
+</script> {% endcomment %}
+{% comment %} {% block deferred_script %}
+    <script src="{% static 'inbox.js' %}"></script>
+    <script src="{% static 'inbox-single-message.js' %}"></script>
+{% endblock %}
+
+{% block css_stylesheet %}
+<link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/inbox.css' %}">
+{% endblock %} {% endcomment %}

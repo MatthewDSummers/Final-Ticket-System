@@ -1,0 +1,124 @@
+#ticket-top-right{
+    border-top: 4px solid rgb(136, 136, 136);
+    border-right: 1px solid rgb(136, 136, 136);
+    padding:5%;
+    box-shadow:  var(--box-shadow);
+    width: 35em;
+    margin-right: 2em;
+}
+
+#ticket-top-right a{
+    /* display: block; */
+    /* line-height: 29px; */
+    padding-bottom: 9px;
+    margin-top: -8px;
+}
+.single-ticket-description{
+    height: 40vh;
+    overflow-y: auto;
+    /* padding-right: 20px; */
+    padding: .5em 1em .5em 0;
+
+}
+.single-ticket-description::-webkit-scrollbar {
+        width: 10px;
+        background-color: #f5f5f5;
+    }
+
+    .single-ticket-description::-webkit-scrollbar-thumb {
+        background-color: #6d6d6d;
+    }
+
+.ticket-assignment-dropdown-trigger{
+    margin-left: -2em;
+}
+
+/* PRIORITIES */
+.crucial{
+    color: rgb(255, 255, 255);
+    background-color: var(--crucial);
+    text-shadow: 1px 1px black;
+}
+.high{
+    color: hsl(0, 0%, 100%);
+    background-color: var(--high);
+    text-shadow: 1px 1px black;
+}
+.intermediate{
+    color: rgb(255, 255, 255);
+    background-color: var(--intermediate);
+    text-shadow: 1px 1px black;
+}
+.low{
+    color: rgb(50, 50, 50);
+    background-color: var(--low);
+    text-shadow: 1px 1px 1px rgb(217, 217, 217);
+}
+.not-set{
+    background: yellow;
+    color: black;
+}
+.priority{
+    display: inline-block;
+    padding-inline: .4rem;
+    /* margin-bottom: -9px; */
+    margin-bottom: 9px;
+    text-align: center;
+}
+
+
+/* TICKET STATUS  */
+.resolved{
+    color: var(--resolved) !important;
+    font-weight: 600;
+
+}
+.unresolved{
+    color: var(--unresolved) !important;
+    font-weight: 600;
+}
+
+.table-arrow {
+    cursor: pointer;
+    border: solid var(--clr-dark);
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    margin-inline: 4px;
+    padding:2.5px;
+    /* position: relative; */
+    /* left: 0px; */
+    /* background-color: red; */
+    margin-bottom: .2em;
+    transition: transform 0.3s ease;
+}
+.table-down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+.table-up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+#assignment-div{
+    width: 300px;
+    margin-block: .5em;
+    border-radius: 8px;
+    padding:.5em;
+    background-color: var(--clr-secondary);
+
+}
+    #assignment-div a{
+        color: var(--anchor-alt);
+        margin-block-end: 1px;
+    }
+.ticket-assignment-dropdown-trigger{
+    cursor: pointer;
+}
+
+.border-normal{
+    border-radius: 7px;
+}
+.border-special{
+    border-radius: 7px 7px 0 0;
+}

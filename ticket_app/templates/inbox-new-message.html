@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+{% include 'inbox-sidenav.html' %}
+
+<div class="margin-inline-lg margin-block-lg">
+    <div class="center header">
+        <h3 class="title" id="{{page_title}}">{{page_title}}</h3>
+    </div>
+    <div class="margin-inline-lg margin-block-lg">
+        <div id="message-container">
+            <div id="to" class="form-hr">
+                    <a href="#" id="recipients">Add recipients</a>
+            </div>
+
+            <form id="message-form" action="{% url 'ticket-easy:create-mail' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-hr">
+                    <input type="text" name="the_message_subject" id="the_message_subject" placeholder="Subject" autocomplete="off">
+                </div>
+
+                <div class="editable message-body-container">
+                    {% if no_recipients_found %}
+                        {{the_body}}
+                    {% endif %}
+                </div>
+                <textarea name="the_message_body" id="the_message_body" style="display:none;"></textarea>
+
+                <input type="text" name="the_message_recipients" id="the_message_recipients" value="">
+                <button type="submit" class="main-button" id="send-email">Send</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block deferred_script %}
+    <script src="{% static 'ticket_app_static/js/inbox.js' %}"></script>
+    <script src="{% static 'ticket_app_static/js/inbox-single-message.js' %}"></script>
+{% endblock %}
+
+{% block css_stylesheet %}
+<link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/inbox.css' %}">
+{% endblock %}

@@ -1,0 +1,273 @@
+/* #send-form{
+    color: white !important;
+} */
+
+
+
+.field{
+    background-color: var(--clr-hr);
+    padding: .75em 0em .5em 0.5em;
+    width: 29em;
+    /* height: 4.3em; */
+    border-radius: 1.7em;
+    /* border: 1px solid silver; */
+    box-shadow: 1px 1px 5px rgb(136, 136, 136);
+}
+
+.cool-input{
+    /* margin-left: 8em; */
+    /* border-radius: 1.7em;
+    border: 0; */
+    /* padding-inline: .5em; */
+    padding: .35em .8em;
+    color: var(--clr-dark);
+    width: 97.6%;
+    width: 100%;
+    /* width: 47.6%; */
+    border-radius: 5px;
+    border: 1px solid black;
+    /* border: 1px solid var(--clr-hr); */
+    /* margin-left: .2em; */
+    /* margin-right: -2.2em; */
+    background-color: var(--form-input);
+    /* float: right; */
+    /* margin-right: .5em; */
+}
+    .cool-input::placeholder{
+        color: var(--clr-dark);
+    }
+.cool-input-label{
+    color: var(--clr-light);
+    /* margin-right: 2em; */
+}
+.main-button{
+    width: 100% !important;
+}
+.main-content * + * {
+    margin-block: 1em;
+}
+.main-content{
+    width: 29rem;
+}
+.sub-content{
+    height: 14em;
+}
+
+
+
+
+
+
+
+
+/* on all bots and create bots page      */
+
+.custom-select-container,
+.custom-select-value,
+.custom-select-value-ajax,
+.custom-select-options,
+.custom-select-options-ajax,
+.custom-select-option-ajax,
+.custom-select-option{
+    box-sizing: border-box;
+}
+@-webkit-keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+/* @-webkit-keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+} */
+
+/* @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+} */
+@-webkit-keyframes fadeOut {
+    0% {opacity: 1;}
+    100% {opacity: 0;} 
+}
+@keyframes fadeOut {
+    0% {opacity: 1;}
+    100% {opacity: 0;} 
+} 
+.custom-select-container{
+    /* position: relative; */
+    display: inline-block;
+
+    height: 2.25rem;
+    width: 100% !important;
+    position: relative;
+}
+
+/* .custom-select-container .custom-select-options{
+    display: none;
+    -webkit-animation: fadeIn .5s;
+    animation: fadeIn .5s;
+} */
+
+
+/* .custom-select-container:hover .custom-select-options{
+    display: block;
+    -webkit-animation: fadeIn .5s;
+    animation: fadeIn .5s;
+} */
+.fade-in{
+    display: block;
+    -webkit-animation: fadeIn .5s;
+    animation: fadeIn .5s;
+}
+.fade-out{
+    /* display: none; */
+    /* -webkit-animation-name: fadeOut 2.5s;
+    animation-name: fadeOut 2.5s; */
+    -webkit-animation: fadeOut .5s;
+    animation: fadeOut .5s;
+}
+.show{
+    display: block;
+}
+.hidden{
+    display: none;
+}
+.custom-select-container:not(div.and-or-select){
+    background-color: #fdff9e;
+    background-color: hsl(61, 100%, 91%);
+    background-color: var(--form-input);
+    /* border-radius: 7px 7px 0px 0px; */
+    border-radius: 7px;
+
+}
+.and-or-select > .custom-select-value{
+    background-color: #fdff9e;
+    background-color: hsl(0, 0%, 15%);
+    color: rgb(243, 243, 243);
+}
+.custom-select-value, .custom-select-value-ajax{
+    /* display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all .3s;
+    width: 14rem;
+    border: 1px solid black;
+    padding: .25rem .5rem;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 7px; */
+    /* border-radius: 7px 7px 0px 0px; */
+    display: flex;
+    text-align: center;
+    /* display:inline-block; */
+
+    align-items: center;
+    justify-content: space-between;
+    /* transition: all .3s; */
+    /* width: 240px; */
+    /* width: 14rem; */
+    border: 1px solid black;
+    padding: .35rem .5rem;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 7px;
+
+    /* border-radius: 7px 7px 0px 0px; */
+    width: 100% !important;
+    overflow: hidden;
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /* background-color: var(--form-input); */
+
+}
+
+.custom-select-container:focus > .custom.select.value{
+    border-width: 220px;
+    outline: none;
+    
+}
+/* i think the after is uselesssss */
+.custom-select-value::before{
+    content:'';
+    display: inline-block;
+    border: 4px solid transparent;
+    border-top-color: rgb(69, 126, 231);
+    margin-right: 7px;
+    margin-top: 4px;
+}
+.custom-select-value-ajax::after{
+    content:'';
+    display: inline-block;
+    border: 4px solid transparent;
+    border-top-color: black;
+    margin-left: 12px;
+    margin-top: 4px;
+}
+
+.custom-select-options, .custom-select-options-ajax{
+    display: none;
+    position: absolute;
+    top: 37px;
+    padding: 0;
+    margin: 0;
+    border: 2px solid black;
+    border-top: none;
+    max-height: 15rem;
+    width: 100% !important;
+    list-style: none;
+    overflow-y: scroll;
+    background-color: #fdffcf;
+    background-color: hsl(0, 0%, 91%);
+    background-color:     var(--select-options-primary);
+    color: black;
+    /* min-height: 5rem; */
+    /* z-index: 999999; */
+    border-radius: 0px 0px 7px 7px;
+    /* transition: opacity .2s ease; */
+    /* opacity: 0; */
+
+}
+
+.custom-select-options.fade{
+    display: block;
+    transition: opacity .5s ease;
+    opacity: 1;
+}
+.custom-select-options.show{
+    display: block;
+    /* opacity: 1; */
+}
+.custom-select-options-ajax.show{
+    display: block;
+}
+
+.custom-select-option, .custom-select-option-ajax{
+    padding:.25rem .5rem;
+    cursor: pointer;
+    margin-block:0;
+    text-align: center;
+}
+
+.custom-select-option:hover{
+    background-color: hsl(214, 39%, 40%);
+    background-color: var(--select-option-primary-hover);
+    color: white
+
+}
+.custom-select-option.selected{
+    background-color: hsl(214, 39%, 70%);
+    background-color: var(--select-selected-primary);;
+    color: var(--clr-dark);
+}
+.custom-select-option-ajax:hover{
+    background-color: hsl(214, 39%, 40%);
+    color: white
+
+}
+.custom-select-option-ajax.selected{
+    background-color: hsl(214, 39%, 70%);
+}

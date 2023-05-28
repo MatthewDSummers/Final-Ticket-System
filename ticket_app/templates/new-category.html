@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="margin-inline padding-block-lg">
+    <div class="center header">
+        <h3 class="title" id="{{page_title}}">Manage Categories</h3>
+    </div>
+    {% comment %} <h5>Leave a detailed description of the issue at hand</h5> {% endcomment %}
+    <div class="center">
+        <div class="rofw">
+            <div class="main-content colf-12">
+                <div class="sub-content">
+                    <form method="POST" action="{% url 'ticket-easy:create-category' %}" autocomplete="off">
+                        {% csrf_token %}
+                    
+                        <h4 class="theme-accent">Create a category</h4>
+                        <input type="text" class="cool-input mx-auto center" name="category" placeholder="Give this category a name">
+                        <button class="main-button" >Create Category</button>
+                    </form>
+                    <hr class="contrast-background">
+
+                </div>
+
+                {% if user.level == 9 %}
+                    <div class="sub-content">
+                        <form method="POST" action="{% url 'ticket-easy:delete-category' %}" id="delete-category-form" >
+                            {% csrf_token %}
+
+                            <h4 class=" theme-accent">Delete a category</h4>
+                            <i class="theme-text">This action cannot be undone</i>
+
+                            <select name="delete-category" id="delete-the-category" class="select delete-the-category theme-text" data-select>
+                                <option disabled selected value>Select a category</option>
+                                {% for cat in categories %}
+                                    <option value="{{cat.id}}">{{cat.name}}</option>
+                                {% endfor %}
+                            </select>
+
+                            <input type="hidden" data-delegate="delete-the-category" name="category_id">
+                            <button class="main-button" >Remove Category</button>
+                        </form>
+                    </div>
+                {% endif %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block css_stylesheet %}
+<link rel="stylesheet" href="{% static 'ticket_app_static/css/category-form.css' %}">
+
+{% endblock %} 
+{% block deferred_script %}
+    <script src="{% static 'ticket_app_static/js/import-select.js' %}" type="module"></script>
+    <script src="{% static 'ticket_app_static/js/new-ticket-new-category.js' %}" type="module"></script>
+
+{% endblock %}
+{% comment %} {% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% if user.level == 9 %}
+<div class="margin-inline margin-block-lg">
+    <div class="center header">
+        <h3 class="title" id="{{page_title}}">New Category</h3>
+    </div>
+
+    <div id="create-ticket" class="col-7">
+        <h2 class="h2">Add Category</h2>
+
+<form method="POST" action="/add-category" class="form-cfontrol" id="new-cat">
+    {% csrf_token %}
+
+    <div class="field"><span class="bolder larger">
+        <label for="cat-name" class="cool-input-label">Name</label>
+
+        <input type="text" id="cat-name" class="cool-input" name="cat-name">
+    </div>
+
+        <button class="send-category2  butn">Add</button>
+</form>
+
+
+<form method="POST" action="/remove-category" class="form-cfontrol" id="new-cat">
+    {% csrf_token %}
+<div class="field"><span class="bolder larger">
+    <label for="category" class="black">Remove Category</label></span>
+
+    <select name="delete-category" id="category" class="select">
+        <option disabled selected value>Select a category</option>
+            {% for cat in categories %}
+        <option value="{{cat.id}}">{{cat.name}}</option>
+            {% endfor %}
+    </select>
+
+    <button class="send-category  butn">Remove</button>
+</form>
+</div>
+</div>
+{% endif %}
+
+
+
+{% endblock %}
+{% block css_stylesheet %}
+<link rel="stylesheet" href="{% static 'ticket_app_static/css/category-form.css' %}">
+{% endblock %} {% endcomment %}

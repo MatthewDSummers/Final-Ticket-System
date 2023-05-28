@@ -1,0 +1,19 @@
+.report-select{
+    width: 200px;
+    margin-bottom: 4px;
+    border-radius: 7px;
+    padding-left: 20px;
+    /* padding: 0px 8px 0px 8px; */
+}
+
+#charts-container{
+    padding: 2em 5em 0 10em;
+    color: var(--clr-dark);
+}
+#charts-title{
+    font-family: 'Assistant', sans-serif;
+}
+#bar-chart{
+    width: 70vw;
+    height: 85vh;
+}

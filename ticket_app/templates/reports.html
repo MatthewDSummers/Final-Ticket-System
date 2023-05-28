@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<div class="padding-block-lg">
+    <div class="center header">
+        <h3 class="title" id="{{page_title}}">Reports</h3>
+    </div>
+    <div class="row padding-block-lg margin-inline-lg">
+        <div class="col-12">
+            {% if no_results %}
+                <h4 class="theme-text">No tickets {{no_date}}</h4>
+            {% else %}
+                <h4 class="theme-text">{{the_date}}</h4>
+            {% endif %}
+        </div>
+
+        <!-- SINGLE DAY  -->
+        <div id="reports" class="col-sm-12 col-md-4 col-lg-4">
+            {% if not test_len %}
+                <form action="{% url 'ticket-easy:report-singledate' %}" method="POST" id="generate-reports-form">
+                    {% csrf_token %}
+                    <input type="text" name="date" class="form-control" id="start" placeholder="Tickets per day" onfocus="(this.type = 'date')">                
+                    <br>
+                    <button type="submit" id="reports-submit" class="main-button">Search</button>
+                </form>
+            {% endif %}
+        <!-- SINGLE DAY  -->
+                <br>
+        <!-- DATE RANGE  -->
+            <form action="{% url 'ticket-easy:report-daterange' %}" method="POST" id="generate-reports-form">
+                {% csrf_token %}
+                <input type="text" name="start" class="form-control" id="start" placeholder="Start date" onfocus="(this.type = 'date')">
+                <br>
+                <input type="text" name="end" class="form-control"id="end" placeholder="End date" onfocus="(this.type = 'date')">
+                <br>
+                <button type="submit" id="reports-submit" class="main-button">Search</button>
+            </form>
+        <!-- DATE RANGE  -->
+        </div>
+
+    {% if test_len or per_day %}
+
+        <div id="results" class="col-sm-12 col-md-4 col-lg-4">
+            {% if test_len == 0 %}
+                <h2>No results</h2>
+            {% endif %}
+            {% if test_len != 0 %}
+                <form id="report-view-form" action="{% url 'ticket-easy:report-view' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="res1" value="{{start}}">
+                    <input type="hidden" name="res2" value="{{end}}">
+                    <input type="hidden" name="final" value="{{finale}}">
+                    <br><hr>
+                    <button type="submit" class="alt-button">See Full Report</button>
+                    <br>
+                    <br>
+
+                    <h3 class="text-center theme-text"> or </h3>
+                    <input type="hidden" id="report-search-results" name="result_items" value="">
+
+                </form>
+            <div>
+
+
+                
+            <form action="{% url 'ticket-easy:report-view-filter' %}" method="POST" id="pie-form">
+                {% csrf_token %}
+                {% comment %} {% for ticket in final %}
+                <input type="hidden" value={{ticket.id}}>
+                {% endfor %} {% endcomment %}
+
+                <input type="hidden" name="res1" value="{{start}}">
+                <input type="hidden" name="res2" value="{{end}}">
+                <input type="hidden" name="res3" value="{{daily}}">
+                <br>
+                <select class="report-select" name="filter_prio" data-selectf>
+                    <option value="none" selected disabled hidden>Filter by Priority</option>
+                    <option value="Low">LOW</option>
+                    <option value="Intermediate">INTERMEDIATE</option>
+                    <option value="High">HIGH</option>
+                    <option value="Crucial">CRUCIAL</option>
+                </select>
+                <br>
+                <br>
+                <select class="report-select" name="filter_cat" data-selectf>
+                    <option value="none" selected disabled hidden>Filter by Category</option>
+                    {% for cat in categories %}
+                        <option value="{{cat.id}}">{{cat.name}}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <br>
+                <select class="report-select" name="filter_status" data-selectf>
+                    <option value="none" selected disabled hidden>Filter by Status</option>
+                    <option value="Unresolved">Unresolved</option>
+                    <option value="Resolved">Resolved</option>
+                </select>
+                <br>
+                <br>
+                <button type="submit" class="report-select main-button" name="cat">Refine</button>
+
+            </form>
+        </div>
+    </div>
+
+    {% if test_len %}
+
+    <div class="charts-wrapper col-4">
+        <h4 class="theme-text">Report Type</h4>
+
+        <form action="{% url 'ticket-easy:visual-chart' %}" method="POST" id="pie-form">
+            {% csrf_token %}
+            
+            <input type="hidden" name="chart-type" value="pie">
+            <input type="hidden" name="res1" value="{{start}}">
+            <input type="hidden" name="res2" value="{{end}}">
+
+            <select name="cat" id="cat" class="report-fselect cfat" data-selectf>
+                <option value="Category">Category</option> 
+                <option value="Status">Status</option>
+                <option value="Priority">Priority</option>
+                <option value="Sender">Sender</option>
+            </select>
+            <button type="submit" class="chart-select alt-button">Pie</button>
+        </form>
+
+        <form action="{% url 'ticket-easy:visual-chart' %}" method="POST" id="bar-form">
+            {% csrf_token %}
+            <input type="hidden" name="chart-type" value="bar">
+            <input type="hidden" name="res1" value="{{start}}">
+            <input type="hidden" name="res2" value="{{end}}">
+
+            <select name="cat" id="bar" class="bar" data-selectf>
+                <option value="Category">Category</option>
+                <option value="Status">Status</option>
+                <option value="Priority">Priority</option>
+                <option value="Sender">Sender</option>
+            </select>
+            <button type="submit"  class="chart-select alt-button">Bar</button>
+        </form>
+         {% comment %} <form action="/line-chart" method="POST" id="line-form">
+            {% csrf_token %}
+            {% for ticket in final %}
+            <input type="hidden" name="pie" value={{ticket.id}}>
+            {% endfor %}
+
+            <input type="hidden" name="bar1" value="{{start}}">
+            <input type="hidden" name="bar2" value="{{end}}">
+
+            <select name="line" id="bar" class="line" data-selectf>
+                <option value="Status">Status</option>
+            </select>
+            <button type="submit"  class="chart-select alt-button">Line</button>
+        </form> {% endcomment %}
+        {% endif %}
+    </div>
+
+</div> 
+{% comment %} <a href="/report-delete-all">DELETE ALL REPORTS</a> {% endcomment %}
+{% comment %} <a href="/delete_tickets">DELETE ALL REPORTS</a> {% endcomment %}
+
+        {% endif %}
+        {% comment %} {% endfor %} {% endcomment %}
+        {% comment %} </ul> {% endcomment %}
+        {% endif %}
+
+    </div>
+</div>
+<script>
+    console.log(document.getElementById("report-search-results"))
+    console.log("fhoapisdjfop")
+    $(document).ready(function(){
+        var django_results = "{{django_results|safe}}";
+        var results_list = [];
+        var parsed = JSON.parse(django_results);
+        $("#report-search-results").val(parsed)
+        parsed.forEach(function(result) {
+            console.log(result);
+        });
+    })
+</script>
+{% endblock %}
+
+{% block css_stylesheet %}
+    {% comment %} <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/ticket-app.css' %}"> {% endcomment %}
+    <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/reports.css' %}">
+{% endblock %}
+
+{% block deferred_script %}
+    {% comment %} <script type="module" src="{% static 'import-select.js' %}"></script> {% endcomment %}
+
+{% endblock %}
+

@@ -1,0 +1,454 @@
+{% comment %} {% extends 'base.html' %}
+{% block content %} {% endcomment %}
+
+{% load static %}
+
+{% comment %} ticket.status = "To Do" when admin puts it on backburner {% endcomment %}
+{% comment %} ticket.status = "In Progress" when... assigned? {% endcomment %}
+{% comment %} ticket.status = "Open" when not assigned and not resolved {% endcomment %}
+{% comment %} ticket.status = "Closed" instead of "Resolved" {% endcomment %}
+{% comment %} ticket.status = "Testing" {% endcomment %}
+{% if user.level == 9 or user.level == 8  or user.level == 1%}
+
+<div class="table-body" data-table="{{tag_filter}}" data-page={{which_type}}>
+{% comment %} <div class="margin-inline-lg padding-block-lg"> {% endcomment %}
+    {% if tickets %}
+        {% if not_main_page  %}
+            {% comment %} {% if tag_filter == "active" %}
+                <button class="main-button margin-top-md" onclick="window.history.go(-1); return false;"><img src="{% static 'login_app_static/images/arrow-back.png' %}"><a href="#">Go Back</a></button>
+            {% else%} {% endcomment %}
+                <button class="main-button margin-top-md reset-table" data-which_table="{{tag_filter}}"><a href="#">Reset Table</a></button>
+
+                {% comment %} <a href="#" class="main-button margin-top-md" onclick="resetTable(e)" data-which_table="{{tag_filter}}">
+                    <img src="{% static 'login_app_static/images/arrow-back.png' %}">
+                    Reset
+                  </a> {% endcomment %}
+            {% comment %} {% endif %} {% endcomment %}
+        {% endif %}
+    {% endif %} 
+
+        <div id="" class="center header">
+            {% comment %} <h1> the title is - {{title}} </h1> {% endcomment %}
+             {% if not tickets %}
+                {% if title %}
+                    <h4 class="theme-text">No tickets {{searched}} in {{title}}</h4>
+                {% else %}
+                    <h4 class="theme-text">No tickets {{searched}}</h4>
+                {% endif %}
+            {% else %}
+                <h4 class="theme-text">{{title}}</h4>
+            {% endif %}
+
+            {% comment %} {% if not tickets %}
+                {% if request.GET.type == "Sent" or request.GET.type == "Assigned" %}
+                    <h4 class="theme-text">No tickets</h4>
+                {% else %}
+                    <h4 class="theme-text">{{request.GET.value}} for {{tag_filter}} {{request.GET.type}} Tickets</h4>
+                {% endif %}
+            {% else %}
+                {% if request.GET.type == "Sent" or request.GET.type == "Assigned" %}
+                    {% if not request.GET.filter %}
+                        {% if request.GET.table_variant != "Hold" %}
+                            <h4 class="theme-text">{{tag_filter}} {{request.GET.type}} Tickets</h4>
+                        {% else %}
+                            <h4 class="theme-text">Withheld {{request.GET.type}} Tickets</h4>
+                        {% endif %}
+                    {% else %}
+                        <h4 class="theme-text">{{request.GET.value}} for {{tag_filter}} {{request.GET.type}} Tickets</h4>
+                    {% endif %}
+                {% else %}
+                    <h4 class="theme-text">{{title}}</h4>
+                {% endif %}
+            {% endif %} {% endcomment %}
+
+        </div>
+
+    {% if request.GET.type == "Active" or request.GET.type == "Pinned" or request.GET.type == "Archived" or request.GET.type == "Withheld" %}
+        {% if not tickets  and not_main_page %}
+            {% comment %} <td> {% endcomment %}
+                <h4 class="text-center">
+                    <button class="main-button margin-bottom-md" onclick="history.go(-1)"><a href="#" class="text-center"><img src="{% static 'login_app_static/images/arrow-back.png' %}">Back</a></button>
+                </h4>
+            {% comment %} </td> {% endcomment %}
+        {% endif %}
+    {% endif %}
+    {% if tickets %}
+
+        <div id="ticket-table-container">
+            
+            <table class="ticket-table">
+
+
+            <thead>
+                <tr>
+                    <th class="relative ID">
+                        {% comment %} <input class="table-input" id="table-ticket-id" type="text" placeholder="ID" autocomplete="off" data-which_table="{{tag_filter}}" > {% endcomment %}
+                        <input class="table-ticket-id table-input" type="text" placeholder="ID" autocomplete="off" data-which_table="{{tag_filter}}" data-which_input="table-ticket-id" >
+                        <div class="absolute hidden menu-sort">
+                            <p class="ascending-id" data-which_table="{{tag_filter}}">Ascending</p>
+                            <p class="descending-id" data-which_table="{{tag_filter}}">Descending</p>
+                            <p class="specific-id" data-which_table="{{tag_filter}}">Specific ID</p>
+                        </div>
+
+                    </th>
+
+                    <th>
+                        <select class="table-select priority-select" id="table-ticket-priority" data-select>
+                            <option selected disabled></option>
+                            <option>Not Set</option>
+                            <option>Low</option>
+                            <option>Intermediate</option>
+                            <option>High</option>
+                            <option>Crucial</option>
+                        </select>
+                        <input type="hidden" data-table_variant="{{tag_filter}}">
+                    </th>
+                    <th>        
+
+                        <input class="table-ticket-description table-input"  type="text" placeholder="Search by keyword(s). . . " autocomplete="off" data-which_table="{{tag_filter}}" data-which_input="table-ticket-description">
+                    </th>
+
+                    {% comment %} {% if not tag_filter %} {% endcomment %}
+                {% if not profile_page %}
+                    <th>
+                        <select class="table-select" id="table-ticket-status" data-select>
+                            <option selected disabled>Status</option>
+                            <option>Resolved</option>
+                            <option>Unresolved</option>
+                        </select>
+                        <input type="hidden" data-table_variant="{{tag_filter}}">
+                    </th>
+                {% endif %}
+                    {% comment %} {% endif %} {% endcomment %}
+
+                    <th>
+                        <select class="table-select" id="table-ticket-categories" data-select>
+                            <option selected disabled>Category</option>
+                            {% for category in categories %}
+                                <option>{{category.name}}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="hidden" value="{{tag_filter}}" class="tag_filter" data-table_variant="{{tag_filter}}">
+                    </th>
+
+                    {% comment %} {% if not tag_filter %} {% endcomment %}
+                    <th>
+                        <select class="table-select" id="table-ticket-assigned" data-select>
+                            <option>Assignment</option>
+                            <option>Assigned</option>
+                            <option>Unassigned</option>
+                            <option>Specific Person</option>
+                        </select>
+                        <input type="hidden" data-table_variant="{{tag_filter}}">
+                    </th>
+                    {% comment %} {% endif %} {% endcomment %}
+
+                    <th>
+                        <input class="table-input" id="table-ticket-date" type="text" placeholder="Select a date . . ." data-which_table={{tag_filter}}>
+                        <input type="hidden" id="table-ticket-date-second-input">
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+        {% for ticket in tickets %}
+            {% if ticket.pinned != "Pinned"  %}
+                <tr class="content-tr">
+            {% else %}
+                <tr class="content-tr pinned">
+            {% endif %}
+                    <td class="sub-info-trigger"> <span class="table-arrow table-down" id="{{ticket.id}}"></span> {{ticket.id}}</td>
+                {% if ticket.priority == "Overdue" %}
+                    <td class="purple priority-name"></td>
+                {% elif ticket.priority == "Crucial" %}
+                    <td class="priority-name"><div class="crucial priority"></div></td>
+                {% elif ticket.priority == "High" %}
+                    <td class="priority-name"><div class="high priority"></div></td>
+                {% elif ticket.priority == "Intermediate" %}
+                    <td class="priority-name"><div class="intermediate priority"></div></td>
+                {% elif ticket.priority == "Low" %}
+                    <td class="priority-name"><div class="low priority"></div></td>
+                {% elif ticket.priority == "Not Set" %}
+                    <td class="priority-name"><div class="not-set priority"></div></td>
+                {% endif %}
+
+                <td>{{ticket.desc}}</td>
+
+                {% comment %} {% if not tag_filter %} {% endcomment %}
+                {% if not profile_page %}
+                    {% if ticket.status == "Unresolved" %}
+                        <td class="unresolved">{{ticket.status}}</td>
+                    {% elif ticket.status == "Resolved" %}
+                        <td class="resolved">{{ticket.status}}</td>
+                    {% elif ticket.status == "In Progress" %}
+                        <td>{{ticket.status}}</td>
+                    {% endif %}
+                {% endif %}
+                {% comment %} {% endif %} {% endcomment %}
+
+                <td class="category-name">{{ticket.category.name}}</td>
+                {% comment %} {% if not tag_filter %} {% endcomment %}
+                    {% if ticket.assigned.all %}
+                        <td>
+                            <a href="{% url 'login-app:user-tickets' user_id=ticket.assigned.all.first.id %}?type=Profile" class="assigned">{{ticket.assigned.all.first.full_name}}</a>
+                        </td>
+                    {% else %} 
+                        <td>
+                            <a href="{% url 'ticket-easy:single-ticket' ticket_id=ticket.id %}" class="unassigned">Unassigned</a>
+                        </td>
+                    {% endif %}
+                {% comment %} {% endif %} {% endcomment %}
+
+                    <td>{{ticket.created_at.date}}</td>
+                </tr>
+            {% if ticket.pinned == "Pinned" %}
+                <tr class="ticket-sub-info pinned-sub-info hidden" data-sub_info="{{ticket.id}}">
+            {% elif ticket.pinned != "Pinned" %}
+                <tr class="ticket-sub-info  hidden" data-sub_info="{{ticket.id}}">
+            {% endif %}
+
+                    <th class="table-empty-col"><a href="{% url 'ticket-easy:single-ticket' ticket_id=ticket.id %}">View</a></th>
+                    <th class="table-empty-col"></th>
+                    {% if not profile_page %}
+                        <th class="theme-text">SENDER</th>
+                    {% endif %}
+
+                    <th class="theme-text">RESOLVED BY</th>
+                    <th class="theme-text">RESOLVED TIME</th>
+                    <th class="theme-text">PROGRESS STATUS</th>
+                    <th class="theme-text">Actions</th>
+                </tr>
+
+            {% if ticket.pinned == "Pinned" %}
+                <tr class="ticket-sub-info pinned-sub-info hidden" data-sub_info="{{ticket.id}}">
+            {% else %}
+                <tr class="ticket-sub-info hidden" data-sub_info="{{ticket.id}}">
+            {% endif %}
+
+                    <td class="table-empty-col"></td>
+                    <td class="table-empty-col"></td>
+
+
+                    {% comment %} <td class="table-empty-col"></td> {% endcomment %}
+                    {% if not profile_page %}
+                        {% comment %} <td>{{ticket.sender.full_name}}</td>  {% endcomment %}
+                        <td><a href="{% url 'login-app:user-tickets' user_id=ticket.sender.id %}?type=Sent&page=1">{{ticket.sender.full_name}}</a></td> 
+                    {% endif %}
+                    {% comment %} <td>
+                        <select class="inner-table-select" data-select>
+                            {% for admin in Admins %}
+                                <option>{{admin.full_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <select class="inner-table-select" data-select>
+                            {% for admin in Admins %}
+                                <option>{{admin.full_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </td> {% endcomment %}
+
+                {% if ticket.resolved_by %}
+                    <td>{{ticket.resolved_by.full_name}}</td>
+                {% else %}
+                    <td>Unresolved</td>
+                {% endif %}
+
+                {% if ticket.resolved_at %}
+                    <td>{{ticket.resolved_at}}</td>
+                {% else %}
+                    <td>Unresolved</td>
+                {% endif %}
+
+                {% comment %} {% if ticket.hold == "" %}
+                    <td><a href="/ticket{% url 'ticket-easy:withold-ticket' ticket_id=ticket.id %}">Hold ticket</a></td>
+                {% elif ticket.hold == "Hold" %}
+                    <td><a href="/ticket/reopen/{{ticket.id}}">Reopen ticket</a></td>
+                {% endif %} {% endcomment %}
+            {% if user.level == 8 or user.level == 9 %}
+                <td>
+                    {% if ticket.hold == "Hold" %}
+                        {% comment %} <form class="inline ticket-actions" action="{% url 'ticket-easy:withhold-ticket' ticket_id=ticket.id %}" method="POST"  data-which_table="{{tag_filter}}" data-page={{which_type}}> {% endcomment %}
+                        <form class="inline ticket-actions" action="{% url 'ticket-easy:ticket-status' ticket_id=ticket.id %}" method="POST"  data-which_table="{{tag_filter}}" data-page={{which_type}}>
+                            {% csrf_token %}
+                            {% comment %} <input type="hidden" value="{{ request.build_absolute_uri }}" name="url">
+                            <input type="hidden" value="open" name="hold"> {% endcomment %}
+                            <input type="hidden" class="which_action" value="reopened">
+                            <input type="hidden" value="{{ticket_context_url}}" name="url" class="url">
+                            <button type="submit" class="plain-button">Re-open</button>
+                        </form>
+                    {% else %}
+                        {% comment %} <form class="inline ticket-actions" action="{% url 'ticket-easy:withhold-ticket' ticket_id=ticket.id %}" method="POST"  data-which_table="{{tag_filter}}" data-page={{which_type}}> {% endcomment %}
+                        <form class="inline ticket-actions" action="{% url 'ticket-easy:ticket-status' ticket_id=ticket.id %}" method="POST"  data-which_table="{{tag_filter}}" data-page={{which_type}}>
+                            {% csrf_token %}
+
+                            {% comment %} <input type="hidden" value="{{ request.build_absolute_uri }}" name="url"> {% endcomment %}
+                            {% comment %} <input type="hidden" value="hold" name="hold"> {% endcomment %}
+                            <input type="hidden" class="which_action" value="hold">
+                            <input type="hidden" value="{{ticket_context_url}}" name="url" class="url">
+                            <button type="submit" class="plain-button">Put on Hold</button>
+                        </form>
+                    {% endif %}
+                </td>
+            {% else %}
+                {% if ticket.hold == "Hold" %}
+                    <td>On Hold</td>
+                {% else %}
+                    {% if ticket.status == "Unresolved" %}
+                        {% if ticket.assigned.all %}
+                                <td>In Progress</td>
+                        {% else %}
+                            <td>Awaiting Assignment</td>
+                        {% endif %}
+                    {% else %}
+                        <td>Resolved</td>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+
+            {% if user.level != 1 %}
+                <td>
+                {% if ticket.pinned != "Pinned" %}
+                    <form class="inline ticket-actions" action="{% url 'ticket-easy:pin-ticket' ticket_id=ticket.id %}" method="POST" data-which_table="{{tag_filter}}" data-page={{which_type}}>
+                        {% csrf_token %}
+                        {% comment %} <input type="hidden" value="{{url}}" name="url"> {% endcomment %}
+                        {% comment %} <input type="hidden" value="{{ request.build_absolute_uri }}" name="url"> {% endcomment %}
+                        <input type="hidden" value="{{ticket_context_url}}" name="url" class="url">
+                        <input type="hidden" name="pin" class="which_action" value="pin">
+                        <button type="submit" class="plain-button">Pin</button>
+                    </form>
+    
+                {% elif ticket.pinned == "Pinned" %}
+                    <form class="inline ticket-actions" action="{% url 'ticket-easy:pin-ticket' ticket_id=ticket.id %}" method="POST" data-which_table="{{tag_filter}}" data-page={{which_type}}>
+                        {% csrf_token %}
+                        <input type="hidden" value="{{ticket_context_url}}" name="url" class="url">
+                        {% comment %} <input type="hidden" value="{{ request.build_absolute_uri }}" name="url"> {% endcomment %}
+                        <input type="hidden" name="unpin" class="which_action" value="unpin">
+                        <button type="submit" class="plain-button">Unpin</button>
+                    </form>
+                {% endif %}
+
+                {% if ticket.archived != True %}
+                    <form class="inline ticket-actions" action="{% url 'ticket-easy:archive-ticket' ticket_id=ticket.id %}" method="POST" data-which_table="{{tag_filter}}" data-page={{which_type}}>
+                        {% csrf_token %}
+                        {% comment %} <input type="hidden" value="{{ request.build_absolute_uri }}" name="url"> {% endcomment %}
+                        <input type="hidden" name="unpin" class="which_action" value="archive">
+                        <input type="hidden" value="{{ticket_context_url}}" name="url" class="url">
+
+                        <button type="submit" class="plain-button">Archive</button>
+                    </form>
+                {% elif ticket.archived == True %}
+                    <form class="inline ticket-actions" action="{% url 'ticket-easy:archive-ticket' ticket_id=ticket.id %}" method="POST" data-which_table="{{tag_filter}}" data-page={{which_type}}>
+                        {% csrf_token %}
+                        {% comment %} <input type="hidden" value="{{ request.build_absolute_uri }}" name="url"> {% endcomment %}
+                        <input type="hidden" name="unpin" class="which_action" value="unarchive">
+                        <input type="hidden" value="{{ticket_context_url}}" name="url" class="url">
+
+                        <button type="submit" class="plain-button">Unarchive</button>
+                    </form>
+                {% endif %}
+
+                    {% if user.level == 8  %}
+                        {% if user == ticket.sender %}
+                            <form class="inline ticket-actions delete-ticket" action="#" method="POST" data-which_table="{{tag_filter}}" data-page={{which_type}}>
+                                {% csrf_token %}
+                                {% comment %} <input type="hidden" value="{{ request.build_absolute_uri }}" name="url"> {% endcomment %}
+                                <input type="hidden" value="{{ticket_context_url}}" name="url" class="url">
+
+                                <button type="submit" class="plain-button delete-ticket">Delete</button>
+                            </form>
+                        {% endif %}
+                    {% elif user.level == 9 %}
+                        <form class="inline ticket-actions delete-ticket" action="#" method="POST" data-which_table="{{tag_filter}}" data-page={{which_type}}>
+                            {% csrf_token %}
+                            {% comment %} <input type="hidden" value="{{ request.build_absolute_uri }}" name="url"> {% endcomment %}
+                            <input type="hidden" value="{{ticket_context_url}}" name="url" class="url">
+
+                            <button type="submit" class="plain-button delete-ticket">Delete</button>
+                        </form>
+                    {% endif %}
+                </td>
+            {% elif user.level == 1 %}
+                {% if user == ticket.sender %}
+                    <td>
+                        <form class="inline ticket-actions" action="#" method="POST">
+                        {% comment %} <form class="inline ticket-actions" action="{% url 'ticket-easy:delete-ticket' ticket_id=ticket.id %}" method="POST"> {% endcomment %}
+                            {% csrf_token %}
+                            <button type="submit" class="plain-button delete-ticket">Delete</button>
+                        </form>
+                    </td>
+                {% endif %}
+            {% endif %}
+
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+        <div class="pagination-container">
+            <div class="relativef rofw pagination">
+                {% if tickets %}
+                    <h5 class="theme-text">Page {{ tickets.number }} of {{tickets.paginator.num_pages}}</h5>
+                {% endif %}
+
+                {% comment %} {% if not tickets.has_previous %}
+                    <p class="paginate-command" style="opacity: 0">First</p>
+                    <p class="paginate-command" style="opacity: 0">Previous</p>
+                {% endif %} {% endcomment %}
+                {% if tickets.has_previous %}
+                    <a class="previous paginate-command" href="{{previous_url}}" data-which_table={{tag_filter}}>Previous</a>
+                {% endif %}
+
+                <div class="pagination-a-container">
+                    {% comment %} {% if page_range_length > 1 %} {% endcomment %}
+                    {% if page_range_length > 1 %}
+                         {% comment %} {% if tickets.has_next %} {% endcomment %}
+                            {% for page in page_range %} 
+                                {% if page != "…" %}
+                                    <a class="pagination-a {% if tickets.number == page  %}active-pagination{% endif %}" href="{{elided_page_number}}{{page}}" data-which_table={{tag_filter}}>{{ page }}</a>
+                                {% elif page == "…" %}
+                                    <p class="inline-block theme-text">{{ page }}</p>
+                                {% endif %}
+                            {% endfor %}
+                        {% comment %} {% endif %}  {% endcomment %}
+                    {% endif %}
+                    {% comment %} {% endif %} {% endcomment %}
+                </div>
+
+                {% if tickets.has_next and tickets.number !=  tickets.paginator.page_range|last %}
+                {% comment %} GIVES LAST PAGE NUMBER {% endcomment %}
+                    <a class="next paginate-command" href="{{next_url}}" data-which_table={{tag_filter}}>Next</a>
+                {% endif %}
+
+                {% comment %} {% if not tickets.has_next %}
+                    <p class="paginate-command" style="opacity: 0">First</p>
+                    <p class="paginate-command" style="opacity: 0">Previous</p>
+                {% endif %} {% endcomment %}
+            </div>
+        </div>
+    </div>
+</div>
+    {% comment %} </div> {% endcomment %}
+{% else %}
+    <div class="margin-inline-lg margin-block-lg">
+        <h3>Lost?  <a href="/">Go Home</a> </h3>
+    </div>
+{% endif %}
+
+
+{% comment %} <script type="module"> import { updateTable } from "{% static 'update-table.js' %}"; updateTable() </script> {% endcomment %}
+
+{% comment %} <script src="{% static 'import-select.js' %}" type="module"></script> {% endcomment %}
+
+{% comment %} {% endblock %} {% endcomment %}
+
+{% comment %} {% block deferred_script %} {% endcomment %}
+    {% comment %} <script src="{% static 'select-scenarios-all-tickets.js' %}" type="module"></script>
+    <script src="{% static 'all-tickets.js' %}" type="module"></script> {% endcomment %}
+{% comment %} {% endblock %} {% endcomment %}
+
+{% comment %} {% block css_stylesheet %} {% endcomment %}
+    {% comment %} <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/ticket_app_static/all-tickets.css {% endcomment %}
+{% comment %} {% endblock %} {% endcomment %}

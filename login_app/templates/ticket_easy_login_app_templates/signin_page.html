@@ -1,0 +1,18 @@
+{% extends 'ticket_easy_login_app_templates/base-two.html' %}
+{% block content %}
+            <div class="row">
+                <div id="content-1" class="col-sm col-md col-lg">
+                    <h2 id="title">Login</h2>
+                    <form action="{% url 'login-app:login' %}" method="POST" id="login" class="login_app_form">
+                        {% csrf_token %}
+                        <label for="email" class="labels">Email</label>
+                        <input type="text" name="email" id="email" class="form-control">
+                        
+                        <label for="password" class="labels">Password</label>
+                        <input type="password" name="password" id="password" class="form-control ">
+                        <br>
+                        <button type="submit" class="main-button alt-shadow"  id="sign-in-button">Login</button>
+                    </form>
+                </div>
+            </div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+
+<!-- THIS PAGE IS NOT ENTIRELY DONE -->
+
+    <div class="padding-block-lg margin-inline-lg">
+        <div id="create-ticket" class="col-5">
+            <h2>Edit Ticket</h2> 
+            <hr>
+            <form action="/ticket-easy/edit_ticket/{{ticket.id}}/{{sender.id}}" method="POST">
+                {% csrf_token %}
+                {% comment %} <label for="sender">Sender</label>
+                <select name="sender" id="sender" class="custom_select" data-select>
+                    <option value={{sender.id}}>{{sender.full_name}}</option>
+                </select> {% endcomment %}
+
+                <label for="priority">Priority</label>
+                <select name="prio" id="priority" class="custom_select" data-select>
+                    <option value={{priority}}>Currently: {{ticket.priority}}</option>
+                    {% for priority in priorities %}
+                        {% if priority != ticket.priority %}
+                            <option value={{priority}}>{{priority}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+
+                <label for="category">Category</label>
+                <select name="cat" id="category" class="custom_select" data-select>
+                    <option value="{{category.name}}">Currently: {{ticket.category.name}}</option>
+                    {% for category in categories %}
+                        {% if category != ticket.category.name %}
+                            <option value="{{category}}">{{category}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+
+                <label for="desc">Description</label>
+                <textarea name="desc" id="desfc" class="form-control" rows="10">{{ticket.desc}}</textarea>
+                <br>
+                <button type="submit"  class="btn-blfock main-button" >Edit Ticket</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block css_stylesheet %}
+<link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/select-automators.css' %}">
+{% endblock %}
+
+{% block deferred_script %}
+    <script src="{% static 'ticket_app_static/js/import-select.js' %}" type="module"></script>
+{% endblock %}

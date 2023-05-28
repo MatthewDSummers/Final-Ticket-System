@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+{% if new_task %}
+<div class="margin-inline padding-block-lg">
+    <div class="center header">
+        <h3 class="title" id="{{page_title}}">New Task</h3>
+    </div>
+    {% comment %} <h5>Leave a detailed description of the issue at hand</h5> {% endcomment %}
+    <div class="center">
+        <div class="">
+            <div class="main-content">
+                <form action="/new-team" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <input type="text" class="cool-input mx-auto" name="name" placeholder="Name of task...">
+                        </div>
+                    </div>
+                    <textarea name="description" id="" class="form-control" rows="6" placeholder="Description..."></textarea>
+                    <button type="submit" class="main-button" id="">Create</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="load-tickets"></div>
+
+    {% comment %} <script>
+        $(document).ready(function(){
+
+            $.ajax({
+                method: 'GET',
+                url: '/tickets/?page=1',
+                data: {
+                        "adding-members": "yes",
+                    },
+                success:function(response){
+                    // console.log(response)
+                    $("#load-tickets").html(response)
+                }
+            });
+        });
+    </script> {% endcomment %}
+{% endif %}
+
+
+{% endblock %}
+
+{% block css_stylesheet %}
+{% comment %} <link rel="stylesheet" href="{% static 'ticket_app_static/css/category-form.css' %}"> {% endcomment %}
+<link rel="stylesheet" href="{% static 'ticket_app_static/css/select-creat-forms.css' %}">
+<link rel="stylesheet" href="{% static 'ticket_app_static/css/teams.css' %}">
+{% endblock %}
+
+{% block deferred_script %}
+    <script src="{% static 'ticket_app_static/js/teams.js' %}" type="module"></script>
+    <script src="{% static 'ticket_app_static/js/import-select.js' %}" type="module"></script>
+    <script src="{% static 'ticket_app_static/js/select-scenarios-forms.js' %}" type="module"></script>
+    {% comment %} <script src="{% static 'general-calendar.js' %}" type="module"></script> {% endcomment %}
+{% endblock %}
+

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="margin-inline-lg padding-block-lg centfer">
+    <div class="center">
+        <h2 class="title">New Canned Response</h2>
+    </div>
+    <br>
+
+        <h2 class="theme-accent glossary-trigger">&nbsp;Glossary<span class="arrow down"></span></h2>
+
+        <div id="canned-response-glossary" style="display: none;">
+            <div class="theme-text">
+                <h5>
+                    You can use these shortcodes in the subject or body of a message.<br>
+                    They will be automatically replaced with the relevant, desired information.<br>
+                </h5>
+                <ul class="margin-inline-sm" style="list-style:none;">
+                    <li>{sender.full_name}</li>
+                    <li>{recipient.first_name}</li>
+                    <li>{recipient.last_name}</li>
+                    <li>{recipient.full_name}</li>
+                    <li>{ticket.id}</li>
+                    <li>{ticket.category}</li>
+                    <li>{ticket.priority}</li>
+                    <li>{ticket.priority.upper_case}</li>
+                    <li>{ticket.status}</li>
+                    <li>{ticket.status.upper_case}</li>
+                </ul>
+                <h6 class="theme-accent"><strong>Example usage:</strong></h6>
+                <p>
+                    {sender.full_name} will be replaced with John Doe if the "Send As..." field is an admin named John Doe.<br>
+                    {ticket.id} will be replaced with 4 if an Automator handles a ticket with the ID of 4.
+                </p>
+                <p class="theme-accent"><strong>Use an Automator to conditionally send out a Canned Response</strong></p>
+            </div>
+        </div>
+
+        <form action="{% url 'ticket-easy:canned-response' %}" method="POST">
+            {% csrf_token %}
+            {% comment %} <label for="canned-response-name" class="theme-text">Canned Response Name:</label>
+                <input id="canned-response-name" class="form-control" style="width: 40%" type="text" name="name">
+            <label for="canned-response-subject" class="theme-text">Subject:</label>
+                <input id="canned-response-subject"  class="form-control" style="width:40%" type="text" name="subject"> {% endcomment %}
+
+
+            {{ form.media }}
+            {{ form.as_p }}
+
+            <select id="admin-select" class="admin-select" name="admin-select">
+                <option id={{admin.id}}>Send As...</option>
+                {% for admin in Senders %}
+                <option value={{admin.id}}>{{admin.full_name}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit"  class="main-button" style=" " >Create</button>
+        </form>
+</div>
+
+{% endblock %}
+
+{% block css_stylesheet %}
+    <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/canned-form.css' %}">
+{% endblock %}
+
+{% block deferred_script %}
+    <script src="{% static 'ticket_app_static/js/canned-response-page.js' %}" type="module"></script>
+{% endblock %}

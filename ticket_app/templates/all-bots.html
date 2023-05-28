@@ -1,0 +1,456 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% load utility_tags %}
+<div class="margin-inline padding-block-lg">
+<!-- Notes:
+        1. using `|add:"0"` to convert dependencies to int for ID comparison
+        2. This page is not really functional yet. It serves as a placeholder. It displays all the bots, but not in a great way, and they can't be edited.
+
+    Custom Filters:
+        lengthify
+        get_item
+-->
+
+{% if user.level == 9 %}
+<!-- just to be doubly sure  -->
+    <div class="center">
+        <h2 class="title">All Automations</h2>
+    </div>
+    {% if all_bots %}
+    <div class="margin-block-lg">
+        <div class="col-8">
+            <h5 class="theme-accent">Review and edit bots here <strong>(In development)</strong></h5>
+            <p class="theme-text">This page is not really functional yet. It serves as a placeholder.<br>
+                It displays all the bots, but not in a great way. No editing capabilities yet.<br>
+                You can delete a bot though. 
+            </p>
+
+        {% for bot in all_bots %}
+            <div class="bot-trigger" id="{{bot.id}}">
+
+<!-- JUST A FUN FILTER I MADE TO FILTER THROUGH THE USERS IN THE BOT'S CANNED ITEM LIST (eventually, when i set field correctly in the models, etc, etc)
+
+        see `def automators`` in automator.views & `lengthify` in utility_tags.py 
+
+-->
+                {% comment %} 
+                
+                {% for item in test_list_one %}
+                    {{item}}{{forloop.counter|lengthify:test_list_one}}
+                {% endfor %}
+                <br><br>
+                {% for item in test_list_two %}
+                    {{item}}{{forloop.counter|lengthify:test_list_two}}
+                {% endfor %}
+                <br><br>
+                {% for item in test_list_three %}
+                    {{item}}{{forloop.counter|lengthify:test_list_three}}
+                {% endfor %}
+                <br><br>
+                {% for item in test_list_four %}
+                    {{item}}{{forloop.counter|lengthify:test_list_four}}
+                {% endfor %}
+                <br><br>
+                {% for item in test_list_five %}
+                    {{item}}{{forloop.counter|lengthify:test_list_five}}
+                {% endfor %}
+                <br><br>
+                {% for item in test_list_six %}
+                    {{item}}{{forloop.counter|lengthify:test_list_six}}
+                {% endfor %}
+                <br><br>
+                {% for item in test_list_seven %}
+                    {{item}}{{forloop.counter|lengthify:test_list_seven}}
+                {% endfor %}
+                <br><br>
+                {% for item in test_list_eight %}
+                    {{item}}{{forloop.counter|lengthify:test_list_eight}}
+                {% endfor %}
+                <br><br>
+                {% for item in test_list_nine %}
+                    {{item}}{{forloop.counter|lengthify:test_list_nine}}
+                {% endfor %}
+                <br><br>
+                {% for item in test_list_ten %}
+                    {{item}}{{forloop.counter|lengthify:test_list_ten}}
+                {% endfor %} 
+                
+                {% endcomment %}
+                <br><br>
+<!-- BOT DETAILS -->
+
+{% comment %}  
+                <p>EVENT: {{bot.event}}</p>
+                <p>NAME: {{bot.name}}</p>
+                <p>ENABLED: {{bot.enabled}}</p>
+                <p>CONDITION: {{bot.condition}}</p>
+                <p>CONDITON SUPPORTIVE: {{bot.condition_dependency}}</p>
+                <p>OR: {{bot.condition_or}}</p>
+                <p>AND: {{bot.condition_inclusive}}</p>
+                <p>AND SUPPORTIVE: {{bot.condition_inclusive_dependency}}</p>
+                <p>then_action: {{bot.then_action}}</p>
+                <p>then_dependency: {{bot.then_dependency}}</p>
+                <p>then_dependency_two: {{bot.then_dependency_two}}</p>
+{% endcomment %}
+
+                {% if bot.name  %} 
+                    <p class="bot-name" id="{{bot.id}}"><span class="arrow down"></span>Automator:<input type="text" class="p-bgr-no-shadow" value="{{bot.name}}">
+                {% else %} 
+                    <p class="bot-name"><span class="arrow down"></span>Automator:<span class="p-bgr-no-shadow">Give this bot a name</span>
+                {% endif %}
+
+                {% if bot.enabled == True %}
+                    <span class="greens" >Enabled</span>
+                    {% else %}
+                    <span class="reds" >Disabled</span>
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="bot-container" style="display:none" id="{{bot.id}}-container">
+
+                <div class="bot-inner-div relative w-100f mx-fauto bot-{{bot.id}}" >
+                    <p class="theme-text add-trigger"><img class="add-condition-trigger" src="{% static 'login_app_static/images/plus.png' %}">Add a trigger</p>
+                    <p class="theme-text add-condition"><img class="add-condition-trigger" src="{% static 'login_app_static/images/plus.png' %}">Add condition</p>
+                    <p class="theme-text add-action"><img class="add-condition-trigger" src="{% static 'login_app_static/images/plus.png' %}">Add an action</p>
+
+
+    <!-- W H E N -->
+                    <form class="bot-{{bot.id}}">
+                        {% if bot.enabled == True %}
+                            <button class="main-button disable-bot" id="">Disable Automator</button>
+                        {% else %}
+                            <button class="main-button disable-bot" id="">Enable Automator</button>
+                        {% endif %}
+                        <br>
+                        <br>
+                        <span class="fw-900 fs-600 theme-text" >When...</span>
+                        <div id="when-div" class="bot-{{bot.id}}">
+
+                            <select id="when" class="bot-{{bot.id}}" data-select data-border="radius">
+                                {% for key, value in When_Options.items %}
+                                    {% if bot.event == value %}
+                                        <option selected>{{key}}</option>
+                                    {% else %}
+                                        <option value="{{value}}">{{key}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+
+        <!-- I F -->
+                    {% if bot.condition %}
+                        <div id = "condition-one-div">
+                            <span class="fw-900 fs-600 theme-text">if...</span>
+                        {% if bot.condition == "category" %}
+                            <select class="condition-one" data-select data-border="radius">
+                                {% for category in categories %}
+                                    {% if category.id ==  bot.condition_dependency|add:"0" %}
+                                        <option>{{bot.condition }} is {{category.name}}</option>
+                                        {% for key, value in If_Options.items %}
+                                            <option value="{{value}}">{{key}}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% elif bot.condition == "priority" %}
+                            <div id="bot-{{bot.id}}-div">
+                                <select id="bot-{{bot.id}}" class="if" data-select data-border="radius">
+                                    <option>{{bot.condition}} is {{ bot.condition_dependency }}</option>
+                                    {% for key, value in If_Options.items %}
+                                        <option value="{{value}}">{{key}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        {% elif bot.condition == "sender" %}
+                            <select class="condition-one" data-select data-border="radius">
+                                {% for person in Users %}
+                                    {% if person.id ==  bot.condition_dependency|add:"0" %}
+                                            <option>{{bot.condition }} is {{person.first_name}} {{person.last_name}}</option>
+                                            {% for key, value in If_Options.items %}
+                                                <option value="{{value}}">{{key}}</option>
+                                            {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+
+                        {% elif bot.condition == "no_admin" %}
+                            <select class="bot-{{bot.id}}" data-select data-border="radius">
+                                <option selected disabled>No admin is assigned</option>
+                                {% for options in If_Options %}
+                                    <option>{{options}}</option>
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                        </div>
+                    {% endif %}
+
+                        {% comment %} problem: {{bot.then_dependency}} {% endcomment %}
+
+    <!--  O R -->
+                    {% if bot.condition_or %}
+                            <span class="fw-900 fs-600 theme-text">or if...</span>
+
+                        {% if bot.condition == "category" %}
+                            <select class="condition-or-select" data-select data-border="radius">
+                                {% for category in categories %}
+                                    {% if category.id ==  bot.condition_or_dependency|add:"0" %}
+                                            <option selected>{{bot.condition|capfirst}} is {{category.name}}</option>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% for key, value in If_Options.items %}
+                                    <option value="{{value}}">{{key}}</option>
+                                {% endfor %}
+                            </select>
+                <!-- PRIORITY -->
+                        {% elif bot.condition == "priority" %}
+                        <select id="condition-or-select" class="bot-{{bot.id}}" data-select data-border="radius">
+                            <option>{{bot.condition_or}} is {{ bot.condition_or_dependency }}</option>
+
+                            {% for key, value in If_Options.items %}
+                                <option value="{{value}}">{{key}}</option>
+                            {% endfor %}
+                        </select>
+                <!-- SENDER -->
+                        {% elif bot.condition == "sender" %}
+                        <select class="condition-or-select" data-select data-border="radius">
+
+                            {% for person in Users %}
+                                {% if person.id ==  bot.condition_or_dependency|add:"0" %}
+                                        <option>{{bot.condition_or|capfirst }} is {{person.full_name}}</option>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% for key, value in If_Options.items %}
+                                <option value="{{value}}">{{key}}</option>
+                            {% endfor %}
+
+                        </select>
+                        {% elif bot.condition == "no_admin" %}
+                <!-- NO ADMIN -->
+                            <select class="condition-or-select" data-select data-border="radius">
+                                {% for key, value in If_Options.items %}
+                                    {% if key == "Ticket is unassigned" %}
+                                        <option value={{value}}>{{key}}</option>
+                                    {% else %}
+                                        <option value="{{value}}">{{key}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                <!-- UNRESOLVED -->
+                            {% elif bot.condition_inclusive == "unresolved" %}
+                                <select class="condition-inclusive" data-select data-border="radius">
+                                    {% for key, value in If_Options.items %}
+                                        {% if key == "Ticket is unresolved" %}
+                                            <option value={{value}}>{{key}}</option>
+                                        {% else %}
+                                            <option value="{{value}}">{{key}}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            {% endif %}
+                    {% endif %}
+
+    <!--  A N D  -->
+                    {% if bot.condition_inclusive %}
+                        <span class="fw-900 fs-600 theme-text">and if...</span>
+                <!-- CATEGORY -->
+                        {% if bot.condition_inclusive == "category" %}
+                            <select class="condition-inclusive" data-select data-border="radius">
+                                {% for category in categories %}
+                                    {% if category.id ==  bot.condition_inclusive_dependency|add:"0" %}
+                                            <option>{{bot.condition }} is {{category.name}}</option>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% for key, value in If_Options.items %}
+                                    <option value="{{value}}">{{key}}</option>
+                                {% endfor %}
+                            </select>
+                <!-- PRIORITY -->
+                        {% elif bot.condition_inclusive == "priority" %}
+                            <div id="condition-inclusive-div" class="bot-{{bot.id}}">
+                                <select id="condition-inclusive" class="bot-{{bot.id}}" data-select data-border="radius">
+                                    <option>{{bot.condition_inclusive}} is {{ bot.condition_inclusive_dependency }}</option>
+
+                                        {% for key, value in If_Options.items %}
+                                            <option value="{{value}}">{{key}}</option>
+                                        {% endfor %}
+                                </select>
+                            </div>
+                <!-- SENDER -->
+                        {% elif bot.condition_inclusive == "sender" %}
+                            <select class="condition-inclusive" data-select data-border="radius">
+                                {% for person in Users %}
+                                    {% if person.id ==  bot.condition_inclusive_dependency|add:"0" %}
+                                            <option>{{bot.condition_inclusive|capfirst }} is {{person.full_name}}</option>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% for key, value in If_Options.items %}
+                                    <option value="{{value}}">{{key}}</option>
+                                {% endfor %}
+                            </select>
+                <!-- NO ADMIN -->
+                        {% elif bot.condition_inclusive == "no_admin" %}
+                            <select class="condition-inclusive" data-select data-border="radius">
+
+                                {% for key, value in If_Options.items %}
+                                    {% if key == "Ticket is unassigned" %}
+                                        <option value={{value}}>{{key}}</option>
+                                    {% else %}
+                                        <option value="{{value}}">{{key}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                <!-- UNRESOLVED -->
+
+                        {% elif bot.condition_inclusive == "unresolved" %}
+                            <select class="condition-inclusive" data-select data-border="radius">
+                                {% for key, value in If_Options.items %}
+                                    {% if key == "Ticket is unresolved" %}
+                                        <option value={{value}}>{{key}}</option>
+                                    {% else %}
+                                        <option value="{{value}}">{{key}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                    {% endif %}
+
+    <!--  T H E N    A C T I O N   -->
+                <span class="fw-900 fs-600 theme-text">then...</span>
+
+                {% if bot.then_dependency %}
+
+                        <div id ="then-div">
+
+                <!-- CANNED MESSAGES -->
+                        {% if  bot.then_action == "canned_response" %}
+                            {% with canned_message=canned_responses|get_item:bot.then_dependency  %}
+                            <!-- Display the name and ID of the canned message -->
+                                <select id="then" class="bot-{{bot.id}}" data-select data-border="radius">
+                                            <option selected value={{canned_message.id}}>Send canned response "{{ canned_message.name }}" to 
+                                                {% for person in users_in_can %}
+                                                    {{person.full_name}}{{forloop.counter|lengthify:users_in_can}}
+                                                {% endfor %}
+                                            </option>
+
+                                    {% for key, value in Then_Options.items %}
+                                        {% if key != "Notify" %}
+                                            <option value="{{value}}">{{key}}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            {% endwith %}
+                <!-- PRIORITY -->
+
+                        {% elif bot.then_action == "priority" %}
+                            <select class="bot-{{bot.id}}" data-select data-border="radius">
+                                <option selected disabled>change {{bot.then_action}} to {{bot.then_dependency}}</option>
+                                {% for options in Then_Options %}
+                                    <option>{{options}}</option>
+                                {% endfor %}
+                            </select>
+                <!-- HOLD or ARCHIVE -->
+                        {% elif bot.then_action == "hold" or bot.then_action ==  "archive" %}
+                            <select class="bot-{{bot.id}}" data-select data-border="radius">
+                                <option selected disabled>{{bot.then_action|capfirst}} ticket</option>
+                                {% for options in Then_Options %}
+                                    <option>{{options}}</option>
+                                {% endfor %}
+                            </select>
+                <!-- ASSIGN -->
+                        {% elif bot.then_action == "assign" %}
+                            {% for admin in Admins %}
+                                {% if admin.id == bot.then_dependency|add:"0" %}
+
+                                <select class="bot-{{bot.id}}" data-select data-border="radius">
+                                    <option selected disabled>{{bot.then_action|capfirst}} {{admin.full_name}}</option>
+                                    {% for options in Then_Options %}
+                                        <option>{{options}}</option>
+                                    {% endfor %}
+                                </select>
+
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        </div>
+                        {% endif %}
+                        <br>
+
+                        <button class="edit-bot alt-button" which_bot="{{bot.id}}">Commit Changes</button>
+                    </form>
+                    <br>
+                    <br>
+                    <form action="{% url 'ticket-easy:delete-automator' automator_id=bot.id %}">
+                        <button class="delete-button">Delete</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% else %}
+    <div class="center">
+        <div class="w-50">
+            <br>
+            <a href="{% url 'ticket-easy:new-automator' %}" class="p-bgr" style="display: block !important;">New Automation</a>
+        </div>
+    </div>
+    {% endif %}
+{% else %}
+    <div class="margin-inline-lg margin-block-lg">
+        <h3>Lost?  <a href="/ticket-easy/users/">Go Home</a> </h3>
+    </div>
+{% endif %}
+</div>
+<script>
+    /*$(".bot-trigger").click(function(){
+
+        var z = $(this).next()
+        if(z.css('display') == 'none'){
+            console.log('hidden')
+            z.css('display', 'block')
+        }
+        else{
+            z.css('display', 'none')
+        }
+        $('.bot-container').not(z).hide()
+    });*/
+    //the great two liner ...extended 
+
+
+    /*
+    $('#bot-selector').on('change', function (e) {
+        var optionSelected = $("option:selected").val();
+        $.ajax({
+            method: 'POST',
+            url: '/all-bots',
+            data: {
+                    'ajax':"ajax",
+                    'option':optionSelected,
+                    'csrfmiddlewaretoken': '{{csrf_token}}'
+                },
+                
+                success:function(response){
+                    $("body").html(response);
+                }
+        });
+
+    });*/
+</script>
+{% endblock %}
+{% block deferred_script %}
+    {% comment %} <script src="{% static 'ticket_app_static/js/select-scenarios-bots.js' %}" type="module"></script> {% endcomment %}
+
+    <script src="{% static 'ticket_app_static/js/automator_page.js' %}" type="module"></script>
+    <script src="{% static 'ticket_app_static/js/import-select.js' %}" type="module"></script>
+{% endblock %}
+{% block css_stylesheet %}
+    <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/select-automators.css' %}">
+    <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/automators.css' %}">
+{% endblock %}

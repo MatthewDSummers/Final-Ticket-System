@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% load static %}
+
+<div class="margin-inline padding-block-lg">
+Hello
+<a href="{% url 'login-app:new-user' %}">new user</a>
+</div>
+
+{% endblock %}

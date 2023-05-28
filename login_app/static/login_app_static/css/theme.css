@@ -1,0 +1,268 @@
+*,
+::before,
+::after{
+    box-sizing: border-box;
+}
+
+:root {
+    --font-shadow-dark : 2px 2px 2px rgb(198, 198, 198);
+    --subheader: rgba(61, 83, 113, 0.937);
+    --content-text-shadow: 1px 1px 3px rgb(187, 187, 187);
+    --clr-error: rgb(255, 10, 10);
+    
+    --sidenav-bgr-clr: hsl(222, 90%, 31%);
+    --clr-hr: rgb(185, 185, 185);
+
+    --clr-light: rgb(255, 255, 255);
+    --clr-dark: black;
+    --font-color-primary: rgb(8, 8, 8);
+    --font-color-reverse: rgb(237, 237, 237);
+    --danger: rgb(165, 0, 0);
+
+    
+    --clr-primary: rgb(51, 51, 255);
+    --clr-secondary: rgb(24, 59, 142);
+    --clr-accent: rgb(212, 124, 1);
+    
+    --foreground: var(--clr-dark);
+    --background: var(--clr-light);
+    --background-secondary: #ebebeb;
+    --background-two: hsl(226, 48%, 94%);
+
+        /* MENUS  */
+        --clr-menus: hsl(226, 48%, 94%);
+        --clr-menus-accent: hsl(254, 41%, 87%);
+    
+
+    --select-container-primary: hsl(61, 100%, 91%);
+    
+    --select-options-primary: hsl(212,74%,97%);
+    --select-option-primary-hover: hsl(214, 39%, 40%);
+    --select-selected-primary: hsl(214, 39%, 70%);
+
+    --select-container: #feffd1;
+    --custom-select-options-table: hsl(212,74%,97%);
+    --custom-select-option-hover: hsl(214, 39%, 40%);
+    --table-nav-color: hsl(210,69%,95%);
+
+    /* SHADOWS  */
+    --box-shadow-main: 4px 4px 3px 1px hsla(239, 66%, 83%, 0.863);
+
+    --button-color: var(--select-container);
+    --button-hover: black;
+    --button-shadow: hsl(0, 0%, 80%);
+    --button-shadow-secondary:hsl(0, 0%, 77%);
+    --ff-title: "Playfair Display", serif;
+    --ff-body: "Assistant", sans-serif;
+    --hover-text:#314f9a;
+
+    /* --text-shadow-secondary: 1px 1px 3px white; */
+
+
+    --crucial: rgb(177, 38, 38);
+    --high: hsl(34, 64%, 53%);
+    --intermediate: hsl(0, 0%, 44%);
+    --low: hsl(0, 0%, 76%);
+
+    --resolved: rgb(3, 134, 3);
+    --unresolved: rgb(218, 0, 0);
+    --pinned: linear-gradient(0.25turn, hsl(219, 76%, 92%),hsl(219, 76%, 94%), hsl(219, 76%, 100%));
+    --pinned-font: rgb(0, 0, 0);
+    --pinned-resolved: rgb(3, 134, 3);
+
+    --pinned-border: 1px solid rgb(184, 184, 184);
+    --td-border: 1px solid rgb(192, 192, 192);
+
+    /* ASSIGNED  */
+    --assigned: hsl(214, 39%, 40%);
+    --unassigned: hsl(29, 100%, 37%);
+    --pane-menus: rgba(237, 241, 255, 0.764);
+
+
+
+
+
+        /* BUTTONS  */
+        --main-button-bgr: rgb(37,71,160);
+        --main-button-clr: #fdff80;
+        --main-button-shadow: 2px 1px 5px var(--button-shadow), 5px 5px 10px var(--button-shadow-secondary);
+        --main-button-border:  1px solid #6faadb;
+    
+        --main-button-bgr-hover: hsl(223, 62%, 47%);
+        /* --main-button-clr-hover: black; */
+        /* --main-button-shadow-hover: yellow; */
+        --main-button-border-hover: 2px solid #6faadb;
+        --tab-hover: #304e9a;
+}
+
+.darkmode{
+    --font-shadow-dark : 2px 2px 2px rgb(56, 56, 56);
+    --content-text-shadow: 1px 1px 3px rgb(95, 95, 95);
+    --subheader: rgba(255, 255, 121, 0.937);
+    --clr-error: rgb(255, 169, 10);
+
+    --clr-hr: rgb(148, 148, 148);
+    --background-two: hsl(293, 18%, 74%);
+    --hover-text:hsl(192, 65%, 41%);
+    --danger: rgb(108, 38, 38);
+
+    --clr-menus: rgb(97, 61, 109);
+    --clr-menus-accent: hsl(254, 41%, 87%);
+
+    --sidenav-bgr-clr: hsl(255, 97%, 56%);
+    --sidenav-bgr-clr: hsl(255, 97%, 36%);
+    /* --sidenav-bgr-clr: hsl(255, 97%, 40%); */
+    --select-container: hsl(255, 97%, 36%);
+    --table-nav-color: hsl(255, 97%, 36%);
+    --table-nav-color: rgb(97, 61, 109);
+    /* plum  */
+    --custom-select-options-table: hsl(254, 41%, 87%);
+    --custom-select-option-hover: hsl(256, 97%, 36%);
+
+    --select-container-primary: hsl(0, 0%, 39%);
+    --select-options-primary: hsl(0, 0%, 72%);
+    --select-option-primary-hover: hsl(256, 97%, 36%);
+    --select-selected-primary: rgb(97, 61, 109);
+    /* --select-selected-primary: rgb(87, 33, 196); */
+
+
+    /* SHADOWS  */
+    --box-shadow-main: 4px 4px 3px 1px hsla(0, 0%, 34%, 0.863);
+    --button-color:#5c4f80;
+    --button-shadow: hsl(0, 0%, 23%);
+    --button-shadow-secondary:hsl(0, 0%, 13%);
+    --button-hover: rgb(37, 37, 37);
+
+    --clr-light: black;
+    --clr-dark: white;
+    --font-color-primary: rgb(226, 226, 226);
+    --font-color-reverse: rgrgb(46, 46, 46)
+
+    --clr-primary: white;
+    --clr-secondary: rgb(97, 61, 109);
+    --clr-accent: orange;
+
+    --foreground: var(--clr-dark);
+    --background: var(--clr-light);
+    --background-secondary: hsl(0, 0%, 9%);
+
+    /* background-color: red; */
+
+    --resolved: rgb(78, 201, 78);
+    /* --unresolved: hsla(0, 100%, 58%, 0.885);
+    --unresolved: hsla(0, 100%, 82%, 0.885); */
+    --unresolved: rgb(255, 63, 33);
+    /* --pinned: linear-gradient(0.25turn, hsl(255, 97%, 36%),hsl(255, 97%, 25%),hsl(255, 97%, 20%), hsl(255, 97%, 10%));
+    --pinned: linear-gradient(0.25turn, hsl(255, 97%, 12%),hsl(255, 97%, 10%),hsl(255, 97%, 6%), hsl(255, 97%, 6%));
+    --pinned: hsl(54, 100%, 93%); */
+    --pinned: hsl(0, 0%, 20%);
+    --pinned-font: hsl(67, 100%, 79%);
+    --pinned-font: hsl(0, 0%, 88%);
+    /* --pinned-font: black; */
+    --pinned-resolved: hsl(120, 100%, 32%);
+
+
+    --pinned-border: 1px solid rgb(46, 46, 46);
+    --td-border: .5px solid hsl(54, 100%, 89%);
+    /* --td-border: .5px solid hsl(0, 0%, 83%); */
+    /* --pinned-border: .5px solid hsl(0, 0%, 83%); */
+    --pinned-border: .5px solid hsl(54, 100%, 89%);
+
+
+    /* --pinned-font: var(--font-color-primary); */
+    /* --text-shadow-secondary: 1px 1px 3px #a63369; */
+    /* --pinned-font: hsl(60, 84%, 75%); */
+
+    --crucial: rgb(255, 63, 33);
+    --high: hsl(34, 64%, 63%);
+    --intermediate: hsl(0, 0%, 54%);
+    --low: hsl(0, 0%, 93%);
+
+    /* ASSIGNED  */
+    --assigned: hsl(214, 39%, 53%);
+    --unassigned: hsl(29, 100%, 52%);
+    --pane-menus: rgb(96, 73, 124);
+
+
+
+
+
+    /* BUTTONS  */
+    --main-button-bgr: rgb(25, 100, 119);
+    --main-button-clr: #fdff80;
+    --main-button-shadow: 2px 1px 5px rgb(122, 114, 131), 5px 5px 10px rgba(136, 134, 139, 0.588);
+    --main-button-border:  1px solid #717171;
+
+    --main-button-bgr-hover: rgb(97, 61, 109);
+    /* --main-button-clr-hover: black; */
+    /* --main-button-shadow-hover: yellow; */
+    --main-button-border-hover: 2px solid #a7a7a7;
+    --tab-hover: #71507b;
+
+}
+
+
+.clr-hr{
+    background-color: var(--clr-hr);
+}
+.container{
+    margin: 0 !important;
+    /* padding: 0 !important; */
+
+    background: var(--background) !important;
+}
+#dark-mode-toggle{
+    position: absolute;
+    right:0;
+    background-color: transparent;
+    border: none;
+    padding: .1em .2em .2em .2em;
+    margin: 0 .9em .5em 0;
+    box-shadow: none;
+
+}
+    #dark-mode-toggle:hover{
+        background-color: rgba(255, 255, 255, 0.156);
+        border-radius: 100%;
+        /* rgb(212, 212, 212) */
+        color: rgb(233, 226, 107);
+        box-shadow: 
+            1px 1px 3px rgba(214, 181, 181, 0.101),
+            1px 1px  2px 3px rgba(166, 166, 166, 0.101);
+    }
+    #dark-mode-toggle:focus{
+        outline: none;
+    }
+
+
+
+    #title{
+        font-family: 'Playfair Display', serif;
+        color: var(--clr-secondary) !important;
+    }
+
+    .alt-shadow{
+        box-shadow: 2px 2px 4px rgb(90, 88, 88) !important;
+    }
+
+    /* FORMS  */
+
+    label{
+        color: var(--primary-font-color);
+    }
+    
+    input{
+        background-color: var(--background-secondary) !important;
+        color: var(--clr-dark) !important;
+    }
+        input::placeholder{
+            color: var(--clr-dark) !important;
+        }
+
+        input[type=date]:focus{
+            background-color: var(--background-secondary) !important;
+            color: var(--clr-dark);
+        }
+    .login_app_form > * + * {
+        margin-block: .5em !important;
+    }

@@ -1,0 +1,236 @@
+a{
+    cursor: pointer;
+}
+.sidenav {
+    height: 100%;
+    /* width: 20rem; */
+    position: fixed;
+    padding-left: .9em;
+    padding-right: .7em;
+    z-index: 9999999;
+    top: 0;
+    left: 0;
+    width: 3.5em;
+    background-color: #2a0048;
+    /* original !!!! ^^^ bgr  */
+    background-color: hsl(270, 8%, 10%);
+    /* solid color ^^^^ */
+    background-color: hsl(222, 90%, 31%);
+    /* BEST BEST BEST BEST  */
+    background-color: var(--sidenav-bgr-clr);
+    background-color: var(--clr-secondary);
+    /* overflow-x: hidden; */
+    padding-top: 2em;
+    transition: width .2s ease;
+    /* padding-left: 0px; */
+    /* display: none; */
+    text-align: left;
+    border-right: 1.5px solid black;
+}
+
+/* .sidenav2 {
+    height: 100%;
+    width: 160px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #2a0048;
+    overflow-x: hidden;
+} */
+
+.sidenav a {
+    text-decoration: none;
+    display: block;
+    color: #818181;
+    font-size: 1.1rem;
+}
+/* .sidenav2 a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #818181;
+    display: block;
+    margin: 4% 0 -10% 10%;
+} */
+.sidenav a:hover span{
+    color: #fff1a1;
+    color: var(--sidenav-hover-text);
+    text-shadow: 1px 1px 1px rgb(48, 48, 48);
+}
+/* .sidenav a:hover{
+    color: rgb(222, 222, 222);
+    text-shadow: 1px 1px rgb(110, 110, 110);
+} */
+/* .sidenav2 a:hover {
+    color: #f1f1f1;
+} */
+.sidenav-item{
+    height: 2em;
+    /* width: 2em; */
+    /* background-color: transparent; */
+    border: none;
+    margin-bottom: .9em;
+    font-size: 1rem;
+    border-radius: 1em;
+    /* padding: .1em 0 0 .3em; */
+}
+
+.sidenav-item:hover{
+    background-color: #feffd6;
+    /* color: green; */
+    background-color: rgb(68, 103, 194);
+    background-color: var(--sidenav-item-hover);
+    border: 1px solid silver;
+    padding: .1em 0 0 .3em;
+    /* width: 6em; */
+}
+    .sidenav-item:focus{
+        outline: none;
+        /* fixes tabbing outline issue  */
+    }
+/* .sidenav-item:hover{
+    color: #fff1a1;
+    text-shadow: 1px 1px 1px rgb(48, 48, 48);
+} */
+
+/* .sidenav-item a{
+    font-size: 12rem;
+} */
+.nav-li{
+    /* position: relative;
+    left: -8em;
+    transition: left 2.2s; */
+}
+    /* .icons{
+        width: 1.5rem;
+    } */
+    .sidenav-icon{
+        width: 1.5em;
+        /* position: absolute; top:10px; left: 4px; */
+    }
+
+    .icon-danger{
+        width: 2.5em;
+        position: absolute; top:5.1em; left: 1em;
+    }
+    /* .sidebar-option:not(.ticket-sidebar-option){ */
+    .sidebar-option{
+        color: #cfc463;
+        /* cursor: pointer; */
+        /* original ^^^  */
+        color: #ececec;
+        /* margin-left: 20%; */
+        /* padding-top: .3em; */
+        /* font-size: 1em; */
+        /* display: inline-block; */
+        /* display: none; */
+        /* position: relative; */
+        /* margin-bottom: -2.2rem; */
+        font-size: 1rem;
+        opacity: 0;
+        /* transition: opacity .9s ease; */
+    }
+        /* .ticket-sidebar-option{
+            font-size: 1rem;
+            opacity: 0;
+            color: red;
+        } */
+    .sidenav-option-container{
+        position: relative;
+        /* display: none; */
+        height: 0px;
+        max-height: 10em;
+        left: -8em;
+        transition: left .6s, height .6s ease;
+    }
+        .sidenav-option-container a{
+            color: rgb(236, 236, 236);
+            text-shadow: 1px 1px 1px rgb(48, 48, 48);
+            font-size: .8rem;
+
+        }
+        .sidenav-option-container a:hover{
+            color: #fff1a1;
+            text-shadow: 1px 1px 8px rgb(157, 172, 217);
+        }
+    .visible-sidenav-item{
+        margin-top: -1em;
+        height: 7em;
+        left: 2em;
+    }
+    .visible-sidenav-item-events{
+        height: 2em;
+        left: 2em;
+    }
+    .visible-sidenav-item-users{
+        margin-top: -.5em;
+        margin-bottom: 1em;
+        height: 2em;
+        left: 2em;
+    }
+
+            /* .dd-content{
+                font-size: .8rem !important;
+                margin-left: 2.6em !important;
+            } */
+
+
+
+            /* INBOX STUFF  */
+            .sidenav-inbox-container{
+                /* margin-bottom: -1.8em; */
+            }
+            .circle{
+                /* background-color: rgb(44, 45, 46); */
+                border-radius: 100%;
+                border: 1px solid black;
+                padding-top: .36em;
+                height: 1.6em;
+                width: 1.6em;
+                color: white;
+                text-align: center;
+                background-color: rgb(207, 7, 7);
+            
+            
+            }
+            .unviewed-div{
+                /* width: 20px; */
+                /* display: inline-block; */
+                position: relative; bottom: 4em; left: .4em;
+                margin-bottom: -2em;
+                /* overflow:hidden;
+                white-space:nowrap;
+                display:inline-block;
+                text-overflow:ellipsis; */
+                /* width:400px */
+            }
+            .center-circle-content{
+            
+                text-align: center;
+                margin: auto;
+                /* width: 50%; */
+                /* background-color: red; */
+            }
+            .unviewed-notification-sm{
+                position: relative; bottom: .3em;
+                font-size: 12px;
+                width: 20px;
+                text-shadow: 1px 1px black;
+                overflow: hidden;
+                display: inline-block;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            
+            .unviewed-notification-lg{
+                position: relative; bottom: .4em;
+                font-size: 15px;
+                /* width: 100px; */
+                width: 20px;
+                text-shadow: 1px 1px black;
+                overflow: hidden;
+                display: inline-block;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }

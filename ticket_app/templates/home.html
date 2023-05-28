@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% comment %} <head>
+    <link rel="stylesheet/less" type="text/css" href="{% static 'styles.less' %}"/>
+    <script src="https://cdn.jsdelivr.net/npm/less@4" ></script>
+</head> {% endcomment %}
+        {% if user.level == 9  or user.level == 8 %}{% comment %} <a href="/delete_tickets" id="delete">Delete all tickets (for testing purposes; remove later)</a> {% endcomment %}
+
+        <div class="row padding-block padding-inline">
+            
+            <div class="content col-sm-12 col-md-12 col-lg-6">
+                <div class="center">
+                    <h2 class="title">Frequented</h2>
+                </div>
+
+                {% comment %} # set local storage for email and name by this  {% endcomment %}
+                <table id="admin-workflow" class="relative margin-block-lg">
+                    <caption id="caption"  class="theme-text" data-name="{{user.first_name}}" data-email="{{user.email}}">User: {{user.full_name}}</caption>
+                    <thead>
+                        <tr>
+                            <th class="theme-text">Shortcuts</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        {% for website in user.websites.all %}
+                        <tr>
+                            <td class="website-td">
+                                <form action="{% url 'ticket-easy:delete-site' website_id=website.id %}" method="POST" class="remove-website-form">
+                                    {% csrf_token %}
+                                    
+                                    <button type="submit" class="remove-website-btn"><img id="icon-minus" src="{% static 'login_app_static/images/minus2.png' %}" % alt="details">
+                                    </button>
+                                </form>
+                                <a href="{{website.content}}" target="blank" class="website-name">{{website.name}}</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td>
+                                <a href="#" class="add-site-trigger"><img id="icon-minus" src="{% static 'login_app_static/images/plus.png' %}" % alt="details"></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            
+                            <td id="">
+                                {% if web_len < 1 %}
+                                    <p class="theme-text"> Add a link to a frequented page</p>
+                                {% endif %}
+
+                                <form action="{% url 'ticket-easy:create-site' %}" method="POST" id="add-site-div" class="hidden" autocomplete="off">
+                                    {% csrf_token %}
+                                    <label for="site-name" class="theme-text hidden-label">Resource Name</label>
+                                    <br>
+                                    <input type="text" id="site-name" name="name" placeholder="Include a title">
+                                    <br>
+                                    <label for="new-link" class="theme-text hidden-label">Add New Resource</label>
+                                    <br>
+                                    <input type="text" id="new-link" name="website" placeholder="Add a link">
+                                    <br><br>
+                                    <button type="submit" class="add-website-btn main-button">Add</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                    
+                </table>
+
+            
+        </div>
+        {% endif %}
+        <div class="content col-sm-12 col-md-12 col-lg-6">
+            <div class="center">
+                <h2 class="title">Summary</h2>
+            </div>
+            <div class="row margin-inline-lg padding-top-lg">
+                <div class="col-6">
+                    <h3 class="theme-text">Active</h3>
+                    <a href="{% url 'ticket-easy:tickets' %}?type=Active&filter=Status&value=Unresolved&table_variant=Active&page=1"  class="block">Unresolved: {{unresolved}}</a>
+                    <a href="{% url 'ticket-easy:tickets' %}?type=Active&filter=Priority&value=Not%20Set&table_variant=Active&page=1" class="block">Priority not set: {{unset}}</a>
+                    <a href="{% url 'ticket-easy:tickets' %}?type=Active&filter=Assignment&value=Unassigned&table_variant=Active&page=1" class="block">Unassigned: {{unassigned}}</a>
+                </div>
+
+                <div class="col-6">
+                    <h3 class="theme-text">On Hold</h3>
+                    <a href="{% url 'ticket-easy:tickets' %}?type=Withheld&page=1" class="block">On Hold: {{withheld}}</a>
+                </div>
+            </div>
+            <div class="row margin-inline-lg padding-top-lg">
+                <div class="col-12">
+                    <h3 class="theme-text">My tickets</h3>
+                    <a href="{% url 'login-app:user-tickets' user_id=user.id %}?type=Profile" class="block">Assigned to me: {{assigned}}</a>
+                </div>
+            </div>
+        </div>
+    </div>  
+
+
+    <script>
+        var website_trigger_counter = 0;
+            $('.add-site-trigger').click(function() {
+                website_trigger_counter += 1;
+                console.log(website_trigger_counter, "counter")
+
+                if(website_trigger_counter % 2 === 0){
+                    console.log("is even")
+                    $(".hidden-label").css("display", "none")
+                }
+
+                $("#add-site-div").toggle({
+                    width: "toggle",
+                    complete: function() {
+                        if(website_trigger_counter % 2 !== 0){
+                            console.log("is odd")
+                            $(".hidden-label").fadeIn(100);
+                        }
+                    }
+                });
+            });
+                /*csrf_token = '{{csrf_token}}'
+                var csrf = document.createElement('input');
+                    csrf.setAttribute("type", 'hidden');
+                    csrf.setAttribute("name", '_csrf');
+                    csrf.setAttribute("value", csrf_token);
+                let new_site_div = document.getElementById('add-site-div');*/
+                /*let form= document.createElement("form");
+                    form.setAttribute('action', '/new-site');
+                    form.setAttribute('method', "POST");
+                    form.appendChild(csrf);*/
+                //console.log(csrf)
+                //console.log(form)
+                //new_site_div.appendChild(csrf)
+                //new_site_div.innerHTML = `
+
+            //`
+
+                //new_site_div.innerHTML = form.innerHTML;
+                
+
+            //});
+            /*function addLink() {
+                let site_name = document.getElementById("site-name").value;
+                let site_value = document.getElementById("new-link").value;
+                //console.log(site_value);
+                anchor= document.createElement("a");
+                //console.log(anchor);
+                anchor.setAttribute('href', site_value);
+                //console.log(anchor)
+                anchor.innerText=site_name;
+                result = document.getElementById("parent")
+                console.log(anchor)
+                //result.innerHTML = anchor
+                document.getElementById("parent").appendChild(anchor);
+            }*/
+        </script>
+{% endblock %}
+{% block css_stylesheet %}
+    {% comment %} <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/running-old.css' %}"> {% endcomment %}
+    <link rel='stylesheet' type='text/css' href="{% static 'ticket_app_static/css/home.css' %}">
+{% endblock %}

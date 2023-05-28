@@ -1,0 +1,280 @@
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display+SC:wght@400;700;900&display=swap');
+
+/* TABLE OF CONTENTS
+
+    1. Inbox Sidebar
+        1.1 General
+        1.2 Main Content
+
+    2. Inbox Table
+
+*/
+
+/*  =================
+    1. Inbox Sidebar
+    ================= */
+
+/* 1.1 General  */
+
+
+.inbox-sidebar{
+    height: 100%;
+    /* border: 1px solid black; */
+    width: 3.4em;
+    /* padding-inline:1em; */
+    position: fixed;
+    z-index: 9999;
+    top: 0em;
+    left: 3.5em;
+    /* background-color: #2a0048; */
+    /* original !!!! ^^^ bgr  */
+    background-color: var(--clr-menus) !important;
+    overflow-x: hidden;
+    padding-top: 3em;
+    transition: left .2s ease;
+    /* border-right: 1px solid hsl(226, 48%, 86%); */
+
+}
+
+    .inbox-action-icon{
+        width:17px;
+        cursor: pointer;
+    }
+    .inbox-edit-icon{
+        width:36px;
+        margin-left: -3px;
+        cursor: pointer;
+    }
+
+#inbox-sidebar-expanded{
+    transition: left .2s;
+    position: fixed;
+    width: 13em;
+    background-color: hsl(226, 48%, 94%);
+    margin-left: 1.67em;
+    padding-top:3em;
+    top: 0em;
+    left: -200px;
+    z-index: 9998;
+    border-radius: 0px 0px 7px 0px;
+
+    box-shadow:0px 3px 5px gray, 
+    -1px 3px 9px rgb(209, 209, 209), 5px 4px 6px rgb(217, 217, 217);
+    padding-bottom: 1em;
+}
+
+.inbox-menu-option-div{
+    padding-top: .2em;
+    border-radius: 0px 9px 9px 0px;
+    /* z-index: 9999; */
+    padding-left: .7em;
+    width: 12em;
+    height: 2rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+
+.inbox-menu-option-count{
+    padding-right: 1em;
+    text-align: right;
+    width: 3.5em;
+    bottom: .37rem;
+    right: 0rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.inbox-menu-item{
+    /* background-color: blue; */
+    border-radius: 100%;
+    width: 2rem;
+    height: 2rem;
+    padding-top: .15em;
+    /* left: .69em; */
+    text-align: center;
+    margin: auto;
+    /* margin-bottom: .3em; */
+}
+
+.inbox-sidebar-count{
+    /* margin-left: 3em; */
+    border: 1px solid black;
+    width: 1px;
+    display : inline;
+    /* flex-direction : row-reverse;  */
+    /* align-items: flex-start; */
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    overflow: hidden;
+    /* text-align: right; */
+}
+.count-item{
+    width: 1px;
+
+}
+
+
+
+
+.active-menu-item{
+    background-color: #a7c1f2;
+}
+.inbox-sidebar-active{
+    background-color: hsl(219, 74%, 80%);
+}
+
+
+
+
+
+/*  =================
+    2. Inbox Table
+    ================= */
+
+.inbox-content{
+    font-family: 'Assistant', sans-serif;
+    font-weight: 400;
+    margin-left: 2rem;
+    width: 100%;
+    /* height: 20em; */
+    /* outline: 2px solid blue; */
+    z-index: 800;
+    /* position: relative; */
+}
+    .inbox-table{
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 91vw;
+    }
+        .inbox-table tbody{
+            width: 100%;
+        }
+
+        .inbox-table tr{
+            border-bottom: 1px solid rgb(223, 223, 223);
+            width: 100%;
+        }
+            .inbox-table tr:hover{
+                transform: scale(1)
+            }
+        .inbox-table td{
+            padding-block: .45rem;
+            padding-inline:.5em;
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+            /* message visible actions  */
+            .inbox-table tr td:nth-child(1){
+                width: 6%;
+            }
+                .inbox-table tr td:nth-child(1) *{
+                    margin-inline: .1em;
+                    margin-bottom: .2em;
+                }
+            /* message participants  */
+            .inbox-table tr td:nth-child(2){
+                width: 17%;
+                /* background-color: red; */
+                font-size: .9rem;
+            }
+            /* message subject + body  */
+            .inbox-table tr td:nth-child(3){
+                width: 65%;
+            }
+            /* message date  */
+            .inbox-table tr td:nth-child(4){
+                width: 12%;
+                text-align: center;
+            }
+            /* message actions - hoverable  */
+            .inbox-table tr td:nth-child(5)> *{
+                margin-inline:.2em;
+                width: 1.1em;
+            }
+
+            .inbox-checkbox{
+                margin-right: 4px;
+            }
+            .viewed{
+                background-color: #e8f0fa;
+                font-weight: 700;
+            }
+            .unviewed{
+                background-color: hsl(214, 25%, 96%)
+            }
+
+            .inbox-icon{
+                width:17px;
+                cursor: pointer;
+            }
+.relative{
+    position: relative;
+}
+.absolute{
+    position: absolute;
+}
+/* .block{
+    display: block;
+}  */
+
+
+
+
+
+/* HOVERABLE ACTIONS  */
+.actions-hoverable{
+    z-index: 801;
+    /* right: 1em;
+    top: .3em; */
+    right: 1em;
+    top: .4em;
+    /* outline: 1px solid red; */
+}
+
+.actions-hoverable-inner{
+    margin-bottom: 1rem;
+    opacity: 0;
+    padding: 0;
+    /* padding-block: .5em; */
+    /* outline: 2px solid green; */
+    padding-left: 1.2em;
+    /* outline: 1px solid gold; */
+    width: 7em;
+    height: 2em;
+}
+
+.actions-hoverable-inner > img{
+
+    /* margin-inline:.7em; */
+    /* margin-right: 1.5em; */
+    width: 1.2em;
+    /* outline: 1px solid green; */
+}
+
+.actions-hoverable-inner a{
+    margin-right: 1em;
+}
+    .actions-hoverable-explanation{
+        right: 1.5em;
+        top: 110px;
+        z-index: 0;
+        display: none;
+        /* margin-block: 2rem; */
+    }
+        .ahe-inner{
+            margin-right: 1.4em;
+        }
+            .ahe-inner p{
+                font-size: .8rem;
+            }
+
+
+
+
+
