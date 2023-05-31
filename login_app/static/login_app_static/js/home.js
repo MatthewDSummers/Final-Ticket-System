@@ -60,7 +60,7 @@ console.log("we did it")
     console.log(optionSelected)
     $.ajax({
         method: 'GET',
-        url: 'ticket-easy/update-tabs',
+        url: '/ticket-easy/users/update-tabs',
         data: {
                 'option':optionSelected,
             },
