@@ -10,7 +10,9 @@
     color-scheme: light dark;
 }
 
-
+.account-button{
+    margin-bottom: 1em !important;
+}
 
 .hidden{
     display: none;

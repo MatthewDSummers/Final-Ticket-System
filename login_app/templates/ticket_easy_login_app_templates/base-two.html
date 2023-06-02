@@ -104,8 +104,28 @@
                     <a class="btnn" href="{% url 'login-app:register-page' %}" onclick="registrationForm()">Register</a>
                     <a href="#">Buy now</a>
                 </div>
+
             </div>
+
 <hr class="clr-hr">
+
+        <!-- DEMO LOGIN -->
+            <form action="{% url 'login-app:demo-login' %}" method="POST" style="display:inline-block">
+                {% csrf_token %}
+                <input type="hidden" name="email" value="super@mail.com">
+                <button class="demo-account-button">Login as Demo Super</button>
+            </form>
+            <form action="{% url 'login-app:demo-login' %}" method="POST" style="display:inline-block">
+                {% csrf_token %}
+                <input type="hidden" name="email" value="staff@mail.com">
+                <button class="demo-account-button">Login as Demo Staff</button>
+            </form>
+            <form action="{% url 'login-app:demo-login' %}" method="POST" style="display:inline-block">
+                {% csrf_token %}
+                <input type="hidden" name="email" value="user@mail.com">
+                <button class="demo-account-button">Login as Demo User</button>
+            </form>
+
             {% block content %}
             {% endblock %}
         </div>

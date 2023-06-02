@@ -90,7 +90,27 @@ def register_user(request):
     request.session['message_status'] = "success"
     return redirect(reverse('login-app:login-page'))
 
-@if_not_logged_in 
+@if_not_logged_in
+def demo_login(request):
+    email = request.POST['email']
+    if email == "super@mail.com" or email == "staff@mail.com" or email == "user@mail.com":
+        try:
+            user = User.objects.get(email = request.POST['email'])
+        except:
+            request.session['message_status'] = "error"
+            messages.error(request, "Incorrect email address or password")
+            return redirect(reverse('login-app:login-page'))
+        else:
+            print(user.level, "THE LEVEL")
+            request.session['user_id'] = user.id
+            user.reset_failed_authorizations()
+            return redirect(reverse('ticket-easy:dashboard'))
+    else:
+        request.session['message_status'] = "error"
+        messages.error(request, "Incorrect email address or password")
+        return redirect(reverse('login-app:login-page'))
+
+@if_not_logged_in
 def login(request):
     try:
         user = User.objects.get(email = request.POST['email'])
@@ -210,6 +230,18 @@ def delete_user(request, target_id):
         target_user = User.objects.get(id=target_id)
     except:
         return kickedOut(request, message_type="error", message="Deletions must be done through the site's form. Please login to continue.")
+
+    if target_user.email == "super@mail.com":
+        theError(request, f"This account cannot be deleted.")
+        return redirect(previous_url)
+
+    elif target_user.email == "staff@mail.com":
+        theError(request, f"This account cannot be deleted.")
+        return redirect(previous_url)
+
+    elif target_user.email == "user@mail.com":
+        theError(request, f"This account cannot be deleted.")
+        return redirect(previous_url)
 
     if bcrypt.checkpw(request.POST["password"].encode(), user.password.encode()):
         user.reset_failed_authorizations()
