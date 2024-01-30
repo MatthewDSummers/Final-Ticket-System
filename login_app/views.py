@@ -179,12 +179,34 @@ def all(request):
     context["page_number"] = page_number
     return render(request, 'users.html', context)
 
+
+def redirect_previous(request):
+    previous_url = request.META.get('HTTP_REFERER')
+    return redirect(previous_url)
+
+@user_level_required(8,9)
+def protected_accounts(request, target_user_email, action=None):
+    if action:
+        protected = ["super@mail.com", "staff@mail.com", "user@mail.com"]
+        if target_user_email in protected:
+            if action == "delete":
+                message = "This account cannot be deleted"
+            elif action == "permissions":
+                message = "This user's permission level cannot be altered"
+
+            theError(request, message)
+            return True
+        else:
+            return False
+
 @user_level_required(8,9)
 def change_user_permission_level(request, user_id):
     target_user = User.objects.get(id=user_id)
     decision = request.POST["decision"]
-    previous_url = request.META.get('HTTP_REFERER')
 
+    protection = protected_accounts(request, target_user.email, action="permissions")
+    if protection:
+        return redirect_previous(request)
 
     if decision == "Make Administrator":
         target_user.level = 8
@@ -207,9 +229,7 @@ def change_user_permission_level(request, user_id):
             theError(request, f"This is the only Super-Admin account. There must remain at least one Super-Admin.")
 
     target_user.save()
-    # print(target_user.level, "the level AFTER")
-
-    return redirect(previous_url)
+    return redirect_previous(request)
 
 
 # @user_level_required(9)
@@ -231,17 +251,10 @@ def delete_user(request, target_id):
     except:
         return kickedOut(request, message_type="error", message="Deletions must be done through the site's form. Please login to continue.")
 
-    if target_user.email == "super@mail.com":
-        theError(request, f"This account cannot be deleted.")
-        return redirect(previous_url)
+    protection = protected_accounts(request, target_user.email, action="delete")
+    if protection:
+        return redirect_previous(request)
 
-    elif target_user.email == "staff@mail.com":
-        theError(request, f"This account cannot be deleted.")
-        return redirect(previous_url)
-
-    elif target_user.email == "user@mail.com":
-        theError(request, f"This account cannot be deleted.")
-        return redirect(previous_url)
 
     if bcrypt.checkpw(request.POST["password"].encode(), user.password.encode()):
         user.reset_failed_authorizations()
