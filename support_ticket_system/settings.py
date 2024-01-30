@@ -27,14 +27,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-
 DEBUG = True
-
 
 
 # PRIOS = ""
 # DEBUG = False
-# ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '[::1]']
 # ALLOWED_HOSTS = ['.localhost', '127.0.0.1']
 # python manage.py runserver --insecure
 
@@ -180,19 +177,12 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'login_app/static'),
 ]
 
-# STATICFILES_DIR = [os.path.join(BASE_DIR, "static"), 
-# # "ticket_app/css"
-# ]
-
-
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/login_app_static/images/'
 
-# x = 5
 # # if Priority.objects.get(toggle_auto_priorites=True):
-# if x == 5:
-#     print(x)
+
 CRONJOBS = [
     # (f'{PRIOS} * * * *', 'ticket_app.cron.update_priority')
     # ('* * * * *', 'ticket_app.cron.update_priority')
@@ -200,14 +190,6 @@ CRONJOBS = [
     ('* * * * *', 'ticket_app.management.commands.reset_message_urls')
 ]
     # print("Auto-priority activated. Let's go crony.")
-
-
-# CKEDITOR_CONFIGS = {
-#     "default": {
-#         "removePlugins": "stylesheetparser",
-#         'allowedContent': True
-#     }
-# }
 
 
 # settings.py
